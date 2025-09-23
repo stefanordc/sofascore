@@ -1,4 +1,5 @@
-import json, datetime, random, time, re, logging, sys, collections, os
+# -*- coding: utf-8 -*-
+import json, datetime, random, time, re, logging, sys, os, subprocess, tempfile, itertools
 from typing import Dict, List, Tuple, Any
 import pandas as pd
 import pymysql
@@ -11,7 +12,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
-from selenium.common.exceptions import TimeoutException, WebDriverException
+from selenium.common.exceptions import TimeoutException, WebDriverException, NoSuchElementException
 import substituicoes_clubes
 
 # ───────────────────────────── CONFIGURAÇÕES ───────────────────────────── #
@@ -30,63 +31,92 @@ proxy_port = "8888"
 PROXY_FAIL_STRIKES = 0
 PROXY_FAIL_LIMIT = 2
 
+# Circuit breaker para 'event'
+EVENT_FAIL_STREAK = 0
+EVENT_FAIL_BREAK_1 = 2   # após 2 falhas seguidas: restart + trocar UA + rebuild session
+EVENT_FAIL_BREAK_2 = 4   # após 4: alternar estado do proxy (liga/desliga)
+
+# Cooldowns
+COOLDOWN_403_429 = (8, 14)  # aguarda aleatório se 403/429
+
+# ─────────────── User-Agents rotativos (desktop Chrome estáveis) ─────────────── #
+_UA_POOL = [
+    # Chrome 120–121
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    # Chrome 122–124
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    # Chrome 140 (atual máquina do Tefin)
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+]
+_ua_cycle = itertools.cycle(random.sample(_UA_POOL, k=len(_UA_POOL)))
+
+def random_user_agent() -> str:
+    return next(_ua_cycle)
+
 # ----------------------------- LISTA DE URLS ----------------------------- #
 urls: List[str] = [
-    'https://www.sofascore.com/pt/football/match/belediye-kutahyaspor-altinordu/ZUjsVDH#id:14645416',
-    'https://www.sofascore.com/pt/football/match/kucukcekmece-sinop-spor-inegolspor/opcsWiUd#id:14645400',
-    'https://www.sofascore.com/pt/football/match/silifke-belediyespor-kahramanmaras-istiklalspor/gnFgsJnFg#id:14647052',
-    'https://www.sofascore.com/pt/football/match/beyoglu-yeni-carsi-fas-silivrispor/CcGsgitb#id:14645415',
-    'https://www.sofascore.com/pt/football/match/somaspor-cankaya-fk/UAWsBkFc#id:14645417',
-    'https://www.sofascore.com/pt/football/match/corluspor-1947-ayvalikgucu-belediyespor/WTWsNXWd#id:14647057',
-    'https://www.sofascore.com/pt/football/match/siran-yildizspor-sivasspor/BlbshwQg#id:14645401',
-    'https://www.sofascore.com/pt/football/match/12-bingolspor-elazigspor/tlbsoHub#id:14645423',
-    'https://www.sofascore.com/pt/football/match/1926-bulancakspor-24-erzincanspor/bRtcsFPje#id:14645409',
-    'https://www.sofascore.com/pt/football/match/yalova-fk-77-sk-balikesirspor/MdpsZNje#id:14645408',
-    'https://www.sofascore.com/pt/football/match/bornova-1877-aliaga-fk/TiUdsYiUd#id:14647054',
-    'https://www.sofascore.com/pt/football/match/bursa-yildirimspor-karsiyaka/ZObskdGc#id:14645405',
-    'https://www.sofascore.com/pt/football/match/anadolu-universitesi-menemen-fk/fMrsajUd#id:14645426',
-    'https://www.sofascore.com/pt/football/match/nigde-belediyesi-spor-68-aksarayspor/LTWsEdvg#id:14647051',
-    'https://www.sofascore.com/pt/football/match/sebat-genclik-spor-orduspor-1967/qpfdsdjUd#id:14645402',
-    'https://www.sofascore.com/pt/football/match/tigres-uanl-cd-guadalajara/NNsPN#id:13984769',
-    'https://www.sofascore.com/pt/football/match/new-york-city-fc-columbus-crew/eabsTcAb#id:14387685',
-    'https://www.sofascore.com/pt/football/match/los-angeles-fc-real-salt-lake/IccsaTjc#id:14037794',
-    'https://www.sofascore.com/pt/football/match/gv-san-jose-academia-de-balompie-boliviano/Nnudstfce#id:14671973',
-    'https://www.sofascore.com/pt/football/match/nacional-potosi-jorge-wilstermann/Dhdsaeu#id:14671449',
-    'https://www.sofascore.com/pt/football/match/club-atletico-tembetary-cerro-porteno/QucsBnCc#id:14636105',
-    'https://www.sofascore.com/pt/football/match/alianza-atletico-de-sullana-club-sporting-cristal/cWshW#id:14558493',
-    'https://www.sofascore.com/pt/football/match/comerciantes-unidos-sport-huancayo/VCnsjxKb#id:14558497',
-    'https://www.sofascore.com/pt/football/match/sport-boys-cienciano/bWsmW#id:14558496',
-    'https://www.sofascore.com/pt/football/match/newells-old-boys-belgrano/dobsmob#id:14557466',
-    'https://www.sofascore.com/pt/football/match/chengdu-rongcheng-ulsan-hd/dddsQzNb#id:14469213',
-    'https://www.sofascore.com/pt/football/match/shanghai-port-vissel-kobe/WmbsMFq#id:14469214',
-    'https://www.sofascore.com/pt/football/match/kfum-oslo-kongsvinger/xnsLp#id:14592306',
-    'https://www.sofascore.com/pt/football/match/sk-brann-mjondalen/dtsjy#id:14592303',
-    'https://www.sofascore.com/pt/football/match/sandefjord-fotball-tromsdalen-uil/unsBn#id:14592297',
-    'https://www.sofascore.com/pt/football/match/austin-fc-minnesota-united/tHqsyjbd#id:14148833',
-    'https://www.sofascore.com/pt/football/match/aab-fc-midtjylland/OAsPA#id:14658176',
-    'https://www.sofascore.com/pt/football/match/if-lyseng-fc-roskilde/yXbsKTi#id:14658179',
-    'https://www.sofascore.com/pt/football/match/kolding-bk-silkeborg-if/KAsITi#id:14664353',
-    'https://www.sofascore.com/pt/football/match/lnz-cherkasy-fc-metalist-kharkiv/oqbsCNnc#id:14573517',
-    'https://www.sofascore.com/pt/football/match/fc-chernihiv-fc-kryvbas-kryvyi-rih/YFrcsmlFc#id:14578562',
-    'https://www.sofascore.com/pt/football/match/polissya-stavky-shakhtar-donetsk/nqbsDLFc#id:14573509',
-    'https://www.sofascore.com/pt/football/match/fc-livyi-bereh-kyiv-victoria-sumy/Txkcsjofd#id:14573514',
-    'https://www.sofascore.com/pt/football/match/oleksandria-dynamo-kyiv/fqbsEjk#id:14573513',
-    'https://www.sofascore.com/pt/football/match/bk-olympic-malmo-ff/RMsmgu#id:14613077',
-    'https://www.sofascore.com/pt/football/match/akhmat-grozny-zenit-st-petersburg/wWsGcc#id:14117945',
-    'https://www.sofascore.com/pt/football/match/fk-krasnodar-krylya-sovetov-samara/xWsANn#id:14117949',
-    'https://www.sofascore.com/pt/football/match/fc-sochi-dynamo-moscow/pWsJW#id:14117948',
-    'https://www.sofascore.com/pt/football/match/ae-kifisia-asteras-aktor/RBcszeY#id:14609086',
-    'https://www.sofascore.com/pt/football/match/panetolikos-aris-thessaloniki/cpbsePc#id:14609089',
-    'https://www.sofascore.com/pt/football/match/aek-athens-ao-egaleo/Uobsapb#id:14609087',
-    'https://www.sofascore.com/pt/football/match/apo-ellas-syrou-aps-atromitos-athinon/mbcsOvvd#id:14609090',
-    'https://www.sofascore.com/pt/football/match/ao-kavala-ofi-crete/Qobsmpb#id:14609093',
-    'https://www.sofascore.com/pt/football/match/apo-levadiakos-paok/bpbsnbc#id:14609084',
-    'https://www.sofascore.com/pt/football/match/athens-kallithea-fc-panathinaikos/Yobsfpb#id:14609091',
-    'https://www.sofascore.com/pt/football/match/gs-marko-ae-larisa/ppbsrLXb#id:14613038'
+# Rodada 12
+    'https://www.sofascore.com/pt/football/match/orense-sc-deportivo-cuenca/bfcsAalc#id:13378653',
+    'https://www.sofascore.com/pt/football/match/mushuc-runa-manta-fc/lwnsBZdb#id:13378651',
+    'https://www.sofascore.com/pt/football/match/macara-ldu/hfcsbvc#id:13378647',
+    'https://www.sofascore.com/pt/football/match/libertad-delfin/NxKbsCHhd#id:13378652',
+    'https://www.sofascore.com/pt/football/match/independiente-del-valle-tecnico-universitario/QNisyUp#id:13378649',
+    'https://www.sofascore.com/pt/football/match/universidad-catolica-del-ecuador-barcelona-sc/afcsRNi#id:13378646',
+    'https://www.sofascore.com/pt/football/match/emelec-aucas/Zecsffc#id:13378648',
+    'https://www.sofascore.com/pt/football/match/vinotinto-futbol-club-el-nacional/efcsZfLd#id:13378650',
+# Rodada 13
+    'https://www.sofascore.com/pt/football/match/tecnico-universitario-deportivo-cuenca/bfcsQNi#id:13378658',
+    'https://www.sofascore.com/pt/football/match/manta-fc-aucas/Zecslwn#id:13378659',
+    'https://www.sofascore.com/pt/football/match/orense-sc-mushuc-runa/BZdbsAalc#id:13378660',
+    'https://www.sofascore.com/pt/football/match/macara-el-nacional/efcsbvc#id:13378657',
+    'https://www.sofascore.com/pt/football/match/vinotinto-futbol-club-independiente-del-valle/yUpsZfLd#id:13378656',
+    'https://www.sofascore.com/pt/football/match/delfin-universidad-catolica-del-ecuador/RNisNxKb#id:13378655',
+    'https://www.sofascore.com/pt/football/match/emelec-barcelona-sc/afcsffc#id:13378654',
+    'https://www.sofascore.com/pt/football/match/libertad-ldu/hfcsCHhd#id:13378661',
+# Rodada 14
+    'https://www.sofascore.com/pt/football/match/mushuc-runa-independiente-del-valle/yUpsBZdb#id:13378668',
+    'https://www.sofascore.com/pt/football/match/deportivo-cuenca-barcelona-sc/afcsbfc#id:13378670',
+    'https://www.sofascore.com/pt/football/match/vinotinto-futbol-club-manta-fc/lwnsZfLd#id:13378666',
+    'https://www.sofascore.com/pt/football/match/universidad-catolica-del-ecuador-ldu/hfcsRNi#id:13378663',
+    'https://www.sofascore.com/pt/football/match/orense-sc-aucas/ZecsAalc#id:13378665',
+    'https://www.sofascore.com/pt/football/match/libertad-macara/bvcsCHhd#id:13378667',
+    'https://www.sofascore.com/pt/football/match/delfin-tecnico-universitario/QNisNxKb#id:13378669',
+    'https://www.sofascore.com/pt/football/match/emelec-el-nacional/efcsffc#id:13378662',
+# Rodada 15
+    'https://www.sofascore.com/pt/football/match/manta-fc-macara/bvcslwn#id:13378676',
+    'https://www.sofascore.com/pt/football/match/tecnico-universitario-ldu/hfcsQNi#id:13378675',
+    'https://www.sofascore.com/pt/football/match/delfin-independiente-del-valle/yUpsNxKb#id:13378673',
+    'https://www.sofascore.com/pt/football/match/orense-sc-emelec/ffcsAalc#id:13378677',
+    'https://www.sofascore.com/pt/football/match/mushuc-runa-el-nacional/efcsBZdb#id:13378674',
+    'https://www.sofascore.com/pt/football/match/universidad-catolica-del-ecuador-deportivo-cuenca/bfcsRNi#id:13378672',
+    'https://www.sofascore.com/pt/football/match/barcelona-sc-aucas/Zecsafc#id:13378671',
+    'https://www.sofascore.com/pt/football/match/vinotinto-futbol-club-libertad/CHhdsZfLd#id:13378678',
+# Rodada 16
+    'https://www.sofascore.com/pt/football/match/libertad-independiente-del-valle/yUpsCHhd#id:13378686',
+    'https://www.sofascore.com/pt/football/match/manta-fc-barcelona-sc/afcslwn#id:13378685',
+    'https://www.sofascore.com/pt/football/match/vinotinto-futbol-club-ldu/hfcsZfLd#id:13378680',
+    'https://www.sofascore.com/pt/football/match/tecnico-universitario-aucas/ZecsQNi#id:13378681',
+    'https://www.sofascore.com/pt/football/match/el-nacional-deportivo-cuenca/bfcsefc#id:13378682',
+    'https://www.sofascore.com/pt/football/match/delfin-mushuc-runa/BZdbsNxKb#id:13378684',
+    'https://www.sofascore.com/pt/football/match/orense-sc-macara/bvcsAalc#id:13378683',
+    'https://www.sofascore.com/pt/football/match/universidad-catolica-del-ecuador-emelec/ffcsRNi#id:13378679',
+# Rodada 17
+    'https://www.sofascore.com/pt/football/match/libertad-tecnico-universitario/QNisCHhd#id:13378691',
+    'https://www.sofascore.com/pt/football/match/universidad-catolica-del-ecuador-el-nacional/efcsRNi#id:13378688',
+    'https://www.sofascore.com/pt/football/match/delfin-emelec/ffcsNxKb#id:13378692',
+    'https://www.sofascore.com/pt/football/match/vinotinto-futbol-club-macara/bvcsZfLd#id:13378690',
+    'https://www.sofascore.com/pt/football/match/independiente-del-valle-ldu/hfcsyUp#id:13378689',
+    'https://www.sofascore.com/pt/football/match/deportivo-cuenca-aucas/Zecsbfc#id:13378694',
+    'https://www.sofascore.com/pt/football/match/mushuc-runa-barcelona-sc/afcsBZdb#id:13378687',
+    'https://www.sofascore.com/pt/football/match/orense-sc-manta-fc/lwnsAalc#id:13378693',
 ]
 
 # ------------- tabelão de substituições de campeonatos ------------- #
 substituicoes_campeonatos = {
+    # ... (mantive exatamente a sua tabela de substituições)
     'Brasileirão Betano': 'Brasileiro',
     'Copa Betano do Brasil': 'Copa do Brasil',
     'FIFA Club World Cup': 'Copa do Mundo de Clubes',
@@ -223,6 +253,7 @@ substituicoes_campeonatos = {
     'Carioca – Taça Rio': 'Carioca',
     'Copa Uruguay': 'Copa do Uruguai',
     'Brasileirão Série B': 'Brasileiro - Série B',
+    'Greece Cup': 'Copa da Grécia',
 }
 
 # ─────────────────────────────── LOGGING ─────────────────────────────── #
@@ -233,49 +264,151 @@ logging.basicConfig(
 )
 log = logging.getLogger("sofascore")
 
+# ─────────────────────── Notificação no Windows ─────────────────────── #
+def _xml_escape(s: str) -> str:
+    return (s or "").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")\
+                    .replace('"', "&quot;").replace("'", "&apos;")
+
+def notify_windows(title: str, message: str, duration: int = 10) -> bool:
+    """
+    Tenta exibir uma notificação no Windows. Ordem:
+    1) winotify → 2) win10toast → 3) plyer → 4) Toast via PowerShell → 5) MessageBox
+    """
+    try:
+        from winotify import Notification, audio
+        toast = Notification(app_id="SofaScore Scraper", title=title, msg=message,
+                             duration="short" if duration <= 7 else "long")
+        toast.set_audio(audio.Default, loop=False)
+        toast.show()
+        return True
+    except Exception as e:
+        log.debug("notify: winotify falhou: %s", e)
+    try:
+        from win10toast import ToastNotifier
+        ToastNotifier().show_toast(title, message, threaded=False, duration=duration)
+        return True
+    except Exception as e:
+        log.debug("notify: win10toast falhou: %s", e)
+    try:
+        from plyer import notification
+        notification.notify(title=title, message=message, timeout=duration)
+        return True
+    except Exception as e:
+        log.debug("notify: plyer falhou: %s", e)
+    try:
+        t = _xml_escape(title)
+        m = _xml_escape(message)
+        ps_code = f'''
+Add-Type -AssemblyName System.Runtime.WindowsRuntime | Out-Null
+$null = [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime]
+$null = [Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom, ContentType = WindowsRuntime]
+$xml = @"
+<toast><visual><binding template="ToastGeneric"><text>{t}</text><text>{m}</text></binding></visual></toast>
+"@
+$doc = New-Object Windows.Data.Xml.Dom.XmlDocument
+$doc.LoadXml($xml)
+$notifier = [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("SofaScore Scraper")
+$toast = [Windows.UI.Notifications.ToastNotification]::new($doc)
+$notifier.Show($toast)
+'''
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".ps1", mode="w", encoding="utf-8") as f:
+            f.write(ps_code)
+            ps1_path = f.name
+        completed = subprocess.run(
+            ["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", ps1_path],
+            capture_output=True, text=True, timeout=10
+        )
+        try: os.unlink(ps1_path)
+        except Exception: pass
+        if completed.returncode == 0:
+            return True
+        else:
+            log.debug("notify: PowerShell rc=%s stderr=%s", completed.returncode, completed.stderr)
+    except Exception as e:
+        log.debug("notify: PowerShell Toast falhou: %s", e)
+    try:
+        import ctypes
+        ctypes.windll.user32.MessageBoxW(0, message, title, 0x0)
+        return True
+    except Exception as e:
+        log.debug("notify: MessageBox falhou: %s", e)
+    return False
+
+def beep_ok():
+    try:
+        import winsound
+        winsound.MessageBeep(winsound.MB_ICONASTERISK)
+    except Exception:
+        pass
+
 # ─────────────────────── sessão HTTP (ignora proxies do ambiente) ─────────────────────── #
 session: requests.Session | None = None
+SESSION_UA = random_user_agent()
 
 def rebuild_session():
-    """Cria/recria a sessão de requests, ignorando HTTP(S)_PROXY do ambiente.
-    Injeta proxy apenas se USAR_PROXY=True."""
-    global session
+    global session, SESSION_UA
+    SESSION_UA = random_user_agent()
     try:
         if session:
             session.close()
     except Exception:
         pass
-    session = requests.Session()
-    session.trust_env = False  # <— ignora variáveis de ambiente de proxy
-    session.headers.update({
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+    s = requests.Session()
+    s.trust_env = False
+    s.headers.update({
+        "User-Agent": SESSION_UA,
         "Accept": "application/json, text/plain, */*",
         "Origin": "https://www.sofascore.com",
         "Referer": "https://www.sofascore.com/",
-        "X-Requested-With": "XMLHttpRequest",
         "Accept-Language": "pt-BR,pt;q=0.9,en;q=0.8",
+        "Cache-Control": "no-cache",
+        "Pragma": "no-cache",
     })
     if USAR_PROXY and proxy_host and proxy_port:
         proxy_url = f"http://{proxy_host}:{proxy_port}"
-        session.proxies.update({"http": proxy_url, "https": proxy_url})
-        log.info("🌐 Proxy requests habilitado: %s", proxy_url)
+        s.proxies.update({"http": proxy_url, "https": proxy_url})
+        log.info("🌐 Proxy requests habilitado: %s | UA=%s", proxy_url, SESSION_UA)
+    else:
+        log.info("🌐 Requests sem proxy | UA=%s", SESSION_UA)
+    globals()['session'] = s
 
-# ─────────────────────── helpers de proxy ─────────────────────── #
+# ─────────────────────── helpers de proxy / recuperação ─────────────────────── #
 def desativar_proxy_instavel(motivo: str):
-    """Desliga proxy (requests + selenium) e reinicia o driver."""
     global USAR_PROXY, PROXY_FAIL_STRIKES, session, driver, matches_done_with_this_driver
     if not USAR_PROXY:
         return
     USAR_PROXY = False
     PROXY_FAIL_STRIKES = 0
-    rebuild_session()  # garante que o requests pare de usar proxy do ambiente
-    log.warning("🛑 Proxy desativado automaticamente (%s). Reiniciando Chrome sem proxy...", motivo)
+    rebuild_session()
+    log.warning("🛑 Proxy desativado (%s). Reiniciando Chrome sem proxy...", motivo)
     try:
         driver.quit()
     except Exception:
         pass
-    driver = criar_driver()  # respeita USAR_PROXY=False
+    driver = criar_driver()
     matches_done_with_this_driver = 0
+
+def alternar_proxy(motivo: str):
+    """Liga/desliga proxy para tentar 'sair' de rate-limit."""
+    global USAR_PROXY, PROXY_FAIL_STRIKES
+    USAR_PROXY = not USAR_PROXY
+    PROXY_FAIL_STRIKES = 0
+    estado = "ON" if USAR_PROXY else "OFF"
+    log.warning("🔁 Alternando proxy (%s). Novo estado: %s", motivo, estado)
+    rebuild_session()
+    restart_driver()
+
+def circuit_breaker_event_failures():
+    """Ações progressivas quando falhamos em obter 'event' consecutivamente."""
+    global EVENT_FAIL_STREAK
+    if EVENT_FAIL_STREAK >= EVENT_FAIL_BREAK_2:
+        alternar_proxy("falhas consecutivas em 'event'")
+        EVENT_FAIL_STREAK = 0
+        return
+    if EVENT_FAIL_STREAK >= EVENT_FAIL_BREAK_1:
+        log.warning("🧯 Circuit breaker: restart driver + rebuild session (falhas seguidas em 'event').")
+        restart_driver()
+        rebuild_session()
 
 # ──────────────────────── CHROME DRIVER HELPERS ──────────────────────── #
 def criar_driver() -> webdriver.Chrome:
@@ -288,27 +421,29 @@ def criar_driver() -> webdriver.Chrome:
     opts.add_argument("--no-sandbox")
     opts.add_argument("--disable-extensions")
     opts.add_argument("--window-size=1920,1080")
-    # endurecimentos anti-bloqueio
+    opts.add_argument("--disable-features=IsolateOrigins,site-per-process,NetworkServiceInProcess")
+    opts.add_argument("--disable-dev-shm-usage")
     opts.add_experimental_option("excludeSwitches", ["enable-automation", "enable-logging"])
     opts.add_experimental_option("useAutomationExtension", False)
     opts.add_argument("--disable-blink-features=AutomationControlled")
-    # carregar DOM mais rápido
     opts.page_load_strategy = 'eager'
-    # reduzir carga (imagens off)
     opts.add_experimental_option("prefs", {
         "profile.managed_default_content_settings.images": 2,
         "profile.default_content_setting_values.notifications": 2
     })
-    # >>> PROXY NO CHROME (cobre http e https)
+    ua = random_user_agent()
+    opts.add_argument(f"--user-agent={ua}")
+
     if USAR_PROXY and proxy_host and proxy_port:
         proxy_spec = f"http={proxy_host}:{proxy_port};https={proxy_host}:{proxy_port}"
         opts.add_argument(f"--proxy-server={proxy_spec}")
-        log.info("🌐 Proxy Chrome habilitado: %s", proxy_spec)
+        log.info("🌐 Proxy Chrome habilitado: %s | UA=%s", proxy_spec, ua)
+    else:
+        log.info("🌐 Chrome sem proxy | UA=%s", ua)
 
     drv = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=opts)
     drv.set_page_load_timeout(30)
-    drv.set_script_timeout(20)
-    # remove navigator.webdriver
+    drv.set_script_timeout(25)
     try:
         drv.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
             "source": "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
@@ -353,28 +488,50 @@ def _deep_find(d: Any, key: str) -> Any:
                 return r
     return None
 
+def _load_next_data_from_dom(drv: webdriver.Chrome) -> dict | None:
+    # 1) script#__NEXT_DATA__
+    for sel in ["script#__NEXT_DATA__", "script[id='__NEXT_DATA__']"]:
+        try:
+            el = drv.find_element(By.CSS_SELECTOR, sel)
+            txt = el.get_attribute("innerHTML") or ""
+            if txt.strip().startswith("{"):
+                return json.loads(txt)
+        except NoSuchElementException:
+            continue
+        except Exception:
+            continue
+    # 2) window.__NEXT_DATA__ via JS
+    try:
+        txt = drv.execute_script("return window.__NEXT_DATA__ ? JSON.stringify(window.__NEXT_DATA__) : null;")
+        if txt:
+            return json.loads(txt)
+    except Exception:
+        pass
+    return None
+
 def extract_event_from_dom(drv: webdriver.Chrome, id_jogo: str) -> Dict | None:
     try:
-        script_tag = drv.find_element(By.CSS_SELECTOR, "script#__NEXT_DATA__")
+        data = _load_next_data_from_dom(drv)
+        if not data:
+            return None
+        evt = _deep_find(data, "event")
+        if isinstance(evt, dict) and str(evt.get("id")) == str(id_jogo):
+            return evt
+        # fallback: alguns builds aninham em props/pageProps
+        page_props = _deep_find(data, "pageProps")
+        evt2 = _deep_find(page_props, "event") if page_props else None
+        if isinstance(evt2, dict) and str(evt2.get("id")) == str(id_jogo):
+            return evt2
     except Exception:
         return None
-    try:
-        data = json.loads(script_tag.get_attribute("innerHTML"))
-    except json.JSONDecodeError:
-        return None
-    evt = _deep_find(data, "event")
-    if isinstance(evt, dict) and str(evt.get("id")) == str(id_jogo):
-        return evt
     return None
 
 # ──────────────────── REQUISIÇÃO À API COM FALLBACKS ──────────────────── #
 def _selenium_api_json(url_api: str) -> Dict:
-    """Abre a URL da API no navegador e tenta capturar o JSON da página."""
     global PROXY_FAIL_STRIKES
     try:
         driver.get(url_api)
     except WebDriverException as e:
-        # erros típicos de proxy/RESET contam strike
         if "ERR_CONNECTION_RESET" in str(e):
             PROXY_FAIL_STRIKES += 1
             if USAR_PROXY and PROXY_FAIL_STRIKES >= PROXY_FAIL_LIMIT:
@@ -382,7 +539,6 @@ def _selenium_api_json(url_api: str) -> Dict:
         raise
 
     try:
-        # 1) tentar <pre>
         try:
             el = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, "pre")))
             txt = el.text.strip()
@@ -391,7 +547,6 @@ def _selenium_api_json(url_api: str) -> Dict:
         except TimeoutException:
             pass
 
-        # 2) tentar body.innerText
         try:
             txt = driver.find_element(By.TAG_NAME, "body").text.strip()
             if txt.startswith("{") or txt.startswith("["):
@@ -399,7 +554,6 @@ def _selenium_api_json(url_api: str) -> Dict:
         except Exception:
             pass
 
-        # 3) tentar page_source
         src = driver.page_source
         m = re.search(r"<pre[^>]*>(.*?)</pre>", src, flags=re.DOTALL | re.IGNORECASE)
         if m:
@@ -415,15 +569,19 @@ def _selenium_api_json(url_api: str) -> Dict:
     except json.JSONDecodeError as e:
         raise ValueError(f"JSON inválido na página da API: {e}")
 
+def _api_url(url: str) -> str:
+    # adiciona cache-buster e mantém consistente
+    sep = "&" if "?" in url else "?"
+    return f"{url}{sep}_={int(time.time()*1000)}"
+
 @backoff.on_exception(
     backoff.expo,
     (requests.exceptions.RequestException, ValueError, TimeoutException, WebDriverException),
     factor=2, max_time=90
 )
 def obter_dados_api(url_api: str) -> Dict:
-    """Tenta API com requests; se falhar por qualquer motivo, usa Selenium."""
     global PROXY_FAIL_STRIKES
-    # sincroniza cookies (ajuda no 403)
+    # Copiar cookies do Selenium
     try:
         session.cookies.clear()
         for c in driver.get_cookies():
@@ -431,46 +589,65 @@ def obter_dados_api(url_api: str) -> Dict:
     except Exception:
         pass
 
+    url_api_cb = _api_url(url_api)
     try:
-        resp = session.get(url_api, timeout=20)
+        resp = session.get(url_api_cb, timeout=20)
     except requests.exceptions.RequestException as e:
-        # Contabiliza falha de proxy e tenta Selenium imediatamente
         PROXY_FAIL_STRIKES += 1
         if USAR_PROXY and PROXY_FAIL_STRIKES >= PROXY_FAIL_LIMIT:
             desativar_proxy_instavel(f"Falhas consecutivas no requests: {type(e).__name__}")
-        return _selenium_api_json(url_api)
+        log.debug("requests exception (%s). Fallback Selenium JSON.", type(e).__name__)
+        return _selenium_api_json(url_api_cb)
 
-    if resp.status_code == 403:
-        return _selenium_api_json(url_api)
+    if resp.status_code in (403, 429):
+        log.warning("🚧 API %s retornou %s. Aguardando cooldown e tentando via Selenium.",
+                    url_api, resp.status_code)
+        time.sleep(random.uniform(*COOLDOWN_403_429))
+        return _selenium_api_json(url_api_cb)
+
+    if resp.status_code >= 500:
+        log.warning("🛠️ API %s retornou %s. Fallback Selenium.", url_api, resp.status_code)
+        return _selenium_api_json(url_api_cb)
 
     try:
         resp.raise_for_status()
         return resp.json()
-    except Exception:
-        # conteúdo não-JSON, 5xx etc → Selenium
-        return _selenium_api_json(url_api)
+    except Exception as e:
+        log.debug("Falha ao parsear JSON (%s). Fallback Selenium.", e)
+        return _selenium_api_json(url_api_cb)
 
 def safe_get_event(id_jogo: str) -> Dict:
+    global EVENT_FAIL_STREAK
     for tentativa in range(4):
         try:
             data = obter_dados_api(f"https://api.sofascore.com/api/v1/event/{id_jogo}")
             if "event" in data:
+                EVENT_FAIL_STREAK = 0
                 return data["event"]
+            else:
+                log.debug("API sem 'event' (keys=%s). Tentando DOM.", list(data.keys()))
         except Exception as e:
             log.debug("API falhou (%s) – tentando DOM", e)
 
         dom_evt = extract_event_from_dom(driver, id_jogo)
         if dom_evt:
+            EVENT_FAIL_STREAK = 0
             return dom_evt
 
         log.warning("Tentativa %d – não consegui 'event'", tentativa + 1)
         time.sleep(4 + random.random() * 2)
 
-    # última cartada: Selenium direto na rota
+    # Último recurso: tentar novamente JSON via Selenium direto
     try:
-        return _selenium_api_json(f"https://api.sofascore.com/api/v1/event/{id_jogo}")["event"]
+        evt = _selenium_api_json(_api_url(f"https://api.sofascore.com/api/v1/event/{id_jogo}")).get("event")
+        if evt:
+            EVENT_FAIL_STREAK = 0
+            return evt
     except Exception:
         pass
+
+    EVENT_FAIL_STREAK += 1
+    circuit_breaker_event_failures()
     raise RuntimeError(f"Não consegui 'event' para {id_jogo}")
 
 # ───────────────────── FUNÇÕES DE EXTRAÇÃO (Selenium) ──────────────────── #
@@ -607,172 +784,188 @@ def inserir_tempo_gols(id_jogo: str, campeonato_padronizado: str, home: str, awa
     log.info("✅  tempo_gols inserido: %d linha(s) para id_jogo=%s", len(df), id_jogo)
 
 # ───────────────────────────── LOOP PRINCIPAL ───────────────────────────── #
-for idx, url in enumerate(urls, start=1):
-    if not url.strip():
-        continue
-    if matches_done_with_this_driver >= MAX_MATCHES_PER_DRIVER:
-        restart_driver()
+def main():
+    inicio = time.time()
+    erros = 0
 
-    log.info("⚽  (%d/%d) %s", idx, len(urls), url)
-    try:
-        id_jogo = re.search(r"#id:(\d+)", url).group(1)
+    global matches_done_with_this_driver
 
-        # país + odds (resiliente)
-        try:
-            driver.get(url)
-        except TimeoutException:
-            log.warning("⏱️ page load timeout; tentando novamente 1x")
+    for idx, url in enumerate(urls, start=1):
+        if not url.strip():
+            continue
+        if matches_done_with_this_driver >= MAX_MATCHES_PER_DRIVER:
             restart_driver()
-            driver.get(url)
-        except WebDriverException as e:
-            if "ERR_CONNECTION_RESET" in str(e) and USAR_PROXY:
-                desativar_proxy_instavel("ERR_CONNECTION_RESET ao abrir a página do jogo")
+
+        log.info("⚽  (%d/%d) %s", idx, len(urls), url)
+        try:
+            m = re.search(r"#id:(\d+)", url)
+            if not m:
+                log.warning("URL sem id_jogo: %s", url); continue
+            id_jogo = m.group(1)
+
+            try:
                 driver.get(url)
-            else:
-                raise
+            except TimeoutException:
+                log.warning("⏱️ page load timeout; tentando novamente 1x")
+                restart_driver()
+                driver.get(url)
+            except WebDriverException as e:
+                if "ERR_CONNECTION_RESET" in str(e) and USAR_PROXY:
+                    desativar_proxy_instavel("ERR_CONNECTION_RESET ao abrir a página do jogo")
+                    driver.get(url)
+                else:
+                    raise
 
-        try:
-            WebDriverWait(driver, 20).until(
-                EC.presence_of_element_located(
-                    (By.CSS_SELECTOR,
-                     "script[type='application/ld+json'],"
-                     "a[href^='/pt/futebol/']:not([href='/pt/futebol/'])")))
-        except TimeoutException:
-            log.warning("⚠️ DOM lento — seguindo sem aguardar completamente.")
+            try:
+                WebDriverWait(driver, 20).until(
+                    EC.presence_of_element_located(
+                        (By.CSS_SELECTOR,
+                         "script[type='application/ld+json'],"
+                         "a[href^='/pt/futebol/']:not([href='/pt/futebol/'])")))
+            except TimeoutException:
+                log.warning("⚠️ DOM lento — seguindo sem aguardar completamente.")
 
-        pais = get_region_text(driver)
-        odd_casa, odd_empate, odd_fora = get_odds(driver)
+            pais = get_region_text(driver)
+            odd_casa, odd_empate, odd_fora = get_odds(driver)
 
-        # evento
-        ev = safe_get_event(id_jogo)
-        home_team, away_team = ev["homeTeam"], ev["awayTeam"]
-        home = substituicoes_clubes.substituicoes_por_id.get(home_team["id"], home_team["name"].strip())
-        away = substituicoes_clubes.substituicoes_por_id.get(away_team["id"], away_team["name"].strip())
-        log.info("Partida: %s x %s | odds %s/%s/%s", home, away, odd_casa, odd_empate, odd_fora)
+            ev = safe_get_event(id_jogo)
+            home_team, away_team = ev["homeTeam"], ev["awayTeam"]
+            home = substituicoes_clubes.substituicoes_por_id.get(home_team["id"], home_team["name"].strip())
+            away = substituicoes_clubes.substituicoes_por_id.get(away_team["id"], away_team["name"].strip())
+            log.info("Partida: %s x %s | odds %s/%s/%s", home, away, odd_casa, odd_empate, odd_fora)
 
-        # INSERT / UPDATE em 'partidas'
-        cursor.execute("SELECT pais, odd_casa, odd_empate, odd_fora, campeonato FROM partidas WHERE id_jogo=%s",
-                       (id_jogo,))
-        row = cursor.fetchone()
-        campeonato_padronizado = None
+            cursor.execute("SELECT pais, odd_casa, odd_empate, odd_fora, campeonato FROM partidas WHERE id_jogo=%s",
+                           (id_jogo,))
+            row = cursor.fetchone()
+            campeonato_padronizado = None
 
-        if not row:
-            dt_ini = datetime.datetime.fromtimestamp(ev["startTimestamp"], tz=datetime.timezone.utc)\
-                                       .astimezone(datetime.timezone(datetime.timedelta(hours=-3)))
-            data_str, hora_str = dt_ini.strftime("%d/%m/%Y"), dt_ini.strftime("%H:%M")
-            campeonato_padronizado = substituir_campeonato((ev["tournament"]["name"] or "").split(",")[0])
-            round_info = ev.get("roundInfo") or {}
-            rodada = re.search(r"\d+", str(round_info.get("name") or round_info.get("round") or "0"))
-            rodada = rodada.group() if rodada else "0"
-            gols_casa = ev["homeScore"].get("normaltime", ev["homeScore"].get("current", 0))
-            gols_fora = ev["awayScore"].get("normaltime", ev["awayScore"].get("current", 0))
-
-            cursor.execute("""
-                INSERT INTO partidas
-                (id_jogo,data,hora,pais,campeonato,rodada,casa,fora,
-                 gols_casa,gols_fora,temporada,odd_casa,odd_empate,odd_fora,cadastrado_em)
-                VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
-            """, (id_jogo, data_str, hora_str, pais, campeonato_padronizado, rodada, home, away,
-                  gols_casa, gols_fora, temporada, odd_casa, odd_empate, odd_fora,
-                  datetime.datetime.now()))
-            conn.commit()
-            log.info("✅  Partida inserida")
-        else:
-            _, _, _, _, camp_existente = row
-            campeonato_padronizado = camp_existente
-
-            sets, vals = [], []
-            if pais != "Desconhecido" and not row[0]:
-                sets.append("pais=%s");           vals.append(pais)
-            if odd_casa and not row[1]:
-                sets.append("odd_casa=%s");       vals.append(odd_casa)
-            if odd_empate and not row[2]:
-                sets.append("odd_empate=%s");     vals.append(odd_empate)
-            if odd_fora and not row[3]:
-                sets.append("odd_fora=%s");       vals.append(odd_fora)
-            if not campeonato_padronizado:
+            if not row:
+                dt_ini = datetime.datetime.fromtimestamp(ev["startTimestamp"], tz=datetime.timezone.utc)\
+                                           .astimezone(datetime.timezone(datetime.timedelta(hours=-3)))
+                data_str, hora_str = dt_ini.strftime("%d/%m/%Y"), dt_ini.strftime("%H:%M")
                 campeonato_padronizado = substituir_campeonato((ev["tournament"]["name"] or "").split(",")[0])
-                sets.append("campeonato=%s");     vals.append(campeonato_padronizado)
-            if sets:
-                vals.append(id_jogo)
-                cursor.execute(f"UPDATE partidas SET {', '.join(sets)} WHERE id_jogo=%s", vals)
+                round_info = ev.get("roundInfo") or {}
+                rodada = re.search(r"\d+", str(round_info.get("name") or round_info.get("round") or "0"))
+                rodada = rodada.group() if rodada else "0"
+                gols_casa = ev["homeScore"].get("normaltime", ev["homeScore"].get("current", 0))
+                gols_fora = ev["awayScore"].get("normaltime", ev["awayScore"].get("current", 0))
+
+                cursor.execute("""
+                    INSERT INTO partidas
+                    (id_jogo,data,hora,pais,campeonato,rodada,casa,fora,
+                     gols_casa,gols_fora,temporada,odd_casa,odd_empate,odd_fora,cadastrado_em)
+                    VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                """, (id_jogo, data_str, hora_str, pais, campeonato_padronizado, rodada, home, away,
+                      gols_casa, gols_fora, temporada, odd_casa, odd_empate, odd_fora,
+                      datetime.datetime.now()))
                 conn.commit()
-                log.info("✅  Partida atualizada")
+                log.info("✅  Partida inserida")
+            else:
+                _, _, _, _, camp_existente = row
+                campeonato_padronizado = camp_existente
 
-        # estatísticas (blindado)
-        try:
-            stats = obter_dados_api(f"https://api.sofascore.com/api/v1/event/{id_jogo}/statistics")
-            inserir_estatisticas(id_jogo, home, away, "1ST", "1_tempo", stats)
-            inserir_estatisticas(id_jogo, home, away, "2ND", "2_tempo", stats)
-            inserir_estatisticas(id_jogo, home, away, "ALL", "estatisticas_partidas", stats)
-        except Exception as e:
-            log.warning("⚠️  Não consegui estatísticas (%s). Seguindo.", e)
-
-        # jogadores (sem 'mando', blindado)
-        try:
-            cursor.execute("SELECT 1 FROM estatisticas_jogadores WHERE id_jogo=%s LIMIT 1", (id_jogo,))
-            if not cursor.fetchone():
-                lineups = obter_dados_api(f"https://api.sofascore.com/api/v1/event/{id_jogo}/lineups")
-                players = []
-                for side, team in [("home", home), ("away", away)]:
-                    for p in lineups.get(side, {}).get("players", []):
-                        ply, st = p.get("player", {}), p.get("statistics", {})
-                        rp = {
-                            "id_jogo": id_jogo, "team": team, "name": ply.get("name"),
-                            "position": ply.get("position"),
-                            "jersey_number": int(ply.get("jerseyNumber") or 0),
-                            "height": int(ply.get("height") or 0), "player_id": ply.get("id"),
-                            "date_of_birth_timestamp": ply.get("dateOfBirthTimestamp"),
-                            "country": ply.get("country", {}).get("name"),
-                            "value": ply.get("proposedMarketValueRaw", {}).get("value"),
-                            "substitute": p.get("substitute"), "captain": p.get("captain"),
-                            "rating": st.get("ratingVersions", {}).get("original"),
-                        }
-                        for k, v in st.items():
-                            if k != "ratingVersions":
-                                rp[re.sub(r'(?<!^)(?=[A-Z])', '_', k).lower()] = v
-                        players.append(rp)
-                if players:
-                    dfp = pd.DataFrame(players).fillna(0); dfp["temporada"] = temporada
-                    cursor.execute("SHOW COLUMNS FROM estatisticas_jogadores")
-                    cols_db = {c[0] for c in cursor.fetchall()}
-                    for col in cols_db:
-                        if col not in dfp.columns and col not in ("id", "mando"):
-                            dfp[col] = datetime.datetime.now() if col == "cadastrado_em" else 0
-                    dfp = dfp[[c for c in dfp.columns if c in cols_db and c != "mando"]]
-                    cols_sql = ",".join(f"`{c}`" for c in dfp.columns)
-                    vals_sql = ",".join(["%s"] * len(dfp.columns))
-                    cursor.executemany(
-                        f"INSERT INTO estatisticas_jogadores ({cols_sql}) VALUES ({vals_sql})",
-                        dfp.values.tolist())
+                sets, vals = [], []
+                if pais != "Desconhecido" and not row[0]:
+                    sets.append("pais=%s");           vals.append(pais)
+                if odd_casa and not row[1]:
+                    sets.append("odd_casa=%s");       vals.append(odd_casa)
+                if odd_empate and not row[2]:
+                    sets.append("odd_empate=%s");     vals.append(odd_empate)
+                if odd_fora and not row[3]:
+                    sets.append("odd_fora=%s");       vals.append(odd_fora)
+                if not campeonato_padronizado:
+                    campeonato_padronizado = substituir_campeonato((ev["tournament"]["name"] or "").split(",")[0])
+                    sets.append("campeonato=%s");     vals.append(campeonato_padronizado)
+                if sets:
+                    vals.append(id_jogo)
+                    cursor.execute(f"UPDATE partidas SET {', '.join(sets)} WHERE id_jogo=%s", vals)
                     conn.commit()
-                    log.info("✅  Jogadores inseridos: %d", len(players))
+                    log.info("✅  Partida atualizada")
+
+            try:
+                stats = obter_dados_api(f"https://api.sofascore.com/api/v1/event/{id_jogo}/statistics")
+                inserir_estatisticas(id_jogo, home, away, "1ST", "1_tempo", stats)
+                inserir_estatisticas(id_jogo, home, away, "2ND", "2_tempo", stats)
+                inserir_estatisticas(id_jogo, home, away, "ALL", "estatisticas_partidas", stats)
+            except Exception as e:
+                log.warning("⚠️  Não consegui estatísticas (%s). Seguindo.", e)
+
+            try:
+                cursor.execute("SELECT 1 FROM estatisticas_jogadores WHERE id_jogo=%s LIMIT 1", (id_jogo,))
+                if not cursor.fetchone():
+                    lineups = obter_dados_api(f"https://api.sofascore.com/api/v1/event/{id_jogo}/lineups")
+                    players = []
+                    for side, team in [("home", home), ("away", away)]:
+                        for p in lineups.get(side, {}).get("players", []):
+                            ply, st = p.get("player", {}), p.get("statistics", {})
+                            rp = {
+                                "id_jogo": id_jogo, "team": team, "name": ply.get("name"),
+                                "position": ply.get("position"),
+                                "jersey_number": int(ply.get("jerseyNumber") or 0),
+                                "height": int(ply.get("height") or 0), "player_id": ply.get("id"),
+                                "date_of_birth_timestamp": ply.get("dateOfBirthTimestamp"),
+                                "country": ply.get("country", {}).get("name"),
+                                "value": ply.get("proposedMarketValueRaw", {}).get("value"),
+                                "substitute": p.get("substitute"), "captain": p.get("captain"),
+                                "rating": st.get("ratingVersions", {}).get("original"),
+                            }
+                            for k, v in st.items():
+                                if k != "ratingVersions":
+                                    rp[re.sub(r'(?<!^)(?=[A-Z])', '_', k).lower()] = v
+                            players.append(rp)
+                    if players:
+                        dfp = pd.DataFrame(players).fillna(0); dfp["temporada"] = temporada
+                        cursor.execute("SHOW COLUMNS FROM estatisticas_jogadores")
+                        cols_db = {c[0] for c in cursor.fetchall()}
+                        for col in cols_db:
+                            if col not in dfp.columns and col not in ("id", "mando"):
+                                dfp[col] = datetime.datetime.now() if col == "cadastrado_em" else 0
+                        dfp = dfp[[c for c in dfp.columns if c in cols_db and c != "mando"]]
+                        cols_sql = ",".join(f"`{c}`" for c in dfp.columns)
+                        vals_sql = ",".join(["%s"] * len(dfp.columns))
+                        cursor.executemany(
+                            f"INSERT INTO estatisticas_jogadores ({cols_sql}) VALUES ({vals_sql})",
+                            dfp.values.tolist())
+                        conn.commit()
+                        log.info("✅  Jogadores inseridos: %d", len(players))
+            except Exception as e:
+                log.warning("⚠️  Não consegui lineups (%s). Seguindo.", e)
+
+            try:
+                inserir_tempo_gols(id_jogo, campeonato_padronizado, home, away)
+            except Exception as e:
+                log.warning("⚠️  Não consegui tempo_gols (%s). Seguindo.", e)
+
         except Exception as e:
-            log.warning("⚠️  Não consegui lineups (%s). Seguindo.", e)
+            if "Timed out receiving message from renderer" in str(e):
+                log.warning("🧹 Renderer travou — reiniciando driver para recuperar.")
+                restart_driver()
+            log.error("❌  Erro em %s: %s", url, e, exc_info=True)
+            erros += 1
 
-        # >>> TEMPO DOS GOLS
-        try:
-            inserir_tempo_gols(id_jogo, campeonato_padronizado, home, away)
-        except Exception as e:
-            log.warning("⚠️  Não consegui tempo_gols (%s). Seguindo.", e)
+        matches_done_with_this_driver += 1
+        time.sleep(random.uniform(4, 8))
 
-    except Exception as e:
-        if "Timed out receiving message from renderer" in str(e):
-            log.warning("🧹 Renderer travou — reiniciando driver para recuperar.")
-            restart_driver()
-        log.error("❌  Erro em %s: %s", url, e, exc_info=True)
+    # ──────────────────────────── ENCERRAMENTO ─────────────────────────────── #
+    try:
+        driver.quit()
+    except Exception:
+        pass
+    try:
+        cursor.close()
+        conn.close()
+    except Exception:
+        pass
 
-    matches_done_with_this_driver += 1
-    time.sleep(random.uniform(4, 8))
+    dur = int(time.time() - inicio)
+    mins, secs = divmod(dur, 60)
+    resumo = f"Concluído em {mins}m{secs}s • URLs: {len(urls)} • Erros: {erros}"
+    log.info("✅✅✅  Processo finalizado. " + resumo)
 
-# ──────────────────────────── ENCERRAMENTO ─────────────────────────────── #
-try:
-    driver.quit()
-except Exception:
-    pass
-try:
-    cursor.close()
-    conn.close()
-except Exception:
-    pass
-log.info("✅✅✅  Processo finalizado.")
+    ok = notify_windows("Scraper finalizado ✅", resumo, duration=10)
+    if not ok:
+        log.warning("⚠️ Nenhum método de notificação funcionou (veja logs).")
+    beep_ok()
+
+if __name__ == "__main__":
+    main()

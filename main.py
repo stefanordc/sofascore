@@ -58,47 +58,6 @@ def random_user_agent() -> str:
 
 # ----------------------------- LISTA DE URLS ----------------------------- #
 urls: List[str] = [
-    'https://www.sofascore.com/pt/football/match/sport-huancayo-alianza-atletico-de-sullana/hWsVCn#id:12507929',
-    'https://www.sofascore.com/pt/football/match/cusco-fc-sport-boys/mWskAA#id:12507931',
-# Clausura Rodada 6
-    'https://www.sofascore.com/pt/football/match/universidad-tecnica-de-cajamarca-union-comercio/GtusehK#id:12533905',
-    'https://www.sofascore.com/pt/football/match/deportivo-garcilaso-alianza-atletico-de-sullana/hWsJwId#id:12533904',
-    'https://www.sofascore.com/pt/football/match/los-chankas-cyc-sport-boys/mWseVac#id:12533906',
-    'https://www.sofascore.com/pt/football/match/asociacion-deportiva-tarma-alianza-lima/lWshlJc#id:12533903',
-    'https://www.sofascore.com/pt/football/match/club-atletico-grau-club-sporting-cristal/cWsNanc#id:12533914',
-    'https://www.sofascore.com/pt/football/match/carlos-mannucci-cienciano/bWsVUac#id:12533913',
-    'https://www.sofascore.com/pt/football/match/sport-huancayo-universitario/fWsVCn#id:12533915',
-    'https://www.sofascore.com/pt/football/match/cusco-fc-universidad-cesar-vallejo/GfcskAA#id:12533916',
-    'https://www.sofascore.com/pt/football/match/comerciantes-unidos-melgar/iWsjxKb#id:12725109',
-# Clausura Rodada 7
-    'https://www.sofascore.com/pt/football/match/cusco-fc-alianza-atletico-de-sullana/hWskAA#id:12596046',
-    'https://www.sofascore.com/pt/football/match/comerciantes-unidos-universidad-tecnica-de-cajamarca/ehKsjxKb#id:12596050',
-    'https://www.sofascore.com/pt/football/match/asociacion-deportiva-tarma-melgar/iWshlJc#id:12596047',
-    'https://www.sofascore.com/pt/football/match/universidad-cesar-vallejo-sport-boys/mWsGfc#id:12596053',
-    'https://www.sofascore.com/pt/football/match/deportivo-garcilaso-universitario/fWsJwId#id:12596049',
-    'https://www.sofascore.com/pt/football/match/union-comercio-sport-huancayo/VCnsGtu#id:12596048',
-    'https://www.sofascore.com/pt/football/match/club-atletico-grau-cienciano/bWsNanc#id:12596045',
-    'https://www.sofascore.com/pt/football/match/alianza-lima-club-sporting-cristal/cWslW#id:12596054',
-    'https://www.sofascore.com/pt/football/match/los-chankas-cyc-carlos-mannucci/VUacseVac#id:12596052',
-# Clausura Rodada 8
-    'https://www.sofascore.com/pt/football/match/universidad-cesar-vallejo-alianza-atletico-de-sullana/hWsGfc#id:12596051',
-    'https://www.sofascore.com/pt/football/match/asociacion-deportiva-tarma-universidad-tecnica-de-cajamarca/ehKshlJc#id:12596055',
-    'https://www.sofascore.com/pt/football/match/comerciantes-unidos-sport-huancayo/VCnsjxKb#id:12596031',
-    'https://www.sofascore.com/pt/football/match/cusco-fc-universitario/fWskAA#id:12596039',
-    'https://www.sofascore.com/pt/football/match/alianza-lima-cienciano/bWslW#id:12596037',
-    'https://www.sofascore.com/pt/football/match/club-atletico-grau-los-chankas-cyc/eVacsNanc#id:12596032',
-    'https://www.sofascore.com/pt/football/match/carlos-mannucci-sport-boys/mWsVUac#id:12596040',
-    'https://www.sofascore.com/pt/football/match/deportivo-garcilaso-union-comercio/GtusJwId#id:12596038',
-    'https://www.sofascore.com/pt/football/match/melgar-club-sporting-cristal/cWsiW#id:12596035',
-# Clausura Rodada 9
-    'https://www.sofascore.com/pt/football/match/sport-boys-alianza-atletico-de-sullana/hWsmW#id:12596036',
-    'https://www.sofascore.com/pt/football/match/los-chankas-cyc-alianza-lima/lWseVac#id:12596030',
-    'https://www.sofascore.com/pt/football/match/universidad-cesar-vallejo-universitario/fWsGfc#id:12596041',
-    'https://www.sofascore.com/pt/football/match/universidad-tecnica-de-cajamarca-club-sporting-cristal/cWsehK#id:12596042',
-    'https://www.sofascore.com/pt/football/match/asociacion-deportiva-tarma-sport-huancayo/VCnshlJc#id:12596029',
-    'https://www.sofascore.com/pt/football/match/deportivo-garcilaso-comerciantes-unidos/jxKbsJwId#id:12596034',
-    'https://www.sofascore.com/pt/football/match/melgar-cienciano/bWsiW#id:12596033',
-    'https://www.sofascore.com/pt/football/match/cusco-fc-union-comercio/GtuskAA#id:12596043',
     'https://www.sofascore.com/pt/football/match/club-atletico-grau-carlos-mannucci/VUacsNanc#id:12596044',
 # Clausura Rodada 10
     'https://www.sofascore.com/pt/football/match/universidad-tecnica-de-cajamarca-cienciano/bWsehK#id:12702526',

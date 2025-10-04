@@ -15,7 +15,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 
 URL_TORNEIO = (
-    "https://www.sofascore.com/pt/torneio/futebol/asia/afc-champions-league/463#id:40457"
+    "https://www.sofascore.com/pt/torneio/futebol/venezuela/copa-venezuela/10528#id:61445,tab:1"
 )
 HEADLESS = True
 WINDOW_SIZE = "1920,1080"

@@ -16,7 +16,7 @@ from selenium.common.exceptions import TimeoutException, WebDriverException, NoS
 import substituicoes_clubes
 
 # ───────────────────────────── CONFIGURAÇÕES ───────────────────────────── #
-temporada = "2025"
+temporada = "2024"
 MAX_MATCHES_PER_DRIVER = 30
 HEADLESS = True
 
@@ -58,65 +58,132 @@ def random_user_agent() -> str:
 
 # ----------------------------- LISTA DE URLS ----------------------------- #
 urls: List[str] = [
-# Rodada 12
-    'https://www.sofascore.com/pt/football/match/orense-sc-deportivo-cuenca/bfcsAalc#id:13378653',
-    'https://www.sofascore.com/pt/football/match/mushuc-runa-manta-fc/lwnsBZdb#id:13378651',
-    'https://www.sofascore.com/pt/football/match/macara-ldu/hfcsbvc#id:13378647',
-    'https://www.sofascore.com/pt/football/match/libertad-delfin/NxKbsCHhd#id:13378652',
-    'https://www.sofascore.com/pt/football/match/independiente-del-valle-tecnico-universitario/QNisyUp#id:13378649',
-    'https://www.sofascore.com/pt/football/match/universidad-catolica-del-ecuador-barcelona-sc/afcsRNi#id:13378646',
-    'https://www.sofascore.com/pt/football/match/emelec-aucas/Zecsffc#id:13378648',
-    'https://www.sofascore.com/pt/football/match/vinotinto-futbol-club-el-nacional/efcsZfLd#id:13378650',
-# Rodada 13
-    'https://www.sofascore.com/pt/football/match/tecnico-universitario-deportivo-cuenca/bfcsQNi#id:13378658',
-    'https://www.sofascore.com/pt/football/match/manta-fc-aucas/Zecslwn#id:13378659',
-    'https://www.sofascore.com/pt/football/match/orense-sc-mushuc-runa/BZdbsAalc#id:13378660',
-    'https://www.sofascore.com/pt/football/match/macara-el-nacional/efcsbvc#id:13378657',
-    'https://www.sofascore.com/pt/football/match/vinotinto-futbol-club-independiente-del-valle/yUpsZfLd#id:13378656',
-    'https://www.sofascore.com/pt/football/match/delfin-universidad-catolica-del-ecuador/RNisNxKb#id:13378655',
-    'https://www.sofascore.com/pt/football/match/emelec-barcelona-sc/afcsffc#id:13378654',
-    'https://www.sofascore.com/pt/football/match/libertad-ldu/hfcsCHhd#id:13378661',
-# Rodada 14
-    'https://www.sofascore.com/pt/football/match/mushuc-runa-independiente-del-valle/yUpsBZdb#id:13378668',
-    'https://www.sofascore.com/pt/football/match/deportivo-cuenca-barcelona-sc/afcsbfc#id:13378670',
-    'https://www.sofascore.com/pt/football/match/vinotinto-futbol-club-manta-fc/lwnsZfLd#id:13378666',
-    'https://www.sofascore.com/pt/football/match/universidad-catolica-del-ecuador-ldu/hfcsRNi#id:13378663',
-    'https://www.sofascore.com/pt/football/match/orense-sc-aucas/ZecsAalc#id:13378665',
-    'https://www.sofascore.com/pt/football/match/libertad-macara/bvcsCHhd#id:13378667',
-    'https://www.sofascore.com/pt/football/match/delfin-tecnico-universitario/QNisNxKb#id:13378669',
-    'https://www.sofascore.com/pt/football/match/emelec-el-nacional/efcsffc#id:13378662',
-# Rodada 15
-    'https://www.sofascore.com/pt/football/match/manta-fc-macara/bvcslwn#id:13378676',
-    'https://www.sofascore.com/pt/football/match/tecnico-universitario-ldu/hfcsQNi#id:13378675',
-    'https://www.sofascore.com/pt/football/match/delfin-independiente-del-valle/yUpsNxKb#id:13378673',
-    'https://www.sofascore.com/pt/football/match/orense-sc-emelec/ffcsAalc#id:13378677',
-    'https://www.sofascore.com/pt/football/match/mushuc-runa-el-nacional/efcsBZdb#id:13378674',
-    'https://www.sofascore.com/pt/football/match/universidad-catolica-del-ecuador-deportivo-cuenca/bfcsRNi#id:13378672',
-    'https://www.sofascore.com/pt/football/match/barcelona-sc-aucas/Zecsafc#id:13378671',
-    'https://www.sofascore.com/pt/football/match/vinotinto-futbol-club-libertad/CHhdsZfLd#id:13378678',
-# Rodada 16
-    'https://www.sofascore.com/pt/football/match/libertad-independiente-del-valle/yUpsCHhd#id:13378686',
-    'https://www.sofascore.com/pt/football/match/manta-fc-barcelona-sc/afcslwn#id:13378685',
-    'https://www.sofascore.com/pt/football/match/vinotinto-futbol-club-ldu/hfcsZfLd#id:13378680',
-    'https://www.sofascore.com/pt/football/match/tecnico-universitario-aucas/ZecsQNi#id:13378681',
-    'https://www.sofascore.com/pt/football/match/el-nacional-deportivo-cuenca/bfcsefc#id:13378682',
-    'https://www.sofascore.com/pt/football/match/delfin-mushuc-runa/BZdbsNxKb#id:13378684',
-    'https://www.sofascore.com/pt/football/match/orense-sc-macara/bvcsAalc#id:13378683',
-    'https://www.sofascore.com/pt/football/match/universidad-catolica-del-ecuador-emelec/ffcsRNi#id:13378679',
-# Rodada 17
-    'https://www.sofascore.com/pt/football/match/libertad-tecnico-universitario/QNisCHhd#id:13378691',
-    'https://www.sofascore.com/pt/football/match/universidad-catolica-del-ecuador-el-nacional/efcsRNi#id:13378688',
-    'https://www.sofascore.com/pt/football/match/delfin-emelec/ffcsNxKb#id:13378692',
-    'https://www.sofascore.com/pt/football/match/vinotinto-futbol-club-macara/bvcsZfLd#id:13378690',
-    'https://www.sofascore.com/pt/football/match/independiente-del-valle-ldu/hfcsyUp#id:13378689',
-    'https://www.sofascore.com/pt/football/match/deportivo-cuenca-aucas/Zecsbfc#id:13378694',
-    'https://www.sofascore.com/pt/football/match/mushuc-runa-barcelona-sc/afcsBZdb#id:13378687',
-    'https://www.sofascore.com/pt/football/match/orense-sc-manta-fc/lwnsAalc#id:13378693',
+    'https://www.sofascore.com/pt/football/match/sport-huancayo-alianza-atletico-de-sullana/hWsVCn#id:12507929',
+    'https://www.sofascore.com/pt/football/match/cusco-fc-sport-boys/mWskAA#id:12507931',
+# Clausura Rodada 6
+    'https://www.sofascore.com/pt/football/match/universidad-tecnica-de-cajamarca-union-comercio/GtusehK#id:12533905',
+    'https://www.sofascore.com/pt/football/match/deportivo-garcilaso-alianza-atletico-de-sullana/hWsJwId#id:12533904',
+    'https://www.sofascore.com/pt/football/match/los-chankas-cyc-sport-boys/mWseVac#id:12533906',
+    'https://www.sofascore.com/pt/football/match/asociacion-deportiva-tarma-alianza-lima/lWshlJc#id:12533903',
+    'https://www.sofascore.com/pt/football/match/club-atletico-grau-club-sporting-cristal/cWsNanc#id:12533914',
+    'https://www.sofascore.com/pt/football/match/carlos-mannucci-cienciano/bWsVUac#id:12533913',
+    'https://www.sofascore.com/pt/football/match/sport-huancayo-universitario/fWsVCn#id:12533915',
+    'https://www.sofascore.com/pt/football/match/cusco-fc-universidad-cesar-vallejo/GfcskAA#id:12533916',
+    'https://www.sofascore.com/pt/football/match/comerciantes-unidos-melgar/iWsjxKb#id:12725109',
+# Clausura Rodada 7
+    'https://www.sofascore.com/pt/football/match/cusco-fc-alianza-atletico-de-sullana/hWskAA#id:12596046',
+    'https://www.sofascore.com/pt/football/match/comerciantes-unidos-universidad-tecnica-de-cajamarca/ehKsjxKb#id:12596050',
+    'https://www.sofascore.com/pt/football/match/asociacion-deportiva-tarma-melgar/iWshlJc#id:12596047',
+    'https://www.sofascore.com/pt/football/match/universidad-cesar-vallejo-sport-boys/mWsGfc#id:12596053',
+    'https://www.sofascore.com/pt/football/match/deportivo-garcilaso-universitario/fWsJwId#id:12596049',
+    'https://www.sofascore.com/pt/football/match/union-comercio-sport-huancayo/VCnsGtu#id:12596048',
+    'https://www.sofascore.com/pt/football/match/club-atletico-grau-cienciano/bWsNanc#id:12596045',
+    'https://www.sofascore.com/pt/football/match/alianza-lima-club-sporting-cristal/cWslW#id:12596054',
+    'https://www.sofascore.com/pt/football/match/los-chankas-cyc-carlos-mannucci/VUacseVac#id:12596052',
+# Clausura Rodada 8
+    'https://www.sofascore.com/pt/football/match/universidad-cesar-vallejo-alianza-atletico-de-sullana/hWsGfc#id:12596051',
+    'https://www.sofascore.com/pt/football/match/asociacion-deportiva-tarma-universidad-tecnica-de-cajamarca/ehKshlJc#id:12596055',
+    'https://www.sofascore.com/pt/football/match/comerciantes-unidos-sport-huancayo/VCnsjxKb#id:12596031',
+    'https://www.sofascore.com/pt/football/match/cusco-fc-universitario/fWskAA#id:12596039',
+    'https://www.sofascore.com/pt/football/match/alianza-lima-cienciano/bWslW#id:12596037',
+    'https://www.sofascore.com/pt/football/match/club-atletico-grau-los-chankas-cyc/eVacsNanc#id:12596032',
+    'https://www.sofascore.com/pt/football/match/carlos-mannucci-sport-boys/mWsVUac#id:12596040',
+    'https://www.sofascore.com/pt/football/match/deportivo-garcilaso-union-comercio/GtusJwId#id:12596038',
+    'https://www.sofascore.com/pt/football/match/melgar-club-sporting-cristal/cWsiW#id:12596035',
+# Clausura Rodada 9
+    'https://www.sofascore.com/pt/football/match/sport-boys-alianza-atletico-de-sullana/hWsmW#id:12596036',
+    'https://www.sofascore.com/pt/football/match/los-chankas-cyc-alianza-lima/lWseVac#id:12596030',
+    'https://www.sofascore.com/pt/football/match/universidad-cesar-vallejo-universitario/fWsGfc#id:12596041',
+    'https://www.sofascore.com/pt/football/match/universidad-tecnica-de-cajamarca-club-sporting-cristal/cWsehK#id:12596042',
+    'https://www.sofascore.com/pt/football/match/asociacion-deportiva-tarma-sport-huancayo/VCnshlJc#id:12596029',
+    'https://www.sofascore.com/pt/football/match/deportivo-garcilaso-comerciantes-unidos/jxKbsJwId#id:12596034',
+    'https://www.sofascore.com/pt/football/match/melgar-cienciano/bWsiW#id:12596033',
+    'https://www.sofascore.com/pt/football/match/cusco-fc-union-comercio/GtuskAA#id:12596043',
+    'https://www.sofascore.com/pt/football/match/club-atletico-grau-carlos-mannucci/VUacsNanc#id:12596044',
+# Clausura Rodada 10
+    'https://www.sofascore.com/pt/football/match/universidad-tecnica-de-cajamarca-cienciano/bWsehK#id:12702526',
+    'https://www.sofascore.com/pt/football/match/deportivo-garcilaso-asociacion-deportiva-tarma/hlJcsJwId#id:12702516',
+    'https://www.sofascore.com/pt/football/match/union-comercio-universidad-cesar-vallejo/GfcsGtu#id:12702502',
+    'https://www.sofascore.com/pt/football/match/comerciantes-unidos-cusco-fc/kAAsjxKb#id:12702506',
+    'https://www.sofascore.com/pt/football/match/club-atletico-grau-sport-boys/mWsNanc#id:12702509',
+    'https://www.sofascore.com/pt/football/match/sport-huancayo-club-sporting-cristal/cWsVCn#id:12702493',
+    'https://www.sofascore.com/pt/football/match/carlos-mannucci-alianza-lima/lWsVUac#id:12702494',
+    'https://www.sofascore.com/pt/football/match/alianza-atletico-de-sullana-universitario/fWshW#id:12702495',
+    'https://www.sofascore.com/pt/football/match/los-chankas-cyc-melgar/iWseVac#id:12702507',
+# Clausura Rodada 11
+    'https://www.sofascore.com/pt/football/match/deportivo-garcilaso-club-sporting-cristal/cWsJwId#id:12702499',
+    'https://www.sofascore.com/pt/football/match/asociacion-deportiva-tarma-cusco-fc/kAAshlJc#id:12702612',
+    'https://www.sofascore.com/pt/football/match/club-atletico-grau-alianza-lima/lWsNanc#id:12702504',
+    'https://www.sofascore.com/pt/football/match/comerciantes-unidos-universidad-cesar-vallejo/GfcsjxKb#id:12702518',
+    'https://www.sofascore.com/pt/football/match/sport-huancayo-cienciano/bWsVCn#id:12702496',
+    'https://www.sofascore.com/pt/football/match/sport-boys-universitario/fWsmW#id:12702497',
+    'https://www.sofascore.com/pt/football/match/union-comercio-alianza-atletico-de-sullana/hWsGtu#id:12702500',
+    'https://www.sofascore.com/pt/football/match/los-chankas-cyc-universidad-tecnica-de-cajamarca/ehKseVac#id:12702501',
+    'https://www.sofascore.com/pt/football/match/carlos-mannucci-melgar/iWsVUac#id:12702517',
+# Clausura Rodada 12
+    'https://www.sofascore.com/pt/football/match/deportivo-garcilaso-cienciano/bWsJwId#id:12702522',
+    'https://www.sofascore.com/pt/football/match/sport-boys-alianza-lima/lWsmW#id:12702519',
+    'https://www.sofascore.com/pt/football/match/cusco-fc-club-sporting-cristal/cWskAA#id:12702520',
+    'https://www.sofascore.com/pt/football/match/union-comercio-universitario/fWsGtu#id:12702521',
+    'https://www.sofascore.com/pt/football/match/asociacion-deportiva-tarma-universidad-cesar-vallejo/GfcshlJc#id:12702527',
+    'https://www.sofascore.com/pt/football/match/comerciantes-unidos-alianza-atletico-de-sullana/hWsjxKb#id:12702523',
+    'https://www.sofascore.com/pt/football/match/los-chankas-cyc-sport-huancayo/VCnseVac#id:12702524',
+    'https://www.sofascore.com/pt/football/match/club-atletico-grau-melgar/iWsNanc#id:12702508',
+    'https://www.sofascore.com/pt/football/match/carlos-mannucci-universidad-tecnica-de-cajamarca/ehKsVUac#id:12702525',
+# Clausura Rodada 13
+    'https://www.sofascore.com/pt/football/match/union-comercio-sport-boys/mWsGtu#id:12702512',
+    'https://www.sofascore.com/pt/football/match/asociacion-deportiva-tarma-alianza-atletico-de-sullana/hWshlJc#id:12702616',
+    'https://www.sofascore.com/pt/football/match/cusco-fc-cienciano/bWskAA#id:12702505',
+    'https://www.sofascore.com/pt/football/match/alianza-lima-melgar/iWslW#id:12702511',
+    'https://www.sofascore.com/pt/football/match/universidad-cesar-vallejo-club-sporting-cristal/cWsGfc#id:12702498',
+    'https://www.sofascore.com/pt/football/match/deportivo-garcilaso-los-chankas-cyc/eVacsJwId#id:12702503',
+    'https://www.sofascore.com/pt/football/match/carlos-mannucci-sport-huancayo/VCnsVUac#id:12702515',
+    'https://www.sofascore.com/pt/football/match/comerciantes-unidos-universitario/fWsjxKb#id:12702514',
+    'https://www.sofascore.com/pt/football/match/club-atletico-grau-universidad-tecnica-de-cajamarca/ehKsNanc#id:12702510',
+# Clausura Rodada 14
+    'https://www.sofascore.com/pt/football/match/comerciantes-unidos-union-comercio/GtusjxKb#id:12831473',
+    'https://www.sofascore.com/pt/football/match/los-chankas-cyc-cusco-fc/kAAseVac#id:12831477',
+    'https://www.sofascore.com/pt/football/match/club-atletico-grau-sport-huancayo/VCnsNanc#id:12831476',
+    'https://www.sofascore.com/pt/football/match/sport-boys-melgar/iWsmW#id:12831483',
+    'https://www.sofascore.com/pt/football/match/universidad-tecnica-de-cajamarca-alianza-lima/lWsehK#id:12831488',
+    'https://www.sofascore.com/pt/football/match/universidad-cesar-vallejo-cienciano/bWsGfc#id:12831478',
+    'https://www.sofascore.com/pt/football/match/deportivo-garcilaso-carlos-mannucci/VUacsJwId#id:12831491',
+    'https://www.sofascore.com/pt/football/match/alianza-atletico-de-sullana-club-sporting-cristal/cWshW#id:12831479',
+    'https://www.sofascore.com/pt/football/match/asociacion-deportiva-tarma-universitario/fWshlJc#id:12831475',
+# Clausura Rodada 15
+    'https://www.sofascore.com/pt/football/match/deportivo-garcilaso-club-atletico-grau/NancsJwId#id:12831489',
+    'https://www.sofascore.com/pt/football/match/los-chankas-cyc-universidad-cesar-vallejo/GfcseVac#id:12831496',
+    'https://www.sofascore.com/pt/football/match/universidad-tecnica-de-cajamarca-melgar/iWsehK#id:12831493',
+    'https://www.sofascore.com/pt/football/match/sport-huancayo-alianza-lima/lWsVCn#id:12831482',
+    'https://www.sofascore.com/pt/football/match/asociacion-deportiva-tarma-union-comercio/GtushlJc#id:12834689',
+    'https://www.sofascore.com/pt/football/match/alianza-atletico-de-sullana-cienciano/bWshW#id:12831495',
+    'https://www.sofascore.com/pt/football/match/carlos-mannucci-cusco-fc/kAAsVUac#id:12831484',
+    'https://www.sofascore.com/pt/football/match/universitario-club-sporting-cristal/cWsfW#id:12831485',
+    'https://www.sofascore.com/pt/football/match/comerciantes-unidos-sport-boys/mWsjxKb#id:12831486',
+# Clausura Rodada 16
+    'https://www.sofascore.com/pt/football/match/deportivo-garcilaso-alianza-lima/lWsJwId#id:12831487',
+    'https://www.sofascore.com/pt/football/match/carlos-mannucci-universidad-cesar-vallejo/GfcsVUac#id:12831497',
+    'https://www.sofascore.com/pt/football/match/universidad-tecnica-de-cajamarca-sport-boys/mWsehK#id:12831490',
+    'https://www.sofascore.com/pt/football/match/union-comercio-club-sporting-cristal/cWsGtu#id:12831480',
+    'https://www.sofascore.com/pt/football/match/sport-huancayo-melgar/iWsVCn#id:12831494',
+    'https://www.sofascore.com/pt/football/match/universitario-cienciano/bWsfW#id:12831492',
+    'https://www.sofascore.com/pt/football/match/los-chankas-cyc-alianza-atletico-de-sullana/hWseVac#id:12831481',
+    'https://www.sofascore.com/pt/football/match/asociacion-deportiva-tarma-comerciantes-unidos/jxKbshlJc#id:12831498',
+    'https://www.sofascore.com/pt/football/match/club-atletico-grau-cusco-fc/kAAsNanc#id:12831500',
+# Clausura Rodada 17
+    'https://www.sofascore.com/pt/football/match/union-comercio-cienciano/bWsGtu#id:13035395',
+    'https://www.sofascore.com/pt/football/match/asociacion-deportiva-tarma-sport-boys/mWshlJc#id:13037280',
+    'https://www.sofascore.com/pt/football/match/carlos-mannucci-alianza-atletico-de-sullana/hWsVUac#id:13036794',
+    'https://www.sofascore.com/pt/football/match/club-atletico-grau-universidad-cesar-vallejo/GfcsNanc#id:13035396',
+    'https://www.sofascore.com/pt/football/match/universidad-tecnica-de-cajamarca-sport-huancayo/VCnsehK#id:13036795',
+    'https://www.sofascore.com/pt/football/match/comerciantes-unidos-club-sporting-cristal/cWsjxKb#id:13037273',
+    'https://www.sofascore.com/pt/football/match/cusco-fc-alianza-lima/lWskAA#id:13036796',
+    'https://www.sofascore.com/pt/football/match/los-chankas-cyc-universitario/fWseVac#id:13036797',
+    'https://www.sofascore.com/pt/football/match/deportivo-garcilaso-melgar/iWsJwId#id:13037278',
 ]
 
 # ------------- tabelão de substituições de campeonatos ------------- #
 substituicoes_campeonatos = {
-    # ... (mantive exatamente a sua tabela de substituições)
     'Brasileirão Betano': 'Brasileiro',
     'Copa Betano do Brasil': 'Copa do Brasil',
     'FIFA Club World Cup': 'Copa do Mundo de Clubes',
@@ -270,10 +337,6 @@ def _xml_escape(s: str) -> str:
                     .replace('"', "&quot;").replace("'", "&apos;")
 
 def notify_windows(title: str, message: str, duration: int = 10) -> bool:
-    """
-    Tenta exibir uma notificação no Windows. Ordem:
-    1) winotify → 2) win10toast → 3) plyer → 4) Toast via PowerShell → 5) MessageBox
-    """
     try:
         from winotify import Notification, audio
         toast = Notification(app_id="SofaScore Scraper", title=title, msg=message,
@@ -389,7 +452,6 @@ def desativar_proxy_instavel(motivo: str):
     matches_done_with_this_driver = 0
 
 def alternar_proxy(motivo: str):
-    """Liga/desliga proxy para tentar 'sair' de rate-limit."""
     global USAR_PROXY, PROXY_FAIL_STRIKES
     USAR_PROXY = not USAR_PROXY
     PROXY_FAIL_STRIKES = 0
@@ -399,7 +461,6 @@ def alternar_proxy(motivo: str):
     restart_driver()
 
 def circuit_breaker_event_failures():
-    """Ações progressivas quando falhamos em obter 'event' consecutivamente."""
     global EVENT_FAIL_STREAK
     if EVENT_FAIL_STREAK >= EVENT_FAIL_BREAK_2:
         alternar_proxy("falhas consecutivas em 'event'")
@@ -472,7 +533,53 @@ conn = pymysql.connect(host="localhost", user="admin", password="1234",
                        database="bet_dados", charset="utf8mb4")
 cursor = conn.cursor()
 
-# ────────────────────── UTIL: BUSCAR 'event' NO DOM ───────────────────── #
+# [FIX DATA] ───────────────────────── AJUSTE DEFINITIVO DA COLUNA partidas.data ───────────────────────── #
+def ensure_partidas_date_column():
+    """
+    - Se `partidas.data` não for DATE, converte strings para ISO e altera para DATE.
+    - Remove NBSP/TAB/CR/LF antes de converter.
+    """
+    try:
+        cursor.execute("SHOW COLUMNS FROM partidas LIKE 'data'")
+        col = cursor.fetchone()
+        if not col:
+            log.warning("Tabela 'partidas' não tem coluna 'data'. Pulando normalização.")
+            return
+        col_type = col[1].lower()  # ex.: 'date', 'varchar(20)'
+        if "date" in col_type:
+            return  # já é DATE
+
+        log.info("🧼 Normalizando partidas.data (tipo atual: %s) → DATE ...", col_type)
+
+        cursor.execute("""
+            UPDATE partidas
+            SET data =
+              DATE_FORMAT(
+                CASE
+                  WHEN TRIM(REPLACE(REPLACE(REPLACE(REPLACE(data, UNHEX('C2A0'), ''), '\t',''), '\r',''), '\n','')) LIKE '____-__-__%%'
+                    THEN DATE(SUBSTRING(TRIM(REPLACE(REPLACE(REPLACE(REPLACE(data, UNHEX('C2A0'), ''), '\t',''), '\r',''), '\n','')),1,10))
+                  WHEN TRIM(REPLACE(REPLACE(REPLACE(REPLACE(data, UNHEX('C2A0'), ''), '\t',''), '\r',''), '\n','')) REGEXP '^[0-9]{2}/[0-9]{2}/[0-9]{4}'
+                    THEN STR_TO_DATE(SUBSTRING_INDEX(TRIM(REPLACE(REPLACE(REPLACE(REPLACE(data, UNHEX('C2A0'), ''), '\t',''), '\r',''), '\n','')), ' ', 1), '%%d/%%m/%%Y')
+                  WHEN TRIM(REPLACE(REPLACE(REPLACE(REPLACE(data, UNHEX('C2A0'), ''), '\t',''), '\r',''), '\n','')) REGEXP '^[0-9]{2}-[0-9]{2}-[0-9]{4}$'
+                    THEN STR_TO_DATE(TRIM(REPLACE(REPLACE(REPLACE(REPLACE(data, UNHEX('C2A0'), ''), '\t',''), '\r',''), '\n','')), '%%d-%%m-%%Y')
+                  ELSE NULL
+                END,
+                '%%Y-%%m-%%d'
+              )
+            WHERE data IS NOT NULL
+        """)
+        conn.commit()
+
+        cursor.execute("ALTER TABLE partidas MODIFY COLUMN data DATE")
+        conn.commit()
+        log.info("✅ partidas.data convertido para DATE.")
+    except Exception as e:
+        log.warning("Não consegui normalizar partidas.data agora (%s). Seguindo assim mesmo.", e)
+
+ensure_partidas_date_column()
+# ───────────────────────────────────────────────────────────────────────── #
+
+# ────────────────────── UTIL: BUSCAR '__NEXT_DATA__' NO DOM ───────────────────── #
 def _deep_find(d: Any, key: str) -> Any:
     if isinstance(d, dict):
         if key in d:
@@ -489,7 +596,6 @@ def _deep_find(d: Any, key: str) -> Any:
     return None
 
 def _load_next_data_from_dom(drv: webdriver.Chrome) -> dict | None:
-    # 1) script#__NEXT_DATA__
     for sel in ["script#__NEXT_DATA__", "script[id='__NEXT_DATA__']"]:
         try:
             el = drv.find_element(By.CSS_SELECTOR, sel)
@@ -500,7 +606,6 @@ def _load_next_data_from_dom(drv: webdriver.Chrome) -> dict | None:
             continue
         except Exception:
             continue
-    # 2) window.__NEXT_DATA__ via JS
     try:
         txt = drv.execute_script("return window.__NEXT_DATA__ ? JSON.stringify(window.__NEXT_DATA__) : null;")
         if txt:
@@ -517,7 +622,6 @@ def extract_event_from_dom(drv: webdriver.Chrome, id_jogo: str) -> Dict | None:
         evt = _deep_find(data, "event")
         if isinstance(evt, dict) and str(evt.get("id")) == str(id_jogo):
             return evt
-        # fallback: alguns builds aninham em props/pageProps
         page_props = _deep_find(data, "pageProps")
         evt2 = _deep_find(page_props, "event") if page_props else None
         if isinstance(evt2, dict) and str(evt2.get("id")) == str(id_jogo):
@@ -570,7 +674,6 @@ def _selenium_api_json(url_api: str) -> Dict:
         raise ValueError(f"JSON inválido na página da API: {e}")
 
 def _api_url(url: str) -> str:
-    # adiciona cache-buster e mantém consistente
     sep = "&" if "?" in url else "?"
     return f"{url}{sep}_={int(time.time()*1000)}"
 
@@ -581,7 +684,6 @@ def _api_url(url: str) -> str:
 )
 def obter_dados_api(url_api: str) -> Dict:
     global PROXY_FAIL_STRIKES
-    # Copiar cookies do Selenium
     try:
         session.cookies.clear()
         for c in driver.get_cookies():
@@ -637,7 +739,6 @@ def safe_get_event(id_jogo: str) -> Dict:
         log.warning("Tentativa %d – não consegui 'event'", tentativa + 1)
         time.sleep(4 + random.random() * 2)
 
-    # Último recurso: tentar novamente JSON via Selenium direto
     try:
         evt = _selenium_api_json(_api_url(f"https://api.sofascore.com/api/v1/event/{id_jogo}")).get("event")
         if evt:
@@ -765,7 +866,7 @@ def inserir_tempo_gols(id_jogo: str, campeonato_padronizado: str, home: str, awa
             break
 
     if not rows:
-        log.info("⚠️  Sem gols (provável 0x0) – não inserido em tempo_gols.")
+        log.info("⚠️  Sem gols (provável 0x0)")
         return
 
     df = pd.DataFrame(rows)
@@ -840,9 +941,12 @@ def main():
             campeonato_padronizado = None
 
             if not row:
-                dt_ini = datetime.datetime.fromtimestamp(ev["startTimestamp"], tz=datetime.timezone.utc)\
-                                           .astimezone(datetime.timezone(datetime.timedelta(hours=-3)))
-                data_str, hora_str = dt_ini.strftime("%d/%m/%Y"), dt_ini.strftime("%H:%M")
+                # [FIX DATA] crio objetos de data/hora seguros para MySQL
+                dt_ini_utc = datetime.datetime.fromtimestamp(ev["startTimestamp"], tz=datetime.timezone.utc)
+                dt_brt = dt_ini_utc.astimezone(datetime.timezone(datetime.timedelta(hours=-3)))
+                data_date = dt_brt.date()                  # python datetime.date → coluna DATE
+                hora_str = dt_brt.strftime("%H:%M")        # string HH:MM para coluna texto
+
                 campeonato_padronizado = substituir_campeonato((ev["tournament"]["name"] or "").split(",")[0])
                 round_info = ev.get("roundInfo") or {}
                 rodada = re.search(r"\d+", str(round_info.get("name") or round_info.get("round") or "0"))
@@ -852,10 +956,10 @@ def main():
 
                 cursor.execute("""
                     INSERT INTO partidas
-                    (id_jogo,data,hora,pais,campeonato,rodada,casa,fora,
-                     gols_casa,gols_fora,temporada,odd_casa,odd_empate,odd_fora,cadastrado_em)
-                    VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
-                """, (id_jogo, data_str, hora_str, pais, campeonato_padronizado, rodada, home, away,
+                    (id_jogo, data, hora, pais, campeonato, rodada, casa, fora,
+                     gols_casa, gols_fora, temporada, odd_casa, odd_empate, odd_fora, cadastrado_em)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                """, (id_jogo, data_date, hora_str, pais, campeonato_padronizado, rodada, home, away,
                       gols_casa, gols_fora, temporada, odd_casa, odd_empate, odd_fora,
                       datetime.datetime.now()))
                 conn.commit()

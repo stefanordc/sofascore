@@ -1,0 +1,115 @@
+# Para abrir o navegador
+""""
+& "C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe" `
+  --remote-debugging-port=9222 `
+  --user-data-dir="$env:LOCALAPPDATA\BraveDebug"
+"""
+
+import argparse
+import json
+import sys
+import urllib.request
+
+DEVTOOLS_HOST = "127.0.0.1"
+DEVTOOLS_PORT = 9222
+TIMEOUT = 5
+
+# Prefixos excluídos por padrão (inclui a página diária dinâmica do SofaScore)
+DEFAULT_EXCLUDES = [
+    "https://www.sofascore.com/pt/futebol/",
+]
+
+def http_get(url: str) -> str:
+    with urllib.request.urlopen(url, timeout=TIMEOUT) as resp:
+        return resp.read().decode("utf-8")
+
+def fetch_targets() -> list[dict]:
+    base = f"http://{DEVTOOLS_HOST}:{DEVTOOLS_PORT}"
+    last_error = None
+    for path in ("/json", "/json/list"):
+        try:
+            raw = http_get(base + path)
+            data = json.loads(raw)
+            if isinstance(data, list):
+                return data
+            if isinstance(data, dict) and "tabs" in data:
+                return data["tabs"]
+        except Exception as e:
+            last_error = e
+            continue
+    try:
+        _ = http_get(base + "/json/version")
+    except Exception as e:
+        last_error = e
+    raise ConnectionError(
+        f"Não consegui acessar o DevTools em {base}. "
+        "Abra o Brave com --remote-debugging-port=9222. "
+        f"Detalhes: {last_error}"
+    )
+
+def is_internal(url: str) -> bool:
+    u = (url or "").lower()
+    return u.startswith("chrome://") or u.startswith("brave://")
+
+def normalize(s: str) -> str:
+    return (s or "").replace("\r", " ").replace("\n", " ").strip()
+
+def should_exclude(url: str, excludes: list[str]) -> bool:
+    for p in excludes:
+        if url.startswith(p):
+            return True
+    return False
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Imprime somente as URLs das abas do Brave (uma por linha, entre aspas simples, com vírgula)."
+    )
+    parser.add_argument("--include-internal", action="store_true",
+                        help="Inclui páginas internas (brave://, chrome://).")
+    parser.add_argument("--domain", type=str, default="",
+                        help="Filtra por domínio contendo este trecho (ex.: sofascore.com).")
+    parser.add_argument("--exclude-prefix", action="append", default=[],
+                        help="Prefixo de URL a ignorar (pode repetir a opção várias vezes).")
+    parser.add_argument("--no-default-excludes", action="store_true",
+                        help="Não aplicar a lista de exclusões padrão.")
+    args = parser.parse_args()
+
+    # Monta lista final de exclusões
+    excludes = []
+    if not args.no_default_excludes:
+        excludes.extend(DEFAULT_EXCLUDES)
+    if args.exclude_prefix:
+        excludes.extend(args.exclude_prefix)
+
+    try:
+        targets = fetch_targets()
+    except Exception as e:
+        print(e)
+        sys.exit(1)
+
+    urls = []
+    for t in targets:
+        ttype = (t.get("type") or "").lower()
+        if ttype not in ("page", ""):
+            continue
+        url = normalize(t.get("url", ""))
+        if not url:
+            continue
+        if not args.include_internal and is_internal(url):
+            continue
+        if args.domain and args.domain.lower() not in url.lower():
+            continue
+        if should_exclude(url, excludes):
+            continue
+        urls.append(url)
+
+    if not urls:
+        print("Nenhuma URL encontrada com os filtros atuais.")
+        sys.exit(0)
+
+    # Saída exatamente no formato pedido:
+    for u in urls:
+        print(f"'{u}',")
+
+if __name__ == "__main__":
+    main()

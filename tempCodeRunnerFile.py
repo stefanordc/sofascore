@@ -1,54 +1,177 @@
-'https://www.sofascore.com/pt/football/match/fc-chernihiv-sc-chaika/PerbsmlFc#id:12622328',
-'https://www.sofascore.com/pt/football/match/ucsa-kyiv-real-pharma-odesa/RerbszxUd#id:12622339',
-'https://www.sofascore.com/pt/football/match/kudrivka-irpin-dinaz-vyshhorod/WWncsfwBc#id:12637666',
-'https://www.sofascore.com/pt/football/match/fsc-mariupol-hirnyk-sport-horishni-plavni/ACrspQBc#id:12622337',
-'https://www.sofascore.com/pt/football/match/sc-vilkhivtsi-fc-metalist-kharkiv/oqbsVWxe#id:12622340',
-'https://www.sofascore.com/pt/football/match/mfc-metalurh-zaporizhzhia-victoria-sumy/TxkcsLOoc#id:12622326',
-'https://www.sofascore.com/pt/football/match/fc-kulykiv-bilka-nyva-vinnytsia/hlksObMd#id:12625591',
-'https://www.sofascore.com/pt/football/match/metalist-1925-lokomotyv-kyiv/dFXbsOMgc#id:12622335',
-'https://www.sofascore.com/pt/football/match/sc-poltava-fc-trostianets/GtpcsaMCc#id:12622333',
-'https://www.sofascore.com/pt/football/match/revera-1908-ivano-frankivsk-podillia-khmelnytsky/CCrsRWxe#id:12622334',
-'https://www.sofascore.com/pt/football/match/skala-1911-stryi-fc-epicentr-dunaivtsi/cwEcsRbMd#id:12622331',
-'https://www.sofascore.com/pt/football/match/fc-uzhhorod-prykarpattia-ivano-frankivsk/HCosLWrc#id:12622330',
-'https://www.sofascore.com/pt/football/match/ahrobiznes-volochysk-mfc-mykolaiv/fMosnlQb#id:12622336',
-'https://www.sofascore.com/pt/football/match/bukovyna-chernivtsi-nyva-ternopil/pgosLqr#id:12622332',
-'https://www.sofascore.com/pt/football/match/fc-olimpia-savyntsi-mfc-kremin-kremenchuk/GTrsQvkc#id:12622327',
-'https://www.sofascore.com/pt/football/match/fc-khust-probiy-horodenka/okPcsNFKd#id:12622338',
-# Rodada 2
-'https://www.sofascore.com/pt/football/match/mfc-mykolaiv-fc-metalist-kharkiv/oqbsfMo#id:12649924',
-'https://www.sofascore.com/pt/football/match/sc-poltava-metalist-1925/OMgcsaMCc#id:12649920',
-'https://www.sofascore.com/pt/football/match/fc-kulykiv-bilka-probiy-horodenka/okPcsObMd#id:12649927',
-'https://www.sofascore.com/pt/football/match/fc-chernihiv-victoria-sumy/TxkcsmlFc#id:12649922',
-'https://www.sofascore.com/pt/football/match/bukovyna-chernivtsi-prykarpattia-ivano-frankivsk/HCosLqr#id:12649925',
-'https://www.sofascore.com/pt/football/match/ucsa-kyiv-podillia-khmelnytsky/CCrszxUd#id:12649921',
-'https://www.sofascore.com/pt/football/match/skala-1911-stryi-fc-minaj/tBqcsRbMd#id:12649923',
-'https://www.sofascore.com/pt/football/match/fc-livyi-bereh-kyiv-kudrivka-irpin/fwBcsjofd#id:12649929',
-'https://www.sofascore.com/pt/football/match/fc-olimpia-savyntsi-hirnyk-sport-horishni-plavni/ACrsQvkc#id:12649928',
-# Rodada 3
-'https://www.sofascore.com/pt/football/match/fc-olimpia-savyntsi-zorya-luhansk/MucsQvkc#id:12694171',
-'https://www.sofascore.com/pt/football/match/probiy-horodenka-inhulets-petrove/ycFbsokPc#id:12694169',
-'https://www.sofascore.com/pt/football/match/fc-minaj-victoria-sumy/TxkcstBqc#id:12694153',
-'https://www.sofascore.com/pt/football/match/kolos-kovalivka-obolon-kyiv/owfbsBpFb#id:12694164',
-'https://www.sofascore.com/pt/football/match/bukovyna-chernivtsi-mfc-mykolaiv/fMosLqr#id:12694158',
-'https://www.sofascore.com/pt/football/match/karpaty-lviv-chornomorets-odesa/kqbsqqb#id:12694163',
-'https://www.sofascore.com/pt/football/match/ucsa-kyiv-kudrivka-irpin/fwBcszxUd#id:12694168',
-'https://www.sofascore.com/pt/football/match/metalist-1925-veres-rivne/ypFbsOMgc#id:12694166',
-# Oitavos-de-Final
-'https://www.sofascore.com/pt/football/match/rukh-lviv-karpaty-lviv/qqbsURQb#id:12767356',
-'https://www.sofascore.com/pt/football/match/probiy-horodenka-bukovyna-chernivtsi/LqrsokPc#id:12767360',
-'https://www.sofascore.com/pt/football/match/ucsa-kyiv-oleksandria/EjkszxUd#id:12767375',
-'https://www.sofascore.com/pt/football/match/fc-kryvbas-kryvyi-rih-polissya-zhytomyr/LvdcsYFrc#id:12767362',
-'https://www.sofascore.com/pt/football/match/vorskla-poltava-dynamo-kyiv/fqbsjqb#id:12767354',
-'https://www.sofascore.com/pt/football/match/veres-rivne-obolon-kyiv/owfbsypFb#id:12767348',
-'https://www.sofascore.com/pt/football/match/zorya-luhansk-shakhtar-donetsk/nqbsMuc#id:12767369',
-'https://www.sofascore.com/pt/football/match/lnz-cherkasy-victoria-sumy/TxkcsCNnc#id:12767377',
-# Quartas de final
-'https://www.sofascore.com/pt/football/match/victoria-sumy-bukovyna-chernivtsi/LqrsTxkc#id:13107550',
-'https://www.sofascore.com/pt/football/match/oleksandria-shakhtar-donetsk/nqbsEjk#id:13107549',
-'https://www.sofascore.com/pt/football/match/polissya-zhytomyr-veres-rivne/ypFbsLvdc#id:13107555',
-'https://www.sofascore.com/pt/football/match/rukh-lviv-dynamo-kyiv/fqbsURQb#id:13107548',
-# Semifinais
-'https://www.sofascore.com/pt/football/match/bukovyna-chernivtsi-dynamo-kyiv/fqbsLqr#id:13715019',
-'https://www.sofascore.com/pt/football/match/polissya-zhytomyr-shakhtar-donetsk/nqbsLvdc#id:13715020',
-# Final
-'https://www.sofascore.com/pt/football/match/shakhtar-donetsk-dynamo-kyiv/fqbsnqb#id:13808883',
+import re, time, logging, unicodedata
+from typing    import List, Set, Dict
+
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options  import Options
+from selenium.webdriver.common.by       import By
+from selenium.webdriver.support.ui      import WebDriverWait
+from selenium.webdriver.support         import expected_conditions as EC
+from selenium.common.exceptions         import (
+    ElementClickInterceptedException,
+    TimeoutException,
+)
+from webdriver_manager.chrome import ChromeDriverManager
+
+
+URL_TORNEIO = (
+    "https://www.sofascore.com/pt/torneio/futebol/north-central-america/concacaf-champions-cup/498#id:69806"
+)
+HEADLESS = True
+WINDOW_SIZE = "1920,1080"
+TIMEOUT = 60
+
+BAN_LIST = ("adiad", "cancel", "postpon", "award")
+ID_RE    = re.compile(r"#id:(\d+)")
+logging.basicConfig(level=logging.INFO, format="%(asctime)s  %(message)s")
+
+
+# ─────────── helpers ──────────── #
+def criar_driver() -> webdriver.Chrome:
+    op = Options()
+    if HEADLESS:
+        op.add_argument("--headless=new")
+    op.add_argument(f"--window-size={WINDOW_SIZE}")
+    op.add_argument("--disable-blink-features=AutomationControlled")
+    op.add_argument("--log-level=3")
+    return webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=op)
+
+
+def fechar_overlays(w: WebDriverWait):
+    for xp in (
+        "//button[contains(translate(.,'ACEITAR','aceitar'),'aceitar')]",
+        "//button[@aria-label='Close' or @aria-label='Fechar']",
+    ):
+        try:
+            w.until(EC.element_to_be_clickable((By.XPATH, xp))).click()
+            time.sleep(0.2)
+        except Exception:
+            pass
+
+
+def abrir_aba_jogos(w: WebDriverWait):
+    try:
+        w.until(
+            EC.element_to_be_clickable(
+                (
+                    By.XPATH,
+                    "//button[@role='tab' and (contains(.,'Jogos') or contains(.,'Matches'))]",
+                )
+            )
+        ).click()
+    except Exception:
+        pass
+
+
+def botao_dropdown(w: WebDriverWait):
+    for xp in (
+        "//div[@data-panelid='round']//button[@role='combobox']",
+        "//div[@data-panelid='round']//button[contains(@class,'DropdownButton')]",
+    ):
+        try:
+            return w.until(EC.element_to_be_clickable((By.XPATH, xp)))
+        except Exception:
+            continue
+    raise TimeoutError("Combobox não encontrado.")
+
+
+def obter_fases(w: WebDriverWait) -> List[str]:
+    btn = botao_dropdown(w)
+    btn.click()
+    fases = [
+        li.text.strip()
+        for li in w.until(EC.presence_of_all_elements_located((By.XPATH, "//li[@role='option']")))
+    ]
+    w._driver.execute_script("arguments[0].click();", btn)  # fecha dropdown
+    return fases
+
+
+def normaliza(txt: str) -> str:
+    return unicodedata.normalize("NFKD", txt).encode("ascii", "ignore").decode().lower().strip()
+
+
+def selecionar_fase(w: WebDriverWait, fase: str):
+    """Abre o dropdown, acha a opção pelo texto normalizado e clica via JS."""
+    drv = w._driver
+    drv.execute_script("window.scrollTo(0,0);")
+
+    btn = botao_dropdown(w)
+    drv.execute_script("arguments[0].click();", btn)  # garante abertura mesmo se overlay
+
+    fase_norm = normaliza(fase)
+    lis = w.until(EC.presence_of_all_elements_located((By.XPATH, "//li[@role='option']")))
+
+    alvo = None
+    for li in lis:
+        if normaliza(li.text) == fase_norm:
+            alvo = li
+            break
+    if alvo is None:
+        raise TimeoutException(f"Fase '{fase}' não localizada no dropdown.")
+
+    drv.execute_script("arguments[0].scrollIntoView({block:'center'});", alvo)
+    drv.execute_script("arguments[0].click();", alvo)
+    time.sleep(1)  # give time for the matches list to refresh
+
+
+def scroll_ate_fim(drv: webdriver.Chrome, cont):
+    prev_height = -1
+    while True:
+        drv.execute_script("arguments[0].scrollTop = arguments[0].scrollHeight;", cont)
+        time.sleep(0.5)
+        height = drv.execute_script("return arguments[0].scrollHeight;", cont)
+        if height == prev_height:
+            break
+        prev_height = height
+
+
+def links_validos(w: WebDriverWait) -> Dict[str, str]:
+    cont = w.until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, "div[data-panelid='round'] .list-wrapper"))
+    )
+    scroll_ate_fim(w._driver, cont)
+
+    links = {}
+    for a in cont.find_elements(By.XPATH, ".//a[contains(@href,'/football/match/')]"):
+        txt = normaliza(a.text)
+        if any(b in txt for b in BAN_LIST):
+            continue
+        href = a.get_attribute("href")
+        if (m := ID_RE.search(href)):
+            links[m.group(1)] = href
+    return links
+# ──────────────────────────────────── #
+
+
+def main():
+    driver = criar_driver()
+    wait   = WebDriverWait(driver, TIMEOUT)
+    ids_vistos: Set[str] = set()
+
+    try:
+        driver.get(URL_TORNEIO)
+        fechar_overlays(wait)
+        abrir_aba_jogos(wait)
+
+        fases = obter_fases(wait)
+
+        print("LINKS ABAIXO")
+        for fase in fases:
+            selecionar_fase(wait, fase)
+            novos = links_validos(wait)
+
+            print(f"# {fase}")
+            for jogo_id, url in novos.items():
+                if jogo_id in ids_vistos:
+                    continue
+                ids_vistos.add(jogo_id)
+                print(f"    '{url}',")
+
+        print(f"\nTotal único de links: {len(ids_vistos)}")
+
+    finally:
+        driver.quit()
+
+
+if __name__ == "__main__":
+    main()

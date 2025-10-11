@@ -13,7 +13,7 @@ import pymysql
 from pymysql.constants import CLIENT
 
 # ===== CONFIG =====
-CSV_PATH = r"C:\Users\stefa\Desktop\bet_dados\banco_historico_jogos\Brasil\copa_do_brasil.csv"
+CSV_PATH = r"C:\Users\stefa\Desktop\bet_dados\banco_historico_jogos\Europa\liga_dos_campeoes.csv"
 
 DB_HOST = "localhost"
 DB_PORT = 3306

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import json, datetime, random, time, re, logging, sys, os, subprocess, tempfile, itertools
-from typing import Dict, List, Tuple, Any
+from typing import Dict, List, Tuple, Any, Optional
 import pandas as pd
 import pymysql
 import requests
@@ -13,42 +13,42 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.common.exceptions import TimeoutException, WebDriverException, NoSuchElementException
-import substituicoes_clubes
+from urllib.parse import urlparse
 
-# ───────────────────────────── CONFIGURAÇÕES ───────────────────────────── #
+# ====== NOVO: Import das substituições de clubes (opcional) ======
+try:
+    from substituicoes_clubes import substituicoes_por_id
+except Exception:
+    substituicoes_por_id = {}
+    # logging básico antes do setup para não quebrar caso import falhe
+    print("AVISO: substituicoes_clubes.py não encontrado ou inválido. Seguiremos sem substituições de clubes.")
+
+# =============== CONFIG ===============
 temporada = "2024"
 MAX_MATCHES_PER_DRIVER = 30
 HEADLESS = True
 
-# ------------------------- PROXY (SEM AUTENTICAÇÃO) ---------------------- #
 USAR_PROXY = True
 proxy_user = ""
 proxy_pass = ""
 proxy_host = "200.174.198.86"
 proxy_port = "8888"
 
-# falhas consecutivas do proxy (requests/selenium) para desligar automático
 PROXY_FAIL_STRIKES = 0
 PROXY_FAIL_LIMIT = 2
 
-# Circuit breaker para 'event'
 EVENT_FAIL_STREAK = 0
-EVENT_FAIL_BREAK_1 = 2   # após 2 falhas seguidas: restart + trocar UA + rebuild session
-EVENT_FAIL_BREAK_2 = 4   # após 4: alternar estado do proxy (liga/desliga)
+EVENT_FAIL_BREAK_1 = 2
+EVENT_FAIL_BREAK_2 = 4
 
-# Cooldowns
-COOLDOWN_403_429 = (8, 14)  # aguarda aleatório se 403/429
+COOLDOWN_403_429 = (8, 14)
 
-# ─────────────── User-Agents rotativos (desktop Chrome estáveis) ─────────────── #
 _UA_POOL = [
-    # Chrome 120–121
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-    # Chrome 122–124
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-    # Chrome 140 (atual máquina do Tefin)
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
 ]
 _ua_cycle = itertools.cycle(random.sample(_UA_POOL, k=len(_UA_POOL)))
@@ -56,233 +56,168 @@ _ua_cycle = itertools.cycle(random.sample(_UA_POOL, k=len(_UA_POOL)))
 def random_user_agent() -> str:
     return next(_ua_cycle)
 
-# ----------------------------- LISTA DE URLS ----------------------------- #
-urls: List[str] = [
-    'https://www.sofascore.com/pt/football/match/club-atletico-grau-carlos-mannucci/VUacsNanc#id:12596044',
-# Clausura Rodada 10
-    'https://www.sofascore.com/pt/football/match/universidad-tecnica-de-cajamarca-cienciano/bWsehK#id:12702526',
-    'https://www.sofascore.com/pt/football/match/deportivo-garcilaso-asociacion-deportiva-tarma/hlJcsJwId#id:12702516',
-    'https://www.sofascore.com/pt/football/match/union-comercio-universidad-cesar-vallejo/GfcsGtu#id:12702502',
-    'https://www.sofascore.com/pt/football/match/comerciantes-unidos-cusco-fc/kAAsjxKb#id:12702506',
-    'https://www.sofascore.com/pt/football/match/club-atletico-grau-sport-boys/mWsNanc#id:12702509',
-    'https://www.sofascore.com/pt/football/match/sport-huancayo-club-sporting-cristal/cWsVCn#id:12702493',
-    'https://www.sofascore.com/pt/football/match/carlos-mannucci-alianza-lima/lWsVUac#id:12702494',
-    'https://www.sofascore.com/pt/football/match/alianza-atletico-de-sullana-universitario/fWshW#id:12702495',
-    'https://www.sofascore.com/pt/football/match/los-chankas-cyc-melgar/iWseVac#id:12702507',
-# Clausura Rodada 11
-    'https://www.sofascore.com/pt/football/match/deportivo-garcilaso-club-sporting-cristal/cWsJwId#id:12702499',
-    'https://www.sofascore.com/pt/football/match/asociacion-deportiva-tarma-cusco-fc/kAAshlJc#id:12702612',
-    'https://www.sofascore.com/pt/football/match/club-atletico-grau-alianza-lima/lWsNanc#id:12702504',
-    'https://www.sofascore.com/pt/football/match/comerciantes-unidos-universidad-cesar-vallejo/GfcsjxKb#id:12702518',
-    'https://www.sofascore.com/pt/football/match/sport-huancayo-cienciano/bWsVCn#id:12702496',
-    'https://www.sofascore.com/pt/football/match/sport-boys-universitario/fWsmW#id:12702497',
-    'https://www.sofascore.com/pt/football/match/union-comercio-alianza-atletico-de-sullana/hWsGtu#id:12702500',
-    'https://www.sofascore.com/pt/football/match/los-chankas-cyc-universidad-tecnica-de-cajamarca/ehKseVac#id:12702501',
-    'https://www.sofascore.com/pt/football/match/carlos-mannucci-melgar/iWsVUac#id:12702517',
-# Clausura Rodada 12
-    'https://www.sofascore.com/pt/football/match/deportivo-garcilaso-cienciano/bWsJwId#id:12702522',
-    'https://www.sofascore.com/pt/football/match/sport-boys-alianza-lima/lWsmW#id:12702519',
-    'https://www.sofascore.com/pt/football/match/cusco-fc-club-sporting-cristal/cWskAA#id:12702520',
-    'https://www.sofascore.com/pt/football/match/union-comercio-universitario/fWsGtu#id:12702521',
-    'https://www.sofascore.com/pt/football/match/asociacion-deportiva-tarma-universidad-cesar-vallejo/GfcshlJc#id:12702527',
-    'https://www.sofascore.com/pt/football/match/comerciantes-unidos-alianza-atletico-de-sullana/hWsjxKb#id:12702523',
-    'https://www.sofascore.com/pt/football/match/los-chankas-cyc-sport-huancayo/VCnseVac#id:12702524',
-    'https://www.sofascore.com/pt/football/match/club-atletico-grau-melgar/iWsNanc#id:12702508',
-    'https://www.sofascore.com/pt/football/match/carlos-mannucci-universidad-tecnica-de-cajamarca/ehKsVUac#id:12702525',
-# Clausura Rodada 13
-    'https://www.sofascore.com/pt/football/match/union-comercio-sport-boys/mWsGtu#id:12702512',
-    'https://www.sofascore.com/pt/football/match/asociacion-deportiva-tarma-alianza-atletico-de-sullana/hWshlJc#id:12702616',
-    'https://www.sofascore.com/pt/football/match/cusco-fc-cienciano/bWskAA#id:12702505',
-    'https://www.sofascore.com/pt/football/match/alianza-lima-melgar/iWslW#id:12702511',
-    'https://www.sofascore.com/pt/football/match/universidad-cesar-vallejo-club-sporting-cristal/cWsGfc#id:12702498',
-    'https://www.sofascore.com/pt/football/match/deportivo-garcilaso-los-chankas-cyc/eVacsJwId#id:12702503',
-    'https://www.sofascore.com/pt/football/match/carlos-mannucci-sport-huancayo/VCnsVUac#id:12702515',
-    'https://www.sofascore.com/pt/football/match/comerciantes-unidos-universitario/fWsjxKb#id:12702514',
-    'https://www.sofascore.com/pt/football/match/club-atletico-grau-universidad-tecnica-de-cajamarca/ehKsNanc#id:12702510',
-# Clausura Rodada 14
-    'https://www.sofascore.com/pt/football/match/comerciantes-unidos-union-comercio/GtusjxKb#id:12831473',
-    'https://www.sofascore.com/pt/football/match/los-chankas-cyc-cusco-fc/kAAseVac#id:12831477',
-    'https://www.sofascore.com/pt/football/match/club-atletico-grau-sport-huancayo/VCnsNanc#id:12831476',
-    'https://www.sofascore.com/pt/football/match/sport-boys-melgar/iWsmW#id:12831483',
-    'https://www.sofascore.com/pt/football/match/universidad-tecnica-de-cajamarca-alianza-lima/lWsehK#id:12831488',
-    'https://www.sofascore.com/pt/football/match/universidad-cesar-vallejo-cienciano/bWsGfc#id:12831478',
-    'https://www.sofascore.com/pt/football/match/deportivo-garcilaso-carlos-mannucci/VUacsJwId#id:12831491',
-    'https://www.sofascore.com/pt/football/match/alianza-atletico-de-sullana-club-sporting-cristal/cWshW#id:12831479',
-    'https://www.sofascore.com/pt/football/match/asociacion-deportiva-tarma-universitario/fWshlJc#id:12831475',
-# Clausura Rodada 15
-    'https://www.sofascore.com/pt/football/match/deportivo-garcilaso-club-atletico-grau/NancsJwId#id:12831489',
-    'https://www.sofascore.com/pt/football/match/los-chankas-cyc-universidad-cesar-vallejo/GfcseVac#id:12831496',
-    'https://www.sofascore.com/pt/football/match/universidad-tecnica-de-cajamarca-melgar/iWsehK#id:12831493',
-    'https://www.sofascore.com/pt/football/match/sport-huancayo-alianza-lima/lWsVCn#id:12831482',
-    'https://www.sofascore.com/pt/football/match/asociacion-deportiva-tarma-union-comercio/GtushlJc#id:12834689',
-    'https://www.sofascore.com/pt/football/match/alianza-atletico-de-sullana-cienciano/bWshW#id:12831495',
-    'https://www.sofascore.com/pt/football/match/carlos-mannucci-cusco-fc/kAAsVUac#id:12831484',
-    'https://www.sofascore.com/pt/football/match/universitario-club-sporting-cristal/cWsfW#id:12831485',
-    'https://www.sofascore.com/pt/football/match/comerciantes-unidos-sport-boys/mWsjxKb#id:12831486',
-# Clausura Rodada 16
-    'https://www.sofascore.com/pt/football/match/deportivo-garcilaso-alianza-lima/lWsJwId#id:12831487',
-    'https://www.sofascore.com/pt/football/match/carlos-mannucci-universidad-cesar-vallejo/GfcsVUac#id:12831497',
-    'https://www.sofascore.com/pt/football/match/universidad-tecnica-de-cajamarca-sport-boys/mWsehK#id:12831490',
-    'https://www.sofascore.com/pt/football/match/union-comercio-club-sporting-cristal/cWsGtu#id:12831480',
-    'https://www.sofascore.com/pt/football/match/sport-huancayo-melgar/iWsVCn#id:12831494',
-    'https://www.sofascore.com/pt/football/match/universitario-cienciano/bWsfW#id:12831492',
-    'https://www.sofascore.com/pt/football/match/los-chankas-cyc-alianza-atletico-de-sullana/hWseVac#id:12831481',
-    'https://www.sofascore.com/pt/football/match/asociacion-deportiva-tarma-comerciantes-unidos/jxKbshlJc#id:12831498',
-    'https://www.sofascore.com/pt/football/match/club-atletico-grau-cusco-fc/kAAsNanc#id:12831500',
-# Clausura Rodada 17
-    'https://www.sofascore.com/pt/football/match/union-comercio-cienciano/bWsGtu#id:13035395',
-    'https://www.sofascore.com/pt/football/match/asociacion-deportiva-tarma-sport-boys/mWshlJc#id:13037280',
-    'https://www.sofascore.com/pt/football/match/carlos-mannucci-alianza-atletico-de-sullana/hWsVUac#id:13036794',
-    'https://www.sofascore.com/pt/football/match/club-atletico-grau-universidad-cesar-vallejo/GfcsNanc#id:13035396',
-    'https://www.sofascore.com/pt/football/match/universidad-tecnica-de-cajamarca-sport-huancayo/VCnsehK#id:13036795',
-    'https://www.sofascore.com/pt/football/match/comerciantes-unidos-club-sporting-cristal/cWsjxKb#id:13037273',
-    'https://www.sofascore.com/pt/football/match/cusco-fc-alianza-lima/lWskAA#id:13036796',
-    'https://www.sofascore.com/pt/football/match/los-chankas-cyc-universitario/fWseVac#id:13036797',
-    'https://www.sofascore.com/pt/football/match/deportivo-garcilaso-melgar/iWsJwId#id:13037278',
-]
+# ======= URLs: carregar de urls.txt e normalizar =======
+def _normalize_url_line(ln: str) -> Optional[str]:
+    if not ln:
+        return None
+    s = ln.strip()
+    if not s or s.startswith("#"):
+        return None
+    if s.endswith(","):
+        s = s[:-1].rstrip()
+    if (s.startswith("'") and s.endswith("'")) or (s.startswith('"') and s.endswith('"')):
+        s = s[1:-1].strip()
+    else:
+        if s and s[0] in "'\"":
+            s = s[1:].strip()
+        if s and s[-1] in "'\"":
+            s = s[:-1].strip()
+    pr = urlparse(s)
+    if pr.scheme not in ("http", "https") or not pr.netloc:
+        logging.warning("Linha do urls.txt ignorada (URL inválida): %r", ln)
+        return None
+    return s
 
-# ------------- tabelão de substituições de campeonatos ------------- #
-substituicoes_campeonatos = {
-    'Brasileirão Betano': 'Brasileiro',
-    'Copa Betano do Brasil': 'Copa do Brasil',
-    'FIFA Club World Cup': 'Copa do Mundo de Clubes',
-    'Brasileiro Série B': 'Brasileiro - Série B',
-    'CONMEBOL Libertadores': 'Libertadores',
-    'CONMEBOL Sudamericana': 'Sul-Americana',
-    'Mineiro Módulo I': 'Mineiro',
-    'Paulista Série A1': 'Paulista',
-    'Carioca Série A – Taça Guanabara': 'Carioca',
-    'Gaúcho - Mata-mata': 'Gaúcho',
-    'Baiano, Série A': 'Baiano',
-    'Cearense, Série A': 'Cearense',
-    'CONMEBOL Recopa': 'Recopa Sul-Americana',
-    'Mineiro Módulo I - Troféu Inconfidência': 'Mineiro',
-    'Goiano, 1ª Divisão': 'Goiano',
-    'UEFA Europa League': 'Liga Europa',
-    'UEFA Champions League': 'Liga dos Campeões',
-    'UEFA Conference League': 'Conference League',
-    'UEFA Europa Conference League': 'Conference League',
-    'NM Cup': 'Copa da Noruega',
-    'Primera A': 'Colombiano',
-    'Svenska Cupen': 'Copa da Suécia',
-    'Liga de Primera': 'Chileno',
-    'Liga AUF Uruguaya': 'Uruguaio',
-    'J1 League': 'Japonês',
-    'Primera Division': 'Venezuelano',
-    'Copa Venezuela': 'Copa da Venezuela',
-    'División Profesional': 'Boliviano',
-    'Copa Division Profesional': 'Copa da Bolívia',
-    'Super Cup': 'Supercopa',
-    'Copa Colombia': 'Copa da Colombia',
-    'Liga 1': 'Peruano',
-    'Premier Division': 'Irlandês',
-    'LigaPro Serie A': 'Equatoriano',
-    'Eliteserien': 'Norueguês',
-    'Copa Argentina': 'Copa da Argentina',
-    'Gaucho': 'Gaúcho',
-    'Allsvenskan': 'Sueco',
-    'Supercopa Internacional': 'Supercopa da Argentina',
-    'Liga Profesional de Fútbol': 'Argentino',
-    'Copa Chile': 'Copa do Chile',
-    'Copa Ecuador': 'Copa do Equador',
-    'Supercopa': 'Supercopa do Equador',
-    'Leinster Senior Cup': 'Copa da Liga da Irlanda',
-    'FAI Presidents Cup': 'Supercopa da Irlanda',
-    'Emperor Cup': 'Copa do Imperador',
-    'J. League Cup': 'Copa da Liga do Japão',
-    'FAI Cup': 'Copa da Irlanda',
-    'División de Honor': 'Paraguaio',
-    'Supercopa Uruguaya': 'Supercopa do Uruguai',
-    'Supercopa Venezuela': 'Supercopa da Venezuela',
-    'Community Shield': 'Supercopa da Inglaterra',
-    'FA Cup': 'Copa da Inglaterra',
-    'EFL Cup': 'Copa da Liga Inglesa',
-    'LaLiga': 'La Liga',
-    'Mineiro Módulo I - Classificação contra o rebaixamento': 'Mineiro',
-    'Carioca Série A – Mata-mata': 'Carioca',
-    'Carioca - Taça Rio': 'Carioca',
-    'Carioca - Semifinais': 'Carioca',
-    'Carioca - Classificação preliminar': 'Carioca',
-    'Carioca - Classificação contra o rebaixamento': 'Carioca',
-    'Carioca - Mata-mata contra o rebaixamento': 'Carioca',
-    'Carioca - Mata-mata da Taça Guanabara': 'Carioca',
-    'Gaúcho - Final': 'Gaúcho',
-    'Gaúcho 2ª fase': 'Gaúcho',
-    'Pernambucano - Luta contra o rebaixamento': 'Pernambucano',
-    'Cearense - Luta contra o rebaixamento': 'Cearense',
-    'Goiano - Grupo B': 'Goiano',
-    'Goiano - Grupo A': 'Goiano',
-    'Supercopa de España': 'Supercopa da Espanha',
-    'Copa del Rey': 'Copa do Rei',
-    'Coppa Italia': 'Copa da Itália',
-    'Supercoppa Italiana': 'Supercopa da Itália',
-    'DFL Supercup': 'Supercopa da Alemanha',
-    'Supercup': 'Supercopa da Alemanha',
-    'DFB Pokal': 'Copa da Alemanha',
-    'Trophée des Champions': 'Supercopa da França',
-    'Coupe de France': 'Copa da França',
-    'Liga Portugal Betclic': 'Português',
-    'Taça de Portugal': 'Copa de Portugal',
-    'League Cup': 'Copa da Liga Portuguesa',
-    'Johan Cruijff Schaal': 'Supercopa da Holanda',
-    'KNVB beker': 'Copa da Holanda',
-    'Ukraine Cup': 'Copa da Ucrânia',
-    'Trendyol Süper Lig': 'Turco',
-    'Super Kupa': 'Supercopa da Turquia',
-    'Turkiye Kupasi': 'Copa da Turquia',
-    'Stoiximan Super League': 'Grego',
-    'Greek Football Cup': 'Copa da Grécia',
-    'Saudi Pro League': 'Saudita',
-    "King's Cup": 'Copa da Arábia',
-    'UEFA Super Cup': 'Supercopa da Europa',
-    'Liga dos Campeões da UEFA': 'Liga dos Campeões',
-    'AFC Champions League Elite': 'Liga dos Campeões da Ásia',
-    'CONCACAF Champions Cup': 'Copa dos Campeões da Concacaf',
-    'Liga MX': 'Mexicano',
-    'Supercopa Liga MX': 'Supercopa da Liga Mexicana',
-    'Russian Cup': 'Copa da Rússia',
-    'Danish Superliga': 'Dinamarquês',
-    'Oddset Pokalen': 'Copa da Dinamarca',
-    'Pro League': 'Belga',
-    'Beker van Belgie': 'Copa da Bélgica',
-    'Primera LPF': 'Argentino',
-    'World Cup Qualificação': 'Eliminatórias',
-    'Int. Friendly Games': 'Amistoso',
-    'CONMEBOL Copa América': 'Copa América',
-    'UEFA Nations League': 'Nations League',
-    'Euro': 'Eurocopa',
-    'World Cup Qual. UEFA L': 'Eliminatórias',
-    'World Cup Qual. UEFA K': 'Eliminatórias',
-    'World Cup Qual. UEFA J': 'Eliminatórias',
-    'World Cup Qual. UEFA H': 'Eliminatórias',
-    'World Cup Qual. UEFA A': 'Eliminatórias',
-    'World Cup Qual. UEFA G': 'Eliminatórias',
-    'World Cup Qual. UEFA E': 'Eliminatórias',
-    'World Cup Qual. UEFA B': 'Eliminatórias',
-    'World Cup Qual. UEFA C': 'Eliminatórias',
-    'World Cup Qual. UEFA D': 'Eliminatórias',
-    'World Cup Qual. UEFA F': 'Eliminatórias',
-    'World Cup Qual. UEFA I': 'Eliminatórias',
-    'FIFA World Cup': 'Copa do Mundo',
-    'World Cup Qualification': 'Eliminatórias',
-    'CONCACAF Gold Cup': 'Copa Ouro',
-    'FIFA Intercontinental Cup': 'Mundial de Clubes',
-    'Primera División': 'Paraguaio',
-    'Liga Profesional': 'Argentino',
-    'Russian Cup Regions Path': 'Copa da Rússia',
-    'Copa de la Liga': 'Copa da Liga Argentina',
-    'VriendenLoterij Eredivisie': 'Eredivisie',
-    'Mineiro Módulo I - Playoffs': 'Mineiro',
-    'Paulista Série A1 - Playoffs': 'Paulista',
-    'Paulista Série A1 - Troféu do Interior - Playoffs': 'Paulista',
-    'Cearense - 2ª fase': 'Cearense',
-    'Carioca – Taça Rio': 'Carioca',
-    'Copa Uruguay': 'Copa do Uruguai',
-    'Brasileirão Série B': 'Brasileiro - Série B',
-    'Greece Cup': 'Copa da Grécia',
-}
+def carregar_urls(path: str = "urls.txt") -> List[str]:
+    if not os.path.exists(path):
+        logging.warning("Arquivo %s não encontrado. Nenhuma URL será processada.", path)
+        return []
+    urls: List[str] = []
+    with open(path, "r", encoding="utf-8") as f:
+        for raw in f:
+            u = _normalize_url_line(raw)
+            if u:
+                urls.append(u)
+    logging.info("Total de URLs carregadas do %s: %d", path, len(urls))
+    return urls
 
-# ─────────────────────────────── LOGGING ─────────────────────────────── #
+# ======= Mapa de campeonatos =======
+def substituir_campeonato(n: str) -> str:
+    substituicoes_campeonatos = {
+        'Brasileirão Betano': 'Brasileiro',
+        'Copa Betano do Brasil': 'Copa do Brasil',
+        'FIFA Club World Cup': 'Copa do Mundo de Clubes',
+        'Brasileiro Série B': 'Brasileiro - Série B',
+        'CONMEBOL Libertadores': 'Libertadores',
+        'CONMEBOL Sudamericana': 'Sul-Americana',
+        'Mineiro Módulo I': 'Mineiro',
+        'Paulista Série A1': 'Paulista',
+        'Carioca Série A – Taça Guanabara': 'Carioca',
+        'Gaúcho - Mata-mata': 'Gaúcho',
+        'Baiano, Série A': 'Baiano',
+        'Cearense, Série A': 'Cearense',
+        'CONMEBOL Recopa': 'Recopa Sul-Americana',
+        'Mineiro Módulo I - Troféu Inconfidência': 'Mineiro',
+        'Goiano, 1ª Divisão': 'Goiano',
+        'UEFA Europa League': 'Liga Europa',
+        'UEFA Champions League': 'Liga dos Campeões',
+        'UEFA Conference League': 'Conference League',
+        'UEFA Europa Conference League': 'Conference League',
+        'NM Cup': 'Copa da Noruega',
+        'Primera A': 'Colombiano',
+        'Svenska Cupen': 'Copa da Suécia',
+        'Liga de Primera': 'Chileno',
+        'Liga AUF Uruguaya': 'Uruguaio',
+        'J1 League': 'Japonês',
+        'Primera Division': 'Venezuelano',
+        'Copa Venezuela': 'Copa da Venezuela',
+        'División Profesional': 'Boliviano',
+        'Copa Division Profesional': 'Copa da Bolívia',
+        'Super Cup': 'Supercopa',
+        'Copa Colombia': 'Copa da Colômbia',
+        'Liga 1': 'Peruano',
+        'Premier Division': 'Irlandês',
+        'LigaPro Serie A': 'Equatoriano',
+        'Eliteserien': 'Norueguês',
+        'Copa Argentina': 'Copa da Argentina',
+        'Gaucho': 'Gaúcho',
+        'Allsvenskan': 'Sueco',
+        'Primera División': 'Paraguaio',
+        'Supercopa Internacional': 'Supercopa da Argentina',
+        'Liga Profesional de Fútbol': 'Argentino',
+        'Liga Profesional': 'Argentino',
+        'Copa Chile': 'Copa do Chile',
+        'Copa Ecuador': 'Copa do Equador',
+        'Supercopa': 'Supercopa do Equador',
+        'Leinster Senior Cup': 'Copa da Liga da Irlanda',
+        'FAI Presidents Cup': 'Supercopa da Irlanda',
+        'Emperor Cup': 'Copa do Imperador',
+        'J. League Cup': 'Copa da Liga do Japão',
+        'FAI Cup': 'Copa da Irlanda',
+        'División de Honor': 'Paraguaio',
+        'Supercopa Uruguaya': 'Supercopa do Uruguai',
+        'Supercopa Venezuela': 'Supercopa da Venezuela',
+        'Community Shield': 'Supercopa da Inglaterra',
+        'FA Cup': 'Copa da Inglaterra',
+        'EFL Cup': 'Copa da Liga Inglesa',
+        'LaLiga': 'La Liga',
+        'Mineiro Módulo I - Classificação contra o rebaixamento': 'Mineiro',
+        'Carioca Série A – Mata-mata': 'Carioca',
+        'Carioca - Taça Rio': 'Carioca',
+        'Carioca - Semifinais': 'Carioca',
+        'Carioca - Classificação preliminar': 'Carioca',
+        'Carioca - Classificação contra o rebaixamento': 'Carioca',
+        'Carioca - Mata-mata contra o rebaixamento': 'Carioca',
+        'Carioca - Mata-mata da Taça Guanabara': 'Carioca',
+        'Gaúcho - Final': 'Gaúcho',
+        'Gaúcho 2ª fase': 'Gaúcho',
+        'Pernambucano - Luta contra o rebaixamento': 'Pernambucano',
+        'Cearense - Luta contra o rebaixamento': 'Cearense',
+        'Goiano - Grupo B': 'Goiano',
+        'Goiano - Grupo A': 'Goiano',
+        'Supercopa de España': 'Supercopa da Espanha',
+        'Copa del Rey': 'Copa do Rei',
+        'Coppa Italia': 'Copa da Itália',
+        'Supercoppa Italiana': 'Supercopa da Itália',
+        'DFL Supercup': 'Supercopa da Alemanha',
+        'Supercup': 'Supercopa da Alemanha',
+        'DFB Pokal': 'Copa da Alemanha',
+        'Trophée des Champions': 'Supercopa da França',
+        'Coupe de France': 'Copa da França',
+        'Copa Bicentenario': 'Copa do Peru',
+        'Supercopa Peruana': 'Supercopa do Peru',
+        'Liga Portugal Betclic': 'Português',
+        'Taça de Portugal': 'Copa de Portugal',
+        'League Cup': 'Copa da Liga Portuguesa',
+        'Johan Cruijff Schaal': 'Supercopa da Holanda',
+        'KNVB beker': 'Copa da Holanda',
+        'Ukraine Cup': 'Copa da Ucrânia',
+        'Trendyol Süper Lig': 'Turco',
+        'Super Kupa': 'Supercopa da Turquia',
+        'Turkiye Kupasi': 'Copa da Turquia',
+        'Stoiximan Super League': 'Grego',
+        'Greek Football Cup': 'Copa da Grécia',
+        'Saudi Pro League': 'Saudita',
+        "King's Cup": 'Copa da Arábia',
+        'UEFA Super Cup': 'Supercopa da Europa',
+        'Liga dos Campeões da UEFA': 'Liga dos Campeões',
+        'AFC Champions League Elite': 'Liga dos Campeões da Ásia',
+        'CONCACAF Champions Cup': 'Copa dos Campeões da Concacaf',
+        'Liga MX': 'Mexicano',
+        'Supercopa Liga MX': 'Supercopa da Liga Mexicana',
+        'Russian Cup': 'Copa da Rússia',
+        'Danish Superliga': 'Dinamarquês',
+        'Oddset Pokalen': 'Copa da Dinamarca',
+        'Pro League': 'Belga',
+        'Beker van Belgie': 'Copa da Bélgica',
+        'Primera LPF': 'Argentino',
+        'World Cup Qualificação': 'Eliminatórias',
+        'Int. Friendly Games': 'Amistoso',
+        'CONMEBOL Copa América': 'Copa América',
+        'UEFA Nations League': 'Nations League',
+        'Euro': 'Eurocopa',
+        'FIFA World Cup': 'Copa do Mundo',
+        'Copa Uruguay': 'Copa do Uruguai',
+        'CONCACAF Gold Cup': 'Copa Ouro',
+        'FIFA Intercontinental Cup': 'Mundial de Clubes',
+        'VriendenLoterij Eredivisie': 'Eredivisie',
+        'Brasileirão Série B': 'Brasileiro - Série B',
+        'Greece Cup': 'Copa da Grécia',
+    }
+    nome = (n or "").strip()
+    return substituicoes_campeonatos.get(nome, nome)
+
+# ============== LOGGING ==============
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s  %(levelname)-8s %(message)s",
@@ -290,7 +225,7 @@ logging.basicConfig(
 )
 log = logging.getLogger("sofascore")
 
-# ─────────────────────── Notificação no Windows ─────────────────────── #
+# ====== Notificação Windows (opcional) ======
 def _xml_escape(s: str) -> str:
     return (s or "").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")\
                     .replace('"', "&quot;").replace("'", "&apos;")
@@ -303,23 +238,22 @@ def notify_windows(title: str, message: str, duration: int = 10) -> bool:
         toast.set_audio(audio.Default, loop=False)
         toast.show()
         return True
-    except Exception as e:
-        log.debug("notify: winotify falhou: %s", e)
+    except Exception:
+        pass
     try:
         from win10toast import ToastNotifier
         ToastNotifier().show_toast(title, message, threaded=False, duration=duration)
         return True
-    except Exception as e:
-        log.debug("notify: win10toast falhou: %s", e)
+    except Exception:
+        pass
     try:
         from plyer import notification
         notification.notify(title=title, message=message, timeout=duration)
         return True
-    except Exception as e:
-        log.debug("notify: plyer falhou: %s", e)
+    except Exception:
+        pass
     try:
-        t = _xml_escape(title)
-        m = _xml_escape(message)
+        t = _xml_escape(title); m = _xml_escape(message)
         ps_code = f'''
 Add-Type -AssemblyName System.Runtime.WindowsRuntime | Out-Null
 $null = [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime]
@@ -336,24 +270,13 @@ $notifier.Show($toast)
         with tempfile.NamedTemporaryFile(delete=False, suffix=".ps1", mode="w", encoding="utf-8") as f:
             f.write(ps_code)
             ps1_path = f.name
-        completed = subprocess.run(
-            ["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", ps1_path],
-            capture_output=True, text=True, timeout=10
-        )
+        subprocess.run(["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", ps1_path],
+                       capture_output=True, text=True, timeout=10)
         try: os.unlink(ps1_path)
         except Exception: pass
-        if completed.returncode == 0:
-            return True
-        else:
-            log.debug("notify: PowerShell rc=%s stderr=%s", completed.returncode, completed.stderr)
-    except Exception as e:
-        log.debug("notify: PowerShell Toast falhou: %s", e)
-    try:
-        import ctypes
-        ctypes.windll.user32.MessageBoxW(0, message, title, 0x0)
         return True
-    except Exception as e:
-        log.debug("notify: MessageBox falhou: %s", e)
+    except Exception:
+        pass
     return False
 
 def beep_ok():
@@ -363,8 +286,8 @@ def beep_ok():
     except Exception:
         pass
 
-# ─────────────────────── sessão HTTP (ignora proxies do ambiente) ─────────────────────── #
-session: requests.Session | None = None
+# ====== Sessão HTTP ======
+session: Optional[requests.Session] = None
 SESSION_UA = random_user_agent()
 
 def rebuild_session():
@@ -392,11 +315,11 @@ def rebuild_session():
         log.info("🌐 Proxy requests habilitado: %s | UA=%s", proxy_url, SESSION_UA)
     else:
         log.info("🌐 Requests sem proxy | UA=%s", SESSION_UA)
-    globals()['session'] = s
+    session = s
 
-# ─────────────────────── helpers de proxy / recuperação ─────────────────────── #
+# ====== Proxy helpers ======
 def desativar_proxy_instavel(motivo: str):
-    global USAR_PROXY, PROXY_FAIL_STRIKES, session, driver, matches_done_with_this_driver
+    global USAR_PROXY, PROXY_FAIL_STRIKES, driver, matches_done_with_this_driver
     if not USAR_PROXY:
         return
     USAR_PROXY = False
@@ -430,7 +353,7 @@ def circuit_breaker_event_failures():
         restart_driver()
         rebuild_session()
 
-# ──────────────────────── CHROME DRIVER HELPERS ──────────────────────── #
+# ====== Chrome Driver ======
 def criar_driver() -> webdriver.Chrome:
     opts = Options()
     if HEADLESS:
@@ -472,7 +395,6 @@ def criar_driver() -> webdriver.Chrome:
         pass
     return drv
 
-# cria sessão requests e driver
 rebuild_session()
 driver = criar_driver()
 matches_done_with_this_driver = 0
@@ -487,58 +409,76 @@ def restart_driver():
     matches_done_with_this_driver = 0
     log.info("♻️  ChromeDriver reiniciado")
 
-# ───────────────────────── BASE DE DADOS ─────────────────────────────── #
+# ====== DB ======
 conn = pymysql.connect(host="localhost", user="admin", password="1234",
-                       database="bet_dados", charset="utf8mb4")
+                       database="bet_dados", charset="utf8mb4", autocommit=False)
 cursor = conn.cursor()
 
-# [FIX DATA] ───────────────────────── AJUSTE DEFINITIVO DA COLUNA partidas.data ───────────────────────── #
-def ensure_partidas_date_column():
-    """
-    - Se `partidas.data` não for DATE, converte strings para ISO e altera para DATE.
-    - Remove NBSP/TAB/CR/LF antes de converter.
-    """
+# ====== FIX SEGURO DA COLUNA partidas.data ======
+def ensure_partidas_date_column_safe():
     try:
+        cursor.execute("SHOW COLUMNS FROM partidas LIKE 'data_fix'")
+        has_fix = cursor.fetchone() is not None
+        if not has_fix:
+            cursor.execute("ALTER TABLE partidas ADD COLUMN data_fix DATE NULL")
+            conn.commit()
+
         cursor.execute("SHOW COLUMNS FROM partidas LIKE 'data'")
-        col = cursor.fetchone()
-        if not col:
+        row = cursor.fetchone()
+        if not row:
             log.warning("Tabela 'partidas' não tem coluna 'data'. Pulando normalização.")
             return
-        col_type = col[1].lower()  # ex.: 'date', 'varchar(20)'
+        col_type = row[1].lower()
+
         if "date" in col_type:
-            return  # já é DATE
+            cursor.execute("UPDATE partidas SET data_fix = data WHERE data IS NOT NULL")
+            conn.commit()
+        else:
+            log.info("🧼 Normalizando partidas.data (tipo atual: %s) → DATE (via data_fix)...", col_type)
+            cursor.execute("UPDATE partidas SET data_fix = NULL")
+            conn.commit()
 
-        log.info("🧼 Normalizando partidas.data (tipo atual: %s) → DATE ...", col_type)
+            cursor.execute("""
+                UPDATE partidas
+                   SET data_fix = DATE(SUBSTRING(TRIM(REPLACE(REPLACE(REPLACE(REPLACE(data, UNHEX('C2A0'), ''), '\t',''), '\r',''), '\n','')),1,10))
+                 WHERE TRIM(REPLACE(REPLACE(REPLACE(REPLACE(data, UNHEX('C2A0'), ''), '\t',''), '\r',''), '\n','')) LIKE '____-__-__%%'
+            """)
+            conn.commit()
 
-        cursor.execute("""
-            UPDATE partidas
-            SET data =
-              DATE_FORMAT(
-                CASE
-                  WHEN TRIM(REPLACE(REPLACE(REPLACE(REPLACE(data, UNHEX('C2A0'), ''), '\t',''), '\r',''), '\n','')) LIKE '____-__-__%%'
-                    THEN DATE(SUBSTRING(TRIM(REPLACE(REPLACE(REPLACE(REPLACE(data, UNHEX('C2A0'), ''), '\t',''), '\r',''), '\n','')),1,10))
-                  WHEN TRIM(REPLACE(REPLACE(REPLACE(REPLACE(data, UNHEX('C2A0'), ''), '\t',''), '\r',''), '\n','')) REGEXP '^[0-9]{2}/[0-9]{2}/[0-9]{4}'
-                    THEN STR_TO_DATE(SUBSTRING_INDEX(TRIM(REPLACE(REPLACE(REPLACE(REPLACE(data, UNHEX('C2A0'), ''), '\t',''), '\r',''), '\n','')), ' ', 1), '%%d/%%m/%%Y')
-                  WHEN TRIM(REPLACE(REPLACE(REPLACE(REPLACE(data, UNHEX('C2A0'), ''), '\t',''), '\r',''), '\n','')) REGEXP '^[0-9]{2}-[0-9]{2}-[0-9]{4}$'
-                    THEN STR_TO_DATE(TRIM(REPLACE(REPLACE(REPLACE(REPLACE(data, UNHEX('C2A0'), ''), '\t',''), '\r',''), '\n','')), '%%d-%%m-%%Y')
-                  ELSE NULL
-                END,
-                '%%Y-%%m-%%d'
-              )
-            WHERE data IS NOT NULL
-        """)
-        conn.commit()
+            cursor.execute("""
+                UPDATE partidas
+                   SET data_fix = STR_TO_DATE(SUBSTRING_INDEX(TRIM(REPLACE(REPLACE(REPLACE(REPLACE(data, UNHEX('C2A0'), ''), '\t',''), '\r',''), '\n','')), ' ', 1), '%d/%m/%Y')
+                 WHERE data_fix IS NULL
+                   AND TRIM(REPLACE(REPLACE(REPLACE(REPLACE(data, UNHEX('C2A0'), ''), '\t',''), '\r',''), '\n','')) REGEXP '^[0-9]{2}/[0-9]{2}/[0-9]{4}'
+            """)
+            conn.commit()
 
-        cursor.execute("ALTER TABLE partidas MODIFY COLUMN data DATE")
-        conn.commit()
-        log.info("✅ partidas.data convertido para DATE.")
+            cursor.execute("""
+                UPDATE partidas
+                   SET data_fix = STR_TO_DATE(TRIM(REPLACE(REPLACE(REPLACE(REPLACE(data, UNHEX('C2A0'), ''), '\t',''), '\r',''), '\n','')), '%d-%m-%Y')
+                 WHERE data_fix IS NULL
+                   AND TRIM(REPLACE(REPLACE(REPLACE(REPLACE(data, UNHEX('C2A0'), ''), '\t',''), '\r',''), '\n','')) REGEXP '^[0-9]{2}-[0-9]{2}-[0-9]{4}$'
+            """)
+            conn.commit()
+
+        if "date" not in col_type:
+            cursor.execute("ALTER TABLE partidas CHANGE COLUMN data data_old VARCHAR(50) NULL")
+            cursor.execute("ALTER TABLE partidas CHANGE COLUMN data_fix data DATE NULL")
+            conn.commit()
+            try:
+                cursor.execute("ALTER TABLE partidas DROP COLUMN data_old")
+                conn.commit()
+            except Exception:
+                pass
+
+        log.info("✅ partidas.data está consistente como DATE.")
     except Exception as e:
+        conn.rollback()
         log.warning("Não consegui normalizar partidas.data agora (%s). Seguindo assim mesmo.", e)
 
-ensure_partidas_date_column()
-# ───────────────────────────────────────────────────────────────────────── #
+ensure_partidas_date_column_safe()
 
-# ────────────────────── UTIL: BUSCAR '__NEXT_DATA__' NO DOM ───────────────────── #
+# ====== Helpers DOM / API ======
 def _deep_find(d: Any, key: str) -> Any:
     if isinstance(d, dict):
         if key in d:
@@ -551,10 +491,10 @@ def _deep_find(d: Any, key: str) -> Any:
         for item in d:
             r = _deep_find(item, key)
             if r is not None:
-                return r
+                return None if r is ... else r
     return None
 
-def _load_next_data_from_dom(drv: webdriver.Chrome) -> dict | None:
+def _load_next_data_from_dom(drv: webdriver.Chrome) -> Optional[dict]:
     for sel in ["script#__NEXT_DATA__", "script[id='__NEXT_DATA__']"]:
         try:
             el = drv.find_element(By.CSS_SELECTOR, sel)
@@ -573,7 +513,7 @@ def _load_next_data_from_dom(drv: webdriver.Chrome) -> dict | None:
         pass
     return None
 
-def extract_event_from_dom(drv: webdriver.Chrome, id_jogo: str) -> Dict | None:
+def extract_event_from_dom(drv: webdriver.Chrome, id_jogo: str) -> Optional[Dict]:
     try:
         data = _load_next_data_from_dom(drv)
         if not data:
@@ -589,7 +529,6 @@ def extract_event_from_dom(drv: webdriver.Chrome, id_jogo: str) -> Dict | None:
         return None
     return None
 
-# ──────────────────── REQUISIÇÃO À API COM FALLBACKS ──────────────────── #
 def _selenium_api_json(url_api: str) -> Dict:
     global PROXY_FAIL_STRIKES
     try:
@@ -612,7 +551,7 @@ def _selenium_api_json(url_api: str) -> Dict:
 
         try:
             txt = driver.find_element(By.TAG_NAME, "body").text.strip()
-            if txt.startswith("{") or txt.startswith("["):
+            if txt.strip().startswith("{") or txt.strip().startswith("["):
                 return json.loads(txt)
         except Exception:
             pass
@@ -644,7 +583,8 @@ def _api_url(url: str) -> str:
 def obter_dados_api(url_api: str) -> Dict:
     global PROXY_FAIL_STRIKES
     try:
-        session.cookies.clear()
+        if session:
+            session.cookies.clear()
         for c in driver.get_cookies():
             session.cookies.set(c["name"], c["value"])
     except Exception:
@@ -710,7 +650,7 @@ def safe_get_event(id_jogo: str) -> Dict:
     circuit_breaker_event_failures()
     raise RuntimeError(f"Não consegui 'event' para {id_jogo}")
 
-# ───────────────────── FUNÇÕES DE EXTRAÇÃO (Selenium) ──────────────────── #
+# ====== Odds / Região ======
 def get_region_text(drv: webdriver.Chrome) -> str:
     for s in drv.find_elements(By.CSS_SELECTOR, "script[type='application/ld+json']"):
         try:
@@ -722,7 +662,7 @@ def get_region_text(drv: webdriver.Chrome) -> str:
     anchors = drv.find_elements(By.CSS_SELECTOR, "a[href^='/pt/futebol/']:not([href='/pt/futebol/'])")
     return anchors[0].text.strip() if anchors else "Desconhecido"
 
-def get_odds(drv: webdriver.Chrome, max_scrolls: int = 6, wait_each: float = 0.7) -> Tuple[str | None, str | None, str | None]:
+def get_odds(drv: webdriver.Chrome, max_scrolls: int = 6, wait_each: float = 0.7) -> Tuple[Optional[str], Optional[str], Optional[str]]:
     X_RES_FINAL = ("//span[translate(.,'RESULTADO FINAL','resultado final')='resultado final']"
                    "/ancestor::div[contains(@class,'bg_surface')]")
     try:
@@ -748,12 +688,25 @@ def get_odds(drv: webdriver.Chrome, max_scrolls: int = 6, wait_each: float = 0.7
         logging.debug("get_odds travou: %s", e)
     return None, None, None
 
-# ──────────────── AUXILIARES BD (substituir + estatísticas) ────────────── #
-def substituir_campeonato(n: str) -> str:
-    return substituicoes_campeonatos.get(n.strip(), n.strip())
+# ====== NOVO: helper para aplicar substituição por ID do clube ======
+def nome_clube(team: dict) -> str:
+    """
+    Recebe o objeto de time retornado pela API do SofaScore (ex.: ev['homeTeam']).
+    Se existir um ID e ele estiver em substituicoes_por_id, retorna o nome padronizado.
+    Caso contrário, retorna o name original.
+    """
+    try:
+        tid = int(team.get("id") or 0)
+    except Exception:
+        tid = 0
+    original = (team.get("name") or "").strip()
+    if tid and tid in substituicoes_por_id:
+        return (substituicoes_por_id.get(tid) or original).strip()
+    return original
 
+# ====== Inserções de estatísticas ======
 def inserir_estatisticas(id_jogo: str, home: str, away: str,
-                         periodo: str, tabela: str, stats: dict):
+                         periodo: str, tabela: str, stats: dict, conn=conn, cursor=cursor):
     cursor.execute(f"SELECT 1 FROM {tabela} WHERE id_jogo=%s LIMIT 1", (id_jogo,))
     if cursor.fetchone():
         return
@@ -782,11 +735,11 @@ def inserir_estatisticas(id_jogo: str, home: str, away: str,
     conn.commit()
     log.info("✅  Estatísticas inseridas: %s", tabela)
 
-# ──────────────────────── TEMPO DOS GOLS ────────────────────────── #
+# ====== Tempo dos gols ======
 def _disp(x):
     return x.get("display", 0) if isinstance(x, dict) else (x or 0)
 
-def inserir_tempo_gols(id_jogo: str, campeonato_padronizado: str, home: str, away: str):
+def inserir_tempo_gols(id_jogo: str, campeonato_padronizado: str, home: str, away: str, conn=conn, cursor=cursor):
     cursor.execute("SELECT 1 FROM tempo_gols WHERE id_jogo=%s LIMIT 1", (id_jogo,))
     if cursor.fetchone():
         log.info("ℹ️  tempo_gols já possui id_jogo=%s – nada a fazer.", id_jogo)
@@ -843,10 +796,15 @@ def inserir_tempo_gols(id_jogo: str, campeonato_padronizado: str, home: str, awa
     conn.commit()
     log.info("✅  tempo_gols inserido: %d linha(s) para id_jogo=%s", len(df), id_jogo)
 
-# ───────────────────────────── LOOP PRINCIPAL ───────────────────────────── #
+# ====== MAIN LOOP ======
 def main():
     inicio = time.time()
     erros = 0
+
+    urls = carregar_urls()
+    if not urls:
+        log.warning("Nenhuma URL para processar (verifique urls.txt).")
+        return
 
     global matches_done_with_this_driver
 
@@ -889,9 +847,12 @@ def main():
             odd_casa, odd_empate, odd_fora = get_odds(driver)
 
             ev = safe_get_event(id_jogo)
+
+            # ====== NOVO: aplicar substituição por ID do clube ======
             home_team, away_team = ev["homeTeam"], ev["awayTeam"]
-            home = substituicoes_clubes.substituicoes_por_id.get(home_team["id"], home_team["name"].strip())
-            away = substituicoes_clubes.substituicoes_por_id.get(away_team["id"], away_team["name"].strip())
+            home = nome_clube(home_team)
+            away = nome_clube(away_team)
+
             log.info("Partida: %s x %s | odds %s/%s/%s", home, away, odd_casa, odd_empate, odd_fora)
 
             cursor.execute("SELECT pais, odd_casa, odd_empate, odd_fora, campeonato FROM partidas WHERE id_jogo=%s",
@@ -900,16 +861,15 @@ def main():
             campeonato_padronizado = None
 
             if not row:
-                # [FIX DATA] crio objetos de data/hora seguros para MySQL
                 dt_ini_utc = datetime.datetime.fromtimestamp(ev["startTimestamp"], tz=datetime.timezone.utc)
                 dt_brt = dt_ini_utc.astimezone(datetime.timezone(datetime.timedelta(hours=-3)))
-                data_date = dt_brt.date()                  # python datetime.date → coluna DATE
-                hora_str = dt_brt.strftime("%H:%M")        # string HH:MM para coluna texto
+                data_date = dt_brt.date()
+                hora_str = dt_brt.strftime("%H:%M")
 
                 campeonato_padronizado = substituir_campeonato((ev["tournament"]["name"] or "").split(",")[0])
                 round_info = ev.get("roundInfo") or {}
-                rodada = re.search(r"\d+", str(round_info.get("name") or round_info.get("round") or "0"))
-                rodada = rodada.group() if rodada else "0"
+                rodada_m = re.search(r"\d+", str(round_info.get("name") or round_info.get("round") or "0"))
+                rodada = rodada_m.group() if rodada_m else "0"
                 gols_casa = ev["homeScore"].get("normaltime", ev["homeScore"].get("current", 0))
                 gols_fora = ev["awayScore"].get("normaltime", ev["awayScore"].get("current", 0))
 
@@ -922,29 +882,38 @@ def main():
                       gols_casa, gols_fora, temporada, odd_casa, odd_empate, odd_fora,
                       datetime.datetime.now()))
                 conn.commit()
-                log.info("✅  Partida inserida")
+                log.info("✅  Partida inserida (id_jogo=%s)", id_jogo)
             else:
-                _, _, _, _, camp_existente = row
-                campeonato_padronizado = camp_existente
+                pais_db, oc_db, oe_db, of_db, camp_db = row
+                campeonato_padronizado = camp_db
 
                 sets, vals = [], []
-                if pais != "Desconhecido" and not row[0]:
+                if pais and pais != "Desconhecido" and (not pais_db or not str(pais_db).strip()):
                     sets.append("pais=%s");           vals.append(pais)
-                if odd_casa and not row[1]:
+                if odd_casa and (not oc_db or str(oc_db).strip() == ""):
                     sets.append("odd_casa=%s");       vals.append(odd_casa)
-                if odd_empate and not row[2]:
+                if odd_empate and (not oe_db or str(oe_db).strip() == ""):
                     sets.append("odd_empate=%s");     vals.append(odd_empate)
-                if odd_fora and not row[3]:
+                if odd_fora and (not of_db or str(of_db).strip() == ""):
                     sets.append("odd_fora=%s");       vals.append(odd_fora)
                 if not campeonato_padronizado:
                     campeonato_padronizado = substituir_campeonato((ev["tournament"]["name"] or "").split(",")[0])
                     sets.append("campeonato=%s");     vals.append(campeonato_padronizado)
+
+                # (Opcional) Atualizar nomes caso mudem após substituições – geralmente não precisa,
+                # mas se quiser garantir que 'casa' e 'fora' reflitam o nome padronizado:
+                # sets.append("casa=%s"); vals.append(home)
+                # sets.append("fora=%s"); vals.append(away)
+
                 if sets:
                     vals.append(id_jogo)
                     cursor.execute(f"UPDATE partidas SET {', '.join(sets)} WHERE id_jogo=%s", vals)
                     conn.commit()
-                    log.info("✅  Partida atualizada")
+                    log.info("✅  Partida atualizada (id_jogo=%s)", id_jogo)
+                else:
+                    log.info("ℹ️  Partida já existia e não precisou de atualização (id_jogo=%s)", id_jogo)
 
+            # Estatísticas
             try:
                 stats = obter_dados_api(f"https://api.sofascore.com/api/v1/event/{id_jogo}/statistics")
                 inserir_estatisticas(id_jogo, home, away, "1ST", "1_tempo", stats)
@@ -953,16 +922,18 @@ def main():
             except Exception as e:
                 log.warning("⚠️  Não consegui estatísticas (%s). Seguindo.", e)
 
+            # Lineups / estatísticas de jogadores
             try:
                 cursor.execute("SELECT 1 FROM estatisticas_jogadores WHERE id_jogo=%s LIMIT 1", (id_jogo,))
                 if not cursor.fetchone():
                     lineups = obter_dados_api(f"https://api.sofascore.com/api/v1/event/{id_jogo}/lineups")
                     players = []
-                    for side, team in [("home", home), ("away", away)]:
+                    # Aqui já usamos 'home' e 'away' padronizados
+                    for side, team_name in [("home", home), ("away", away)]:
                         for p in lineups.get(side, {}).get("players", []):
                             ply, st = p.get("player", {}), p.get("statistics", {})
                             rp = {
-                                "id_jogo": id_jogo, "team": team, "name": ply.get("name"),
+                                "id_jogo": id_jogo, "team": team_name, "name": ply.get("name"),
                                 "position": ply.get("position"),
                                 "jersey_number": int(ply.get("jerseyNumber") or 0),
                                 "height": int(ply.get("height") or 0), "player_id": ply.get("id"),
@@ -990,10 +961,11 @@ def main():
                             f"INSERT INTO estatisticas_jogadores ({cols_sql}) VALUES ({vals_sql})",
                             dfp.values.tolist())
                         conn.commit()
-                        log.info("✅  Jogadores inseridos: %d", len(players))
+                        log.info("✅  Jogadores inseridos: %d (id_jogo=%s)", len(players), id_jogo)
             except Exception as e:
                 log.warning("⚠️  Não consegui lineups (%s). Seguindo.", e)
 
+            # Tempo dos gols
             try:
                 inserir_tempo_gols(id_jogo, campeonato_padronizado, home, away)
             except Exception as e:
@@ -1004,12 +976,15 @@ def main():
                 log.warning("🧹 Renderer travou — reiniciando driver para recuperar.")
                 restart_driver()
             log.error("❌  Erro em %s: %s", url, e, exc_info=True)
+            conn.rollback()
             erros += 1
+        else:
+            conn.commit()
 
         matches_done_with_this_driver += 1
         time.sleep(random.uniform(4, 8))
 
-    # ──────────────────────────── ENCERRAMENTO ─────────────────────────────── #
+    # Encerramento
     try:
         driver.quit()
     except Exception:

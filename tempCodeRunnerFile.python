@@ -1,3 +1,297 @@
-& "C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe" `
-  --remote-debugging-port=9222 `
-  --user-data-dir="$env:LOCALAPPDATA\BraveDebug"
+import os
+import re
+import time
+import unicodedata
+import logging
+from typing import Dict, List, Set, Tuple, Optional
+
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import (
+    TimeoutException,
+    WebDriverException,
+    InvalidSessionIdException,
+)
+from webdriver_manager.chrome import ChromeDriverManager
+
+# ================= CONFIG =================
+URL_TORNEIO = "https://www.sofascore.com/pt/torneio/futebol/north-central-america/concacaf-champions-cup/498#id:26749"
+
+HEADLESS = True
+WINDOW_SIZE = "1920,1080"
+TIMEOUT = 60
+SLEEP_UI = 0.6
+
+# Texto a filtrar (jogos adiados/cancelados etc.)
+BAN_LIST = ("adiad", "cancel", "postpon", "award")
+
+# Extrai id a partir de "#id:123456"
+ID_RE = re.compile(r"#id:(\d+)")
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s  %(message)s")
+
+
+# ============== Utils ==============
+def normaliza(txt: str) -> str:
+    return unicodedata.normalize("NFKD", txt or "").encode("ascii", "ignore").decode().lower().strip()
+
+
+def criar_driver() -> webdriver.Chrome:
+    op = Options()
+    if HEADLESS:
+        op.add_argument("--headless=new")
+    op.add_argument(f"--window-size={WINDOW_SIZE}")
+
+    # Flags para estabilidade em headless no Chrome 141+
+    op.add_argument("--disable-gpu")
+    op.add_argument("--use-gl=swiftshader")
+    op.add_argument("--enable-unsafe-swiftshader")
+    op.add_argument("--disable-features=VizDisplayCompositor,CanvasOopRasterization")
+    op.add_argument("--disable-dev-shm-usage")
+    op.add_argument("--no-sandbox")
+    op.add_argument("--disable-blink-features=AutomationControlled")
+    op.add_argument("--lang=pt-BR")
+    op.add_argument(
+        "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+    )
+
+    drv = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=op)
+    return drv
+
+
+def esperar(driver: webdriver.Chrome) -> WebDriverWait:
+    return WebDriverWait(driver, TIMEOUT)
+
+
+def fechar_overlays(driver: webdriver.Chrome, w: WebDriverWait) -> None:
+    for xp in (
+        "//button[contains(translate(.,'ACEITAR','aceitar'),'aceitar')]",
+        "//button[@aria-label='Close' or @aria-label='Fechar']",
+        "//button[contains(.,'Aceitar') or contains(.,'Accept')]",
+    ):
+        try:
+            w.until(EC.element_to_be_clickable((By.XPATH, xp))).click()
+            time.sleep(0.2)
+        except Exception:
+            pass
+
+
+def abrir_aba_jogos(driver: webdriver.Chrome, w: WebDriverWait) -> None:
+    for xp in (
+        "//button[@role='tab' and (contains(.,'Jogos') or contains(.,'Matches'))]",
+        "//a[@role='tab' and (contains(.,'Jogos') or contains(.,'Matches'))]",
+    ):
+        try:
+            el = w.until(EC.element_to_be_clickable((By.XPATH, xp)))
+            el.click()
+            time.sleep(SLEEP_UI)
+            return
+        except Exception:
+            continue
+    # algumas páginas já abrem em 'Jogos'; sem drama
+
+
+# ============== Seletor de fases ==============
+def achar_painel_round(driver: webdriver.Chrome, w: WebDriverWait):
+    # Anchor claro pelo id informado
+    return w.until(EC.presence_of_element_located((By.CSS_SELECTOR, "#tabpanel-round")))
+
+
+def achar_botao_dropdown(driver: webdriver.Chrome, w: WebDriverWait):
+    # O seu HTML mostra role="combobox" na hierarquia do toolbar do round
+    candidatos = [
+        "#tabpanel-round button[role='combobox']",
+        "button[role='combobox']",
+        "button.dropdown__button",
+    ]
+    for css in candidatos:
+        try:
+            return w.until(EC.element_to_be_clickable((By.CSS_SELECTOR, css)))
+        except Exception:
+            continue
+    raise TimeoutException("Botão do dropdown (combobox) não encontrado.")
+
+
+def abrir_dropdown(driver: webdriver.Chrome, w: WebDriverWait, btn) -> str:
+    # Retorna o id da UL (aria-controls) que contém as opções
+    aria_controls = btn.get_attribute("aria-controls")
+    driver.execute_script("arguments[0].click();", btn)
+    time.sleep(0.2)
+    if not aria_controls:
+        # fallback: procura um UL de lista aberto embaixo do botão
+        try:
+            w.until(EC.presence_of_element_located((By.CSS_SELECTOR, "ul.dropdown__list")))
+        except Exception:
+            pass
+    return aria_controls or ""
+
+
+def listar_fases(driver: webdriver.Chrome, w: WebDriverWait) -> List[str]:
+    btn = achar_botao_dropdown(driver, w)
+    ul_id = abrir_dropdown(driver, w, btn)
+
+    # Itens são li[role='option'] dentro do ul com id (aria-controls) ou, genericamente, .dropdown__list
+    fases: List[str] = []
+    if ul_id:
+        itens = w.until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, f"ul#{ul_id} li[role='option']"))
+        )
+    else:
+        itens = w.until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, "ul.dropdown__list li[role='option']"))
+        )
+
+    for li in itens:
+        txt = (li.text or "").strip()
+        if txt:
+            fases.append(txt)
+
+    # Fecha o dropdown clicando no botão novamente, se ainda aberto
+    try:
+        driver.execute_script("arguments[0].click();", btn)
+    except Exception:
+        pass
+
+    # remove duplicadas preservando ordem
+    uniq, seen = [], set()
+    for f in fases:
+        if f not in seen:
+            uniq.append(f)
+            seen.add(f)
+    return uniq
+
+
+def selecionar_fase(driver: webdriver.Chrome, w: WebDriverWait, alvo_texto: str) -> None:
+    """Abre o dropdown e clica na opção cujo texto casado (normalizado) com alvo_texto."""
+    btn = achar_botao_dropdown(driver, w)
+    ul_id = abrir_dropdown(driver, w, btn)
+
+    alvo_norm = normaliza(alvo_texto)
+    if ul_id:
+        itens = w.until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, f"ul#{ul_id} li[role='option']"))
+        )
+    else:
+        itens = w.until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, "ul.dropdown__list li[role='option']"))
+        )
+
+    alvo = None
+    for li in itens:
+        t = normaliza(li.text)
+        if t == alvo_norm or alvo_norm in t:
+            alvo = li
+            break
+
+    if not alvo:
+        # fecha dropdown e erra com contexto
+        try:
+            driver.execute_script("arguments[0].click();", btn)
+        except Exception:
+            pass
+        raise TimeoutException(f"Fase '{alvo_texto}' não localizada no dropdown.")
+
+    driver.execute_script("arguments[0].scrollIntoView({block:'center'});", alvo)
+    driver.execute_script("arguments[0].click();", alvo)
+    time.sleep(SLEEP_UI)  # dá tempo da lista de jogos atualizar
+
+
+# ============== Captura de jogos ==============
+def scroll_ate_fim(driver: webdriver.Chrome, cont) -> None:
+    prev = -1
+    while True:
+        driver.execute_script("arguments[0].scrollTop = arguments[0].scrollHeight;", cont)
+        time.sleep(0.4)
+        h = driver.execute_script("return arguments[0].scrollHeight;", cont)
+        if h == prev:
+            break
+        prev = h
+
+
+def coletar_links_da_fase(driver: webdriver.Chrome, w: WebDriverWait) -> Dict[str, str]:
+    # Dentro do #tabpanel-round, a lista está em .list-wrapper
+    cont = w.until(EC.presence_of_element_located((By.CSS_SELECTOR, "#tabpanel-round .list-wrapper")))
+    scroll_ate_fim(driver, cont)
+
+    links: Dict[str, str] = {}
+    as_ = cont.find_elements(By.XPATH, ".//a[contains(@href,'/football/match/')]")
+    for a in as_:
+        href = a.get_attribute("href") or ""
+        txt = normaliza(a.text)
+        if any(b in txt for b in BAN_LIST):
+            continue
+        m = ID_RE.search(href)
+        if m:
+            links[m.group(1)] = href
+    return links
+
+
+# ============== Fluxo principal ==============
+def fluxo(driver: webdriver.Chrome) -> Tuple[Set[str], int]:
+    w = esperar(driver)
+
+    driver.get(URL_TORNEIO)
+    time.sleep(1.2)
+
+    fechar_overlays(driver, w)
+    abrir_aba_jogos(driver, w)
+    achar_painel_round(driver, w)  # ancora o painel
+
+    fases = listar_fases(driver, w)
+    logging.info(f"Fases encontradas: {fases}")
+
+    ids_vistos: Set[str] = set()
+    fases_ok = 0
+
+    print("LINKS ABAIXO")
+    for fase in fases:
+        try:
+            selecionar_fase(driver, w, fase)
+        except TimeoutException:
+            logging.warning(f"Não consegui selecionar a fase: {fase}. Pulando…")
+            continue
+
+        novos = coletar_links_da_fase(driver, w)
+        fases_ok += 1
+
+        print(f"# {fase}")
+        for jogo_id, url in novos.items():
+            if jogo_id in ids_vistos:
+                continue
+            ids_vistos.add(jogo_id)
+            print(f"    '{url}',")
+
+    print(f"\nTotal único de links: {len(ids_vistos)}")
+    return ids_vistos, fases_ok
+
+
+def main():
+    driver = None
+    try:
+        driver = criar_driver()
+        try:
+            fluxo(driver)
+        except (InvalidSessionIdException, WebDriverException) as e:
+            # se a sessão cair, tenta uma vez reiniciar
+            logging.error(f"Sessão do Chrome caiu: {e}. Reiniciando 1x…")
+            try:
+                driver.quit()
+            except Exception:
+                pass
+            driver = criar_driver()
+            fluxo(driver)
+    finally:
+        try:
+            if driver:
+                driver.quit()
+        except Exception:
+            pass
+
+
+if __name__ == "__main__":
+    main()

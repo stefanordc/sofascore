@@ -8,7 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import ElementClickInterceptedException
 from webdriver_manager.chrome import ChromeDriverManager
 
-URL_TORNEIO    = "https://www.sofascore.com/pt/futebol/2025-09-12"
+URL_TORNEIO    = "https://www.sofascore.com/pt/torneio/futebol/brazil/brasileirao-serie-a/325#id:72034"
 RODADA_INICIAL = 1
 RODADA_FINAL   = 38
 HEADLESS       = True

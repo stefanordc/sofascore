@@ -24,7 +24,7 @@ except Exception:
     print("AVISO: substituicoes_clubes.py não encontrado ou inválido. Seguiremos sem substituições de clubes.")
 
 # =============== CONFIG ===============
-temporada = "2024"
+temporada = "2025"
 MAX_MATCHES_PER_DRIVER = 30
 HEADLESS = True
 
@@ -98,8 +98,30 @@ def substituir_campeonato(n: str) -> str:
         'Copa Betano do Brasil': 'Copa do Brasil',
         'FIFA Club World Cup': 'Copa do Mundo de Clubes',
         'Brasileiro Série B': 'Brasileiro - Série B',
+        'World Cup Qual. UEFA L': 'Eliminatórias',
+        'World Cup Qual. UEFA H': 'Eliminatórias',
+        'World Cup Qual. UEFA G': 'Eliminatórias',
+        'World Cup Qual. UEFA C': 'Eliminatórias',
+        'World Cup Qual. UEFA J': 'Eliminatórias',
+        'World Cup Qual. UEFA D': 'Eliminatórias',
+        'World Cup Qual. UEFA B': 'Eliminatórias',
+        'World Cup Qual. UEFA A': 'Eliminatórias',
         'CONMEBOL Libertadores': 'Libertadores',
         'CONMEBOL Sudamericana': 'Sul-Americana',
+        'World Cup Qualification': 'Eliminatórias',
+        'World Cup Qual. CONCACAF Gr. 2': 'Eliminatórias',
+        'World Cup Qual. CONCACAF Group A': 'Eliminatórias',
+        'World Cup Qual. CONCACAF Gr. 1': 'Eliminatórias',
+        'World Cup Qual. CONCACAF Gr. 3': 'Eliminatórias',
+        'World Cup Qual. UEFA L': 'Eliminatórias',
+        'World Cup Qual. UEFA H': 'Eliminatórias',
+        'World Cup Qual. UEFA G': 'Eliminatórias',
+        'World Cup Qual. UEFA C': 'Eliminatórias',
+        'World Cup Qual. UEFA J': 'Eliminatórias',
+        'World Cup Qual. UEFA D': 'Eliminatórias',
+        'World Cup Qual. UEFA K': 'Eliminatórias',
+        'World Cup Qual. CONCACAF Group A': 'Eliminatórias',
+        
         'Mineiro Módulo I': 'Mineiro',
         'Paulista Série A1': 'Paulista',
         'Carioca Série A – Taça Guanabara': 'Carioca',
@@ -150,6 +172,7 @@ def substituir_campeonato(n: str) -> str:
         'Community Shield': 'Supercopa da Inglaterra',
         'FA Cup': 'Copa da Inglaterra',
         'EFL Cup': 'Copa da Liga Inglesa',
+        'World Cup Qual. CONCACAF Gr. 3': 'Eliminatórias',
         'LaLiga': 'La Liga',
         'Mineiro Módulo I - Classificação contra o rebaixamento': 'Mineiro',
         'Carioca Série A – Mata-mata': 'Carioca',

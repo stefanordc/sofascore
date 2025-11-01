@@ -1,0 +1,505 @@
+  [ PAPEL ] 
+
+  Atue como Designer e Editor de Dados Sênior. Crie uma apresentação tipo e-book para a Bet Dados no Gamma (tema: Coal).
+
+  [ CONTEXTO ]
+
+  Público leigo–intermediário; foco em clareza.
+
+  Use somente os dados fornecidos. Sem inferências, estimativas ou previsões.
+
+  Se um dado não existir, omite a seção.
+
+  Duelo no formato “Time A x Time B” (nunca “vs”).
+
+  Estética “big tech”: precisão, consistência, espaço em branco e alinhamento milimétrico.
+
+  [ ESTILO GLOBAL — CONTRASTE OBRIGATÓRIO ] Forçar cor do texto = #FFFFFF para qualquer elemento textual, sem exceções:
+
+  Aplica cor #FFFFFF com opacidade 100% para: títulos, subtítulos, parágrafos, bullets, textos de cartões, subtítulos/captions, notas, footers, botões, placeholders, links, números de ordenação (ex.: “01”, “02” no canto), legendas de gráficos, rótulos de eixos, rótulos de dados, títulos de tabela e células de tabela.
+
+  Proibido usar cinzas/“muted”, opacidade < 100% ou “secondary text”. Nada de “texto desabilitado” em cinza.
+
+  Se houver fundo claro/Imagem, coloque placa/overlay escuro (ex.: #0A0A0A 90–95%) antes de posicionar o texto.
+
+  Ícones/linhas divisórias podem usar #FFFFFF a 70–90% de opacidade; o texto nunca.
+
+  [ GRÁFICOS ]
+
+  Desligar cores padrão do tema.
+
+  Barras/fatias/linhas: usar apenas cinzas claros #F2F2F2, #EAEAEA, #E0E0E0, #D5D5D5. (Nunca cinzas escuros.)
+
+  Contorno das barras/fatias: #FFFFFF (80–100% opacidade) para separação.
+
+  Legenda, eixos e labels: #FFFFFF.
+
+  Grade discreta: #9E9E9E a 25–35% opacidade. Fundo do gráfico transparente.
+
+  Cores oficiais dos clubes apenas como acento (borda/marker), mantendo contraste AA.
+
+  [ IDENTIDADE E IMAGENS ]
+
+  Escudos oficiais (sem distorção nem marca d’água). Se não houver, usar placeholder neutro.
+
+  Proibição absoluta de imagens com marca d’água.
+
+  Paleta do deck: #001636 como acento + neutros escuros de fundo + dados em cinzas claros.
+
+  [ TAREFA — SLIDES ] (omita os que não tiverem dados)
+
+  Capa — Título “[Time A x Time B] | Sub “[Data] — [Hora]”; chips de mandante/visitante e fase; troféu oficial como hero; overlay escuro se preciso.
+
+  Publicidade Bet Dados (obrigatório) — texto, CTA “Assinar agora” → https://pay.cakto.com.br/35ww97h_563195 e placeholder de logo.
+
+  Na publicidade, frise que a Bet Dados tem dados de mais de 90 mil jogos, mais de 140 campeonatos, competições de mais de 40 países,
+  mais de 4.200 clubes e mais de 115 mil jogadores. Ressalte também que a Bet Dados é um grupo no Telegram, onde são enviadas análises
+  dos principais jogos do dia, além de análises especiais com dados de ligas, clubes e/ou jogadores.
+
+  Ficha do Jogo — competição, temporada, data/hora, estádio/mandante.
+
+  Panorama das Equipes (cards lado a lado, 2–4 linhas por equipe, texto branco).
+
+  Indicadores-Chave (tabela/tiles).
+
+  Distribuição de Gols por Minutagem.
+
+  Ofensivo vs Defensivo.
+
+  Bolas Paradas.
+
+  Disciplina.
+
+  Tendências Temporais.
+
+  Head-to-Head (se houver).
+
+  Glossário Rápido (somente termos presentes).
+
+  Notas Metodológicas (origem/janela/limitações; “sem prognósticos”).
+
+  Slide Final (QR/CTA).
+
+  [ REGRAS DE CONTEÚDO ]
+
+  Sem previsões/odds.
+
+  Em hipótese alguma utilize imagens com marca d'água.
+
+  Nomes dos clubes exatamente como informados (acentos e caixa).
+
+  Percentuais com até 2 casas decimais; unidades PT-BR.
+
+  [ ENTRADAS ] Duelo, competição, temporada, data/hora e todas as estatísticas fornecidas (médias, totais, séries, rankings etc.).
+
+  [ AUDITORIA DE CONTRASTE (passo obrigatório no final) ]
+
+  Varra o deck e liste qualquer elemento cujo texto NÃO esteja #FFFFFF (inclui textos de cartões, subtítulos/captions, numeradores “01/02/03/04”, descrições, botões, rodapés e legendas).
+
+  Corrija automaticamente para #FFFFFF e reporte “Corrigido: [elementos]”. Se algo não puder ser alterado, substitua por placa/overlay escuro até garantir contraste AA.
+
+  [ CRITÉRIOS DE QUALIDADE ]
+
+  Fidelidade 100% aos dados.
+
+  Texto 100% branco em todo o deck; gráficos em cinzas claros; contraste AA mínimo.
+
+  Coesão (grid, margens, alinhamentos).
+
+  Didática (1 frase objetiva por gráfico).
+
+  Conformidade de marca (escudos/nome de clubes corretos; zero marca d’água).
+
+  [ CHECKLIST FINAL ]
+
+  Todo texto branco #FFFFFF (inclui cartões, captions e numeradores “01/02/03/…”).
+
+  Séries de gráficos somente #F2F2F2–#D5D5D5 + contorno branco; legenda/eixos brancos.
+
+  Sem imagens com marca d’água; escudos/taça oficiais.
+
+  “x” no duelo; nomes dos clubes fiéis.
+
+  Seções sem dados omitidas; nenhum número inventado.
+
+  Exportável para PDF com contraste perfeito.
+
+  Não trazer imagens com marca d'água.
+
+  Os dados e as estatísticas são de um levantamento da Bet Dados.
+
+  NÃO precisa informar a temporada.
+
+  Reforçando: NÃO FAÇA NENHUMA PREVISÃO PARA A PARTIDA!
+
+  Nos gráficos, SEMPRE ative o rótulo de dados (mostrar valores).
+
+  Importante: a Bet Dados NÃO oferece dados em tempo real. Não coloque isso na apresentação. Não coloque NENHUM ponto negativo da Bet Dados.
+
+  Não tenho QR Code, então não peça para o usuário scannear um QR Code. Peça apenas para clicar no botão e assinar a Bet Dados. Explique que, após o pagamento,
+  o link de acesso ao grupo no Telegram será enviado por e-mail para o usuário.
+
+  O botão de assinatura deve estar sempre com grande destaque na página.
+
+  COLOQUE IMAGEM APENAS NA CAPA E NA CONTRACAPA, NÃO COLOQUE MAIS NENHUMA IMAGEM NA APRESENTAÇÃO!
+
+  USE SEMPRE FONTES COM COR ESCURA, COMO PRETO, AZUL ESCURO (#001636).
+
+  [ DADOS DA PARTIDA ]
+
+  Duelo: Santos x Vitória | Campeonato Brasileiro
+
+  Data: 20/10/2025
+
+  Hora: 21:30
+
+  Segue abaixo as estatísticas para a apresentação:
+
+  Temporada atual
+
+  Informações                     Santos Vitória
+                            Jogos    43     57  
+                        Vitórias    14     20  
+                          Empates    12     20  
+                        Derrotas    17     17  
+                    Gols marcados    52     66  
+                    Gols sofridos    56     63  
+                  Aproveitamento 41.86  46.78  
+                    Over 2.5 gols    24     21  
+  Probabilidade de over 2.5 gols 55.81  36.84  
+                  Under 2.5 gols    19     36  
+  Probabilidade de under 2.5 gols 44.19  63.16  
+                        Odd média  2.85   3.49  
+          Odd média quando venceu  4.01   2.15  
+                        Goleadas     0      4  
+          Probabilidade de golear  0.00   7.02  
+          Goleadas como mandante     0      0  
+          Goleadas como visitante     0      3  
+
+  Todas as informações abaixo são baseadas nos últimos 10 jogos de cada clube. Deixe isso explícito e coloque um asterisco em todos os slides informando que os dados são das últimas 10 partidas de cada clube.
+
+  Desempenho recente
+
+  Informações                     Santos Vitória
+                            Jogos    10     10  
+                        Vitórias     3      3  
+                          Empates     4      1  
+                        Derrotas     3      6  
+                    Gols marcados    10     10  
+                    Gols sofridos    17     23  
+                  Aproveitamento 43.33  33.33  
+                    Over 2.5 gols     5      5  
+  Probabilidade de over 2.5 gols 50.00  50.00  
+                  Under 2.5 gols     5      5  
+  Probabilidade de under 2.5 gols 50.00  50.00  
+                        Odd média  3.25   4.99  
+          Odd média quando venceu  5.14         
+                        Goleadas     0      0  
+          Probabilidade de golear  0.00   0.00  
+          Goleadas como mandante     0      0  
+          Goleadas como visitante     0      0  
+
+  Primeiro tempo
+
+  Informações                          Santos Vitória
+                                Jogos    10     10  
+                Posse de bola (média) 53.00  39.40  
+                              xG médio  0.40   0.62  
+                              xG total  4.02   6.23  
+              Grandes chances criadas     3      8  
+              Grandes chances por jogo     0      0  
+          Grandes chances convertidas     0      5  
+    Aproveitamento das grandes chances  0.00  62.50  
+                          Finalizações    70     50  
+                Finalizações por jogo  7.00   5.00  
+                  Finalizações certas    15     16  
+          Finalizações certas por jogo  1.50   1.60  
+            % Acerto nas finalizações:    21     32  
+          Finalizações dentro da área    40     30  
+  Finalizações dentro da área por jogo  4.00   3.00  
+      % de finalizações dentro da área 57.14  60.00  
+                        Bolas na trave     1      1  
+                            Escanteios    28     19  
+                  Escanteios por jogo  2.80   1.90  
+                                Passes  2226   1578  
+                        Passes certos  1902   1267  
+              Assertividade nos passes 85.44  80.29  
+              Entradas no terço final   256    248  
+      Entradas no terço final por jogo 25.60  24.80  
+        Faltas sofridas no terço final    16      8  
+                        Perdas de bola    49     30  
+              Perdas de bola por jogo  4.90   3.00  
+                Duelos ganhos (média) 51.20  51.60  
+                      Cartões amarelos     8     12  
+                    Cartões vermelhos     0      1  
+
+  Segundo tempo
+
+  Informações                          Santos Vitória
+                                Jogos    10     10  
+                Posse de bola (média) 45.50  39.70  
+                              xG médio  0.92   0.53  
+                              xG total  9.19   5.33  
+              Grandes chances criadas    16      7  
+              Grandes chances por jogo     1      0  
+          Grandes chances convertidas     8      3  
+    Aproveitamento das grandes chances 50.00  42.86  
+                          Finalizações    72     48  
+                Finalizações por jogo  7.20   4.80  
+                  Finalizações certas    27     16  
+          Finalizações certas por jogo  2.70   1.60  
+            % Acerto nas finalizações:    37     33  
+          Finalizações dentro da área    46     32  
+  Finalizações dentro da área por jogo  4.60   3.20  
+      % de finalizações dentro da área 63.89  66.67  
+                        Bolas na trave     4      1  
+                            Escanteios    20     18  
+                  Escanteios por jogo  2.00   1.80  
+                                Passes  1770   1605  
+                        Passes certos  1446   1311  
+              Assertividade nos passes 81.69  81.68  
+              Entradas no terço final   287    244  
+      Entradas no terço final por jogo 28.70  24.40  
+        Faltas sofridas no terço final    14      9  
+                        Perdas de bola    33     47  
+              Perdas de bola por jogo  3.30   4.70  
+                Duelos ganhos (média) 53.00  51.90  
+                      Cartões amarelos    19     21  
+                    Cartões vermelhos     1      4  
+
+  Desempenho nos 90 minutos
+
+  Informações                          Santos Vitória
+                                Jogos    10     10  
+                Posse de bola (média) 49.30  39.50  
+                              xG médio  1.32   1.16  
+                              xG total 13.23  11.57  
+              Grandes chances criadas    19     15  
+              Grandes chances por jogo     1      1  
+          Grandes chances convertidas     8      8  
+    Aproveitamento das grandes chances 42.11  53.33  
+                          Finalizações   142     98  
+                Finalizações por jogo 14.20   9.80  
+                  Finalizações certas    42     32  
+          Finalizações certas por jogo  4.20   3.20  
+            % Acerto nas finalizações:    29     32  
+          Finalizações dentro da área    86     62  
+  Finalizações dentro da área por jogo  8.60   6.20  
+      % de finalizações dentro da área 60.56  63.27  
+                        Bolas na trave     5      2  
+                            Escanteios    48     37  
+                  Escanteios por jogo  4.80   3.70  
+                                Passes  3996   3183  
+                        Passes certos  3348   2578  
+              Assertividade nos passes 83.78  80.99  
+              Entradas no terço final   543    492  
+      Entradas no terço final por jogo 54.30  49.20  
+        Faltas sofridas no terço final    30     17  
+                        Perdas de bola    82     77  
+              Perdas de bola por jogo  8.20   7.70  
+                Duelos ganhos (média) 52.10  51.80  
+                      Cartões amarelos    27     33  
+                    Cartões vermelhos     1      5  
+
+  Clean sheets e clean goals
+  clube    clean_sheets  clean_goals
+  Santos 2             4           
+  Vitória 2             4           
+
+  Desempenho em casa do mandante do duelo
+  informacao              dados
+                    Jogos    10
+                Vitórias     4
+                  Empates     3
+                Derrotas     3
+            Gols marcados    10
+            Gols sofridos    12
+          Aproveitamento 50.00
+  Média de gols marcados  1.00
+  Média de gols sofridos  1.20
+            Clean sheets     4
+              Clean goals     4
+                Odd média  2.31
+  Odd média quando venceu  2.54
+
+  Desempenho fora do visitante do duelo
+  informacao              dados
+                    Jogos    10
+                Vitórias     0
+                  Empates     3
+                Derrotas     7
+            Gols marcados     5
+            Gols sofridos    22
+          Aproveitamento 10.00
+  Média de gols marcados  0.50
+  Média de gols sofridos  2.20
+            Clean sheets     2
+              Clean goals     7
+                Odd média  6.83
+  Odd média quando venceu  0.00
+
+  Confronto direto desde 2020
+  informacao             dados
+                  Jogos    1 
+      Vitórias do Santos    1 
+                Empates    0 
+    Vitórias do Vitória    0 
+          Gols do Santos    1 
+        Gols do Vitória    0 
+  Média de gols do duelo 1.00 
+    Odd média do Santos 3.60 
+    Odd média do Vitória 2.20 
+  Odd média do vencedor 3.60 
+
+  Confronto direto - últimos 10 jogos
+  informacao             dados
+                  Jogos    1 
+      Vitórias do Santos    1 
+                Empates    0 
+    Vitórias do Vitória    0 
+          Gols do Santos    1 
+        Gols do Vitória    0 
+  Média de gols do duelo 1.00 
+    Odd média do Santos 3.60 
+    Odd média do Vitória 2.20 
+  Odd média do vencedor 3.60 
+
+  Mais minutos
+
+  name            position   team     minutos
+    Lucas Arcanjo    Goleiro Vitória 900     
+  Gabriel Brazão    Goleiro  Santos 878     
+    Renato Kayzer   Atacante Vitória 829     
+            Ramon   Defensor Vitória 810     
+    Lucas Halter   Defensor Vitória 790     
+        Zé Rafael Meio-campo  Santos 742     
+        Guilherme Meio-campo  Santos 729     
+      Luan Peres   Defensor  Santos 720     
+            Erick   Atacante Vitória 638     
+  Gonzalo Escobar   Defensor  Santos 628     
+
+  Artilharia
+
+  name                position   team     gols
+        Renato Kayzer   Atacante Vitória 3    
+            Guilherme Meio-campo  Santos 2    
+      Álvaro Barreal Meio-campo  Santos 2    
+        Lautaro Díaz   Atacante  Santos 2    
+        Raúl Cáceres   Defensor Vitória 2    
+  Aitor Cantalapiedra   Atacante Vitória 2    
+            Zé Rafael Meio-campo  Santos 1    
+      Tiquinho Soares   Atacante  Santos 1    
+  Benjamín Rollheiser Meio-campo  Santos 1    
+    Gustavo Caballero Meio-campo  Santos 1    
+
+  Assistências
+
+  name                position   team     assistencias
+  Aitor Cantalapiedra   Atacante Vitória 2            
+                Erick   Atacante Vitória 2            
+        João Schmidt Meio-campo  Santos 1            
+            Guilherme Meio-campo  Santos 1            
+  Benjamín Rollheiser Meio-campo  Santos 1            
+      Álvaro Barreal Meio-campo  Santos 1            
+    Gustavo Caballero Meio-campo  Santos 1            
+        Lautaro Díaz   Atacante  Santos 1            
+                Souza   Defensor  Santos 1            
+              Osvaldo Meio-campo Vitória 1            
+
+  Participação em gols
+
+  name                position   team     participacoes
+  Aitor Cantalapiedra   Atacante Vitória 4             
+            Guilherme Meio-campo  Santos 3             
+      Álvaro Barreal Meio-campo  Santos 3             
+        Lautaro Díaz   Atacante  Santos 3             
+        Renato Kayzer   Atacante Vitória 3             
+                Erick   Atacante Vitória 3             
+  Benjamín Rollheiser Meio-campo  Santos 2             
+    Gustavo Caballero Meio-campo  Santos 2             
+        Raúl Cáceres   Defensor Vitória 2             
+        Lucas Halter   Defensor Vitória 2             
+
+  Rating total
+
+  name                position   team    rating_total
+        Renato Kayzer   Atacante Vitória 68,50       
+            Guilherme Meio-campo  Santos 67,10       
+              Osvaldo Meio-campo Vitória 67,00       
+        Lucas Arcanjo    Goleiro Vitória 66,60       
+      Gabriel Brazão    Goleiro  Santos 64,50       
+            Zé Rafael Meio-campo  Santos 64,30       
+  Benjamín Rollheiser Meio-campo  Santos 63,30       
+      Álvaro Barreal Meio-campo  Santos 63,20       
+  Aitor Cantalapiedra   Atacante Vitória 62,60       
+                Erick   Atacante Vitória 62,50       
+
+  Rating médio
+
+  name                position   team_x  rating_medio
+            Guilherme Meio-campo  Santos 7,46        
+            Zé Rafael Meio-campo  Santos 7,14        
+        Lautaro Díaz   Atacante  Santos 7,12        
+  Benjamín Rollheiser Meio-campo  Santos 7,03        
+      Álvaro Barreal Meio-campo  Santos 7,02        
+  Aitor Cantalapiedra   Atacante Vitória 6,96        
+                Erick   Atacante Vitória 6,94        
+        Lucas Halter   Defensor Vitória 6,93        
+                  Edu   Defensor Vitória 6,92        
+                Pepê Meio-campo Vitória 6,92        
+
+  Grandes chances criadas
+
+  name                position   team     grandes_chances
+            Guilherme Meio-campo  Santos 4               
+        Lautaro Díaz   Atacante  Santos 3               
+      Álvaro Barreal Meio-campo  Santos 2               
+        Renato Kayzer   Atacante Vitória 2               
+  Aitor Cantalapiedra   Atacante Vitória 2               
+                Erick   Atacante Vitória 2               
+        João Schmidt Meio-campo  Santos 1               
+        Igor Vinícius   Defensor  Santos 1               
+  Benjamín Rollheiser Meio-campo  Santos 1               
+    Gustavo Caballero Meio-campo  Santos 1               
+
+  Passes chave
+
+  name                position   team     passes_chave
+            Guilherme Meio-campo  Santos 16           
+  Benjamín Rollheiser Meio-campo  Santos 15           
+                Erick   Atacante Vitória 14           
+  Aitor Cantalapiedra   Atacante Vitória 13           
+      Álvaro Barreal Meio-campo  Santos 13           
+              Neymar   Atacante  Santos  8           
+        Lautaro Díaz   Atacante  Santos  7           
+              Ronald Meio-campo Vitória  7           
+        Igor Vinícius   Defensor  Santos  7           
+            Zé Rafael Meio-campo  Santos  6           
+
+  xG total
+
+  name                position   team    xg_total
+        Lautaro Díaz   Atacante  Santos 2,29    
+            Guilherme Meio-campo  Santos 2,27    
+        Renato Kayzer   Atacante Vitória 2,14    
+  Aitor Cantalapiedra   Atacante Vitória 1,95    
+      Tiquinho Soares   Atacante  Santos 1,86    
+            Zé Marcos   Defensor Vitória 1,85    
+  Benjamín Rollheiser Meio-campo  Santos 1,74    
+            Zé Rafael Meio-campo  Santos 1,32    
+    Gustavo Caballero Meio-campo  Santos 0,93    
+                Dudu Meio-campo Vitória 0,92    
+
+  xG médio
+
+  name                position   team    xg_medio
+        Lautaro Díaz   Atacante  Santos 0,38    
+      Luca Meirelles   Atacante  Santos 0,34    
+            Zé Marcos   Defensor Vitória 0,31    
+            Guilherme Meio-campo  Santos 0,25    
+      Ricardo Ryller Meio-campo Vitória 0,23    
+                Dudu Meio-campo Vitória 0,23    
+  Aitor Cantalapiedra   Atacante Vitória 0,22    
+        Renato Kayzer   Atacante Vitória 0,21    
+      Tiquinho Soares   Atacante  Santos 0,21    
+              Neymar   Atacante  Santos 0,20    

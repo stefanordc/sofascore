@@ -1,0 +1,6 @@
+casa = "Santos"
+fora = "Vitória"
+campeonato = "Campeonato Brasileiro"
+data = "20/10/2025"
+hora = "21:30"
+confronto = "Chaves x Benfica"

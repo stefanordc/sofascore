@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Importa 'copa_do_brasil.csv' para MySQL 'jogos_historicos' com detecção robusta de encoding/sep
-e normalização de colunas.
-"""
-
 import os
 import re
 import unicodedata
@@ -13,7 +7,7 @@ import pymysql
 from pymysql.constants import CLIENT
 
 # ===== CONFIG =====
-CSV_PATH = r"C:\Users\stefa\Desktop\bet_dados\banco_historico_jogos\Europa\liga_dos_campeoes.csv"
+CSV_PATH = r"C:\Pessoal\Futebol\Banco de Dados\Regionais\mineiro.csv"
 
 DB_HOST = "localhost"
 DB_PORT = 3306
@@ -37,9 +31,10 @@ CREATE TABLE IF NOT EXISTS jogos_historicos (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 """
 
+# === Ajuste: critério de duplicidade ===
 DDL_UNIQUE = """
 ALTER TABLE jogos_historicos
-ADD UNIQUE KEY uq_jogo_unico (data, campeonato, temporada, casa, fora, gols_casa, gols_fora);
+ADD UNIQUE KEY uq_jogo_unico (data, temporada, casa, gols_casa, gols_fora, fora);
 """
 
 INSERT_SQL = """
@@ -48,7 +43,7 @@ INSERT IGNORE INTO jogos_historicos
 VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
 """
 
-_expected = ["data","campeonato","temporada","casa","gols_casa","gols_fora","fora"]
+_expected = ["data", "campeonato", "temporada", "casa", "gols_casa", "gols_fora", "fora"]
 _printed_mapping_once = False
 
 
@@ -65,6 +60,7 @@ def connect():
         client_flag=CLIENT.MULTI_STATEMENTS,
     )
 
+
 def ensure_table(conn):
     with conn.cursor() as cur:
         cur.execute(DDL_CREATE)
@@ -80,7 +76,7 @@ def ensure_table(conn):
 def normalize_token(s: str) -> str:
     if s is None:
         return ""
-    s = s.replace("\ufeff","")  # BOM
+    s = s.replace("\ufeff", "")  # BOM
     s = s.strip().lower()
     s = unicodedata.normalize("NFD", s)
     s = "".join(ch for ch in s if unicodedata.category(ch) != "Mn")
@@ -88,42 +84,46 @@ def normalize_token(s: str) -> str:
     s = re.sub(r"_+", "_", s).strip("_")
     return s
 
+
 def map_columns(cols):
     norm_cols = [normalize_token(c) for c in cols]
     candidates = {
-        "data": {"data","dt","date"},
-        "campeonato": {"campeonato","competicao","competicao_nome","torneio"},
-        "temporada": {"temporada","season","ano"},
-        "casa": {"casa","mandante","home","time_casa","time_mandante"},
-        "gols_casa": {"gols_casa","gols_mandante","placar_casa","gols_home","home_goals"},
-        "gols_fora": {"gols_fora","gols_visitante","placar_fora","gols_away","away_goals"},
-        "fora": {"fora","visitante","away","time_fora","time_visitante"},
+        "data": {"data", "dt", "date"},
+        "campeonato": {"campeonato", "competicao", "competicao_nome", "torneio"},
+        "temporada": {"temporada", "season", "ano"},
+        "casa": {"casa", "mandante", "home", "time_casa", "time_mandante"},
+        "gols_casa": {"gols_casa", "gols_mandante", "placar_casa", "gols_home", "home_goals"},
+        "gols_fora": {"gols_fora", "gols_visitante", "placar_fora", "gols_away", "away_goals"},
+        "fora": {"fora", "visitante", "away", "time_fora", "time_visitante"},
     }
     mapping, taken = {}, set()
     for target, keys in candidates.items():
         idx = None
         for i, n in enumerate(norm_cols):
-            if i in taken: 
+            if i in taken:
                 continue
             if n == target or n in keys:
-                idx = i; break
+                idx = i
+                break
         if idx is None:  # fallback: contém token principal
             key_token = target.split("_")[0]
             for i, n in enumerate(norm_cols):
-                if i in taken: 
+                if i in taken:
                     continue
                 if key_token in n:
-                    idx = i; break
+                    idx = i
+                    break
         if idx is not None:
             mapping[cols[idx]] = target
             taken.add(idx)
     return mapping
 
+
 def smart_choose_sep_by_header(path):
     """Lê a primeira linha e decide o separador por contagem de candidatos."""
     with open(path, "rb") as f:
         head = f.read(4096)
-    for enc in ("utf-8-sig","cp1252","latin1"):
+    for enc in ("utf-8-sig", "cp1252", "latin1"):
         try:
             s = head.decode(enc, errors="ignore")
             break
@@ -132,15 +132,14 @@ def smart_choose_sep_by_header(path):
     s_line = s.splitlines()[0] if s else ""
     counts = {",": s_line.count(","), ";": s_line.count(";"), "\t": s_line.count("\t"), "|": s_line.count("|")}
     sep = max(counts, key=counts.get)
-    # heurística: se só um deles aparece (>0), usa ele
     if counts[sep] > 0:
         return sep
-    return ","  # default
+    return ","
+
 
 def detect_csv_format(path):
-    # 1) tenta decidir separador pelo header
     sep_hint = smart_choose_sep_by_header(path)
-    encodings = ["utf-8-sig","utf-8","cp1252","latin1"]
+    encodings = ["utf-8-sig", "utf-8", "cp1252", "latin1"]
     for enc in encodings:
         try:
             df = pd.read_csv(path, encoding=enc, sep=sep_hint, nrows=20, engine="python")
@@ -148,17 +147,13 @@ def detect_csv_format(path):
             return enc, sep_hint
         except Exception:
             continue
-    # fallback
     print("-> Formato não detectado; usando latin1 e ';'")
-    return "latin1",";"
+    return "latin1", ";"
+
 
 def standardize_columns(df: pd.DataFrame) -> pd.DataFrame:
     global _printed_mapping_once
 
-    # Se veio 1 coluna só (sintoma clássico de sep errado) e o header contém ';', vamos reprocessar acima no main.
-    # Aqui assumimos que já veio correto.
-
-    # CSV sem header e com 7 colunas
     if (all(str(c).startswith("Unnamed") or isinstance(c, int) for c in df.columns) and len(df.columns) == 7):
         df.columns = _expected
         if not _printed_mapping_once:
@@ -182,18 +177,20 @@ def standardize_columns(df: pd.DataFrame) -> pd.DataFrame:
         raise ValueError(f"CSV sem colunas esperadas: {missing}\nVistas: {list(df.columns)}")
     return df
 
+
 def normalize_chunk(df: pd.DataFrame) -> pd.DataFrame:
     df = standardize_columns(df)
     df["data"] = pd.to_datetime(df["data"], errors="coerce").dt.date
-    for c in ["gols_casa","gols_fora"]:
+    for c in ["gols_casa", "gols_fora"]:
         df[c] = pd.to_numeric(df[c], errors="coerce").fillna(0).astype(int)
-    df["campeonato"] = df["campeonato"].astype(str).str.slice(0,100)
-    df["temporada"]  = df["temporada"].astype(str).str.slice(0,15)
-    df["casa"]       = df["casa"].astype(str).str.slice(0,100)
-    df["fora"]       = df["fora"].astype(str).str.slice(0,100)
+    df["campeonato"] = df["campeonato"].astype(str).str.slice(0, 100)
+    df["temporada"] = df["temporada"].astype(str).str.slice(0, 15)
+    df["casa"] = df["casa"].astype(str).str.slice(0, 100)
+    df["fora"] = df["fora"].astype(str).str.slice(0, 100)
     df = df.dropna(subset=["data"]).copy()
     df["cadastrado_em"] = datetime.now()
-    return df[["data","campeonato","temporada","casa","gols_casa","gols_fora","fora","cadastrado_em"]]
+    return df[["data", "campeonato", "temporada", "casa", "gols_casa", "gols_fora", "fora", "cadastrado_em"]]
+
 
 def insert_dataframe(conn, df: pd.DataFrame) -> int:
     rows = list(df.itertuples(index=False, name=None))
@@ -213,25 +210,34 @@ def main():
         print(f"-> Lendo: {CSV_PATH}")
 
         total_csv, total_ins = 0, 0
-        # 1ª tentativa com enc/sep detectados
         for chunk in pd.read_csv(
-            CSV_PATH, encoding=enc, sep=sep, chunksize=CHUNK_SIZE,
-            engine="python", on_bad_lines="skip", dtype_backend="numpy_nullable"
+            CSV_PATH,
+            encoding=enc,
+            sep=sep,
+            chunksize=CHUNK_SIZE,
+            engine="python",
+            on_bad_lines="skip",
+            dtype_backend="numpy_nullable",
         ):
-            # Se veio 1 coluna só (erro de separador), re-le com ';'
             if len(chunk.columns) == 1:
                 print("-> Detectado 1 coluna (header colado). Recarregando com sep=';'.")
-                total_csv = 0; total_ins = 0
+                total_csv = 0
+                total_ins = 0
                 for chunk2 in pd.read_csv(
-                    CSV_PATH, encoding=enc, sep=";", chunksize=CHUNK_SIZE,
-                    engine="python", on_bad_lines="skip", dtype_backend="numpy_nullable"
+                    CSV_PATH,
+                    encoding=enc,
+                    sep=";",
+                    chunksize=CHUNK_SIZE,
+                    engine="python",
+                    on_bad_lines="skip",
+                    dtype_backend="numpy_nullable",
                 ):
                     total_csv += len(chunk2)
                     df_norm = normalize_chunk(chunk2)
                     ins = insert_dataframe(conn, df_norm)
                     total_ins += ins
                     print(f"   - Processadas {len(df_norm)} | inseridas (novas): {ins}")
-                break  # já tratamos tudo com ';'
+                break
             else:
                 total_csv += len(chunk)
                 df_norm = normalize_chunk(chunk)
@@ -242,6 +248,7 @@ def main():
         print(f"\n✅ Concluído. Lidas: {total_csv} | Inseridas (novas): {total_ins} (duplicatas ignoradas).")
     finally:
         conn.close()
+
 
 if __name__ == "__main__":
     main()

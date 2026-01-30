@@ -1,505 +1,578 @@
-  [ PAPEL ] 
+[ PAPEL ] 
 
-  Atue como Designer e Editor de Dados Sênior. Crie uma apresentação tipo e-book para a Bet Dados no Gamma (tema: Coal).
+Atue como Designer e Editor de Dados Sênior. Crie uma apresentação tipo e-book para a Bet Dados no Gamma (tema: Coal).
 
-  [ CONTEXTO ]
+[ CONTEXTO ]
 
-  Público leigo–intermediário; foco em clareza.
+Público leigo–intermediário; foco em clareza.
 
-  Use somente os dados fornecidos. Sem inferências, estimativas ou previsões.
+Use somente os dados fornecidos. Sem inferências, estimativas ou previsões.
 
-  Se um dado não existir, omite a seção.
+Se um dado não existir, omite a seção.
 
-  Duelo no formato “Time A x Time B” (nunca “vs”).
+Duelo no formato “Time A x Time B” (nunca “vs”).
 
-  Estética “big tech”: precisão, consistência, espaço em branco e alinhamento milimétrico.
+Estética “big tech”: precisão, consistência, espaço em branco e alinhamento milimétrico.
 
-  [ ESTILO GLOBAL — CONTRASTE OBRIGATÓRIO ] Forçar cor do texto = #FFFFFF para qualquer elemento textual, sem exceções:
+[ ESTILO GLOBAL — CONTRASTE OBRIGATÓRIO ] Forçar cor do texto = #FFFFFF para qualquer elemento textual, sem exceções:
 
-  Aplica cor #FFFFFF com opacidade 100% para: títulos, subtítulos, parágrafos, bullets, textos de cartões, subtítulos/captions, notas, footers, botões, placeholders, links, números de ordenação (ex.: “01”, “02” no canto), legendas de gráficos, rótulos de eixos, rótulos de dados, títulos de tabela e células de tabela.
+Aplica cor #FFFFFF com opacidade 100% para: títulos, subtítulos, parágrafos, bullets, textos de cartões, subtítulos/captions, notas, footers, botões, placeholders, links, números de ordenação (ex.: “01”, “02” no canto), legendas de gráficos, rótulos de eixos, rótulos de dados, títulos de tabela e células de tabela.
 
-  Proibido usar cinzas/“muted”, opacidade < 100% ou “secondary text”. Nada de “texto desabilitado” em cinza.
+Proibido usar cinzas/“muted”, opacidade < 100% ou “secondary text”. Nada de “texto desabilitado” em cinza.
 
-  Se houver fundo claro/Imagem, coloque placa/overlay escuro (ex.: #0A0A0A 90–95%) antes de posicionar o texto.
+Se houver fundo claro/Imagem, coloque placa/overlay escuro (ex.: #0A0A0A 90–95%) antes de posicionar o texto.
 
-  Ícones/linhas divisórias podem usar #FFFFFF a 70–90% de opacidade; o texto nunca.
+Ícones/linhas divisórias podem usar #FFFFFF a 70–90% de opacidade; o texto nunca.
 
-  [ GRÁFICOS ]
+[ GRÁFICOS ]
 
-  Desligar cores padrão do tema.
+Desligar cores padrão do tema.
 
-  Barras/fatias/linhas: usar apenas cinzas claros #F2F2F2, #EAEAEA, #E0E0E0, #D5D5D5. (Nunca cinzas escuros.)
+Barras/fatias/linhas: usar apenas cinzas claros #F2F2F2, #EAEAEA, #E0E0E0, #D5D5D5. (Nunca cinzas escuros.)
 
-  Contorno das barras/fatias: #FFFFFF (80–100% opacidade) para separação.
+Contorno das barras/fatias: #FFFFFF (80–100% opacidade) para separação.
 
-  Legenda, eixos e labels: #FFFFFF.
+Legenda, eixos e labels: #FFFFFF.
 
-  Grade discreta: #9E9E9E a 25–35% opacidade. Fundo do gráfico transparente.
+Grade discreta: #9E9E9E a 25–35% opacidade. Fundo do gráfico transparente.
 
-  Cores oficiais dos clubes apenas como acento (borda/marker), mantendo contraste AA.
+Cores oficiais dos clubes apenas como acento (borda/marker), mantendo contraste AA.
 
-  [ IDENTIDADE E IMAGENS ]
+[ IDENTIDADE E IMAGENS ]
 
-  Escudos oficiais (sem distorção nem marca d’água). Se não houver, usar placeholder neutro.
+Escudos oficiais (sem distorção nem marca d’água). Se não houver, usar placeholder neutro.
 
-  Proibição absoluta de imagens com marca d’água.
+Proibição absoluta de imagens com marca d’água.
 
-  Paleta do deck: #001636 como acento + neutros escuros de fundo + dados em cinzas claros.
+Paleta do deck: #001636 como acento + neutros escuros de fundo + dados em cinzas claros.
 
-  [ TAREFA — SLIDES ] (omita os que não tiverem dados)
+[ TAREFA — SLIDES ] (omita os que não tiverem dados)
 
-  Capa — Título “[Time A x Time B] | Sub “[Data] — [Hora]”; chips de mandante/visitante e fase; troféu oficial como hero; overlay escuro se preciso.
+Capa — Título “[Time A x Time B] | Sub “[Data] — [Hora]”; chips de mandante/visitante e fase; troféu oficial como hero; overlay escuro se preciso.
 
-  Publicidade Bet Dados (obrigatório) — texto, CTA “Assinar agora” → https://pay.cakto.com.br/35ww97h_563195 e placeholder de logo.
+Publicidade Bet Dados (obrigatório) — texto, CTA “Assinar agora” → https://pay.cakto.com.br/35ww97h_563195 e placeholder de logo.
 
-  Na publicidade, frise que a Bet Dados tem dados de mais de 90 mil jogos, mais de 140 campeonatos, competições de mais de 40 países,
-  mais de 4.200 clubes e mais de 115 mil jogadores. Ressalte também que a Bet Dados é um grupo no Telegram, onde são enviadas análises
-  dos principais jogos do dia, além de análises especiais com dados de ligas, clubes e/ou jogadores.
+Na publicidade, frise que a Bet Dados tem dados de mais de 90 mil jogos, mais de 140 campeonatos, competições de mais de 40 países,
+mais de 4.200 clubes e mais de 115 mil jogadores. Ressalte também que a Bet Dados é um grupo no Telegram, onde são enviadas análises
+dos principais jogos do dia, além de análises especiais com dados de ligas, clubes e/ou jogadores.
 
-  Ficha do Jogo — competição, temporada, data/hora, estádio/mandante.
+Ficha do Jogo — competição, temporada, data/hora, estádio/mandante.
 
-  Panorama das Equipes (cards lado a lado, 2–4 linhas por equipe, texto branco).
+Panorama das Equipes (cards lado a lado, 2–4 linhas por equipe, texto branco).
 
-  Indicadores-Chave (tabela/tiles).
+Indicadores-Chave (tabela/tiles).
 
-  Distribuição de Gols por Minutagem.
+Distribuição de Gols por Minutagem.
 
-  Ofensivo vs Defensivo.
+Ofensivo vs Defensivo.
 
-  Bolas Paradas.
+Bolas Paradas.
 
-  Disciplina.
+Disciplina.
 
-  Tendências Temporais.
+Tendências Temporais.
 
-  Head-to-Head (se houver).
+Head-to-Head (se houver).
 
-  Glossário Rápido (somente termos presentes).
+Glossário Rápido (somente termos presentes).
 
-  Notas Metodológicas (origem/janela/limitações; “sem prognósticos”).
+Notas Metodológicas (origem/janela/limitações; “sem prognósticos”).
 
-  Slide Final (QR/CTA).
+Slide Final (QR/CTA).
 
-  [ REGRAS DE CONTEÚDO ]
+[ REGRAS DE CONTEÚDO ]
 
-  Sem previsões/odds.
+Sem previsões/odds.
 
-  Em hipótese alguma utilize imagens com marca d'água.
+Em hipótese alguma utilize imagens com marca d'água.
 
-  Nomes dos clubes exatamente como informados (acentos e caixa).
+Nomes dos clubes exatamente como informados (acentos e caixa).
 
-  Percentuais com até 2 casas decimais; unidades PT-BR.
+Percentuais com até 2 casas decimais; unidades PT-BR.
 
-  [ ENTRADAS ] Duelo, competição, temporada, data/hora e todas as estatísticas fornecidas (médias, totais, séries, rankings etc.).
+[ ENTRADAS ] Duelo, competição, temporada, data/hora e todas as estatísticas fornecidas (médias, totais, séries, rankings etc.).
 
-  [ AUDITORIA DE CONTRASTE (passo obrigatório no final) ]
+[ AUDITORIA DE CONTRASTE (passo obrigatório no final) ]
 
-  Varra o deck e liste qualquer elemento cujo texto NÃO esteja #FFFFFF (inclui textos de cartões, subtítulos/captions, numeradores “01/02/03/04”, descrições, botões, rodapés e legendas).
+Varra o deck e liste qualquer elemento cujo texto NÃO esteja #FFFFFF (inclui textos de cartões, subtítulos/captions, numeradores “01/02/03/04”, descrições, botões, rodapés e legendas).
 
-  Corrija automaticamente para #FFFFFF e reporte “Corrigido: [elementos]”. Se algo não puder ser alterado, substitua por placa/overlay escuro até garantir contraste AA.
+Corrija automaticamente para #FFFFFF e reporte “Corrigido: [elementos]”. Se algo não puder ser alterado, substitua por placa/overlay escuro até garantir contraste AA.
 
-  [ CRITÉRIOS DE QUALIDADE ]
+[ CRITÉRIOS DE QUALIDADE ]
 
-  Fidelidade 100% aos dados.
+Fidelidade 100% aos dados.
 
-  Texto 100% branco em todo o deck; gráficos em cinzas claros; contraste AA mínimo.
+Texto 100% branco em todo o deck; gráficos em cinzas claros; contraste AA mínimo.
 
-  Coesão (grid, margens, alinhamentos).
+Coesão (grid, margens, alinhamentos).
 
-  Didática (1 frase objetiva por gráfico).
+Didática (1 frase objetiva por gráfico).
 
-  Conformidade de marca (escudos/nome de clubes corretos; zero marca d’água).
+Conformidade de marca (escudos/nome de clubes corretos; zero marca d’água).
 
-  [ CHECKLIST FINAL ]
+[ CHECKLIST FINAL ]
 
-  Todo texto branco #FFFFFF (inclui cartões, captions e numeradores “01/02/03/…”).
+Todo texto branco #FFFFFF (inclui cartões, captions e numeradores “01/02/03/…”).
 
-  Séries de gráficos somente #F2F2F2–#D5D5D5 + contorno branco; legenda/eixos brancos.
+Séries de gráficos somente #F2F2F2–#D5D5D5 + contorno branco; legenda/eixos brancos.
 
-  Sem imagens com marca d’água; escudos/taça oficiais.
+Sem imagens com marca d’água; escudos/taça oficiais.
 
-  “x” no duelo; nomes dos clubes fiéis.
+“x” no duelo; nomes dos clubes fiéis.
 
-  Seções sem dados omitidas; nenhum número inventado.
+Seções sem dados omitidas; nenhum número inventado.
 
-  Exportável para PDF com contraste perfeito.
+Exportável para PDF com contraste perfeito.
 
-  Não trazer imagens com marca d'água.
+Não trazer imagens com marca d'água.
 
-  Os dados e as estatísticas são de um levantamento da Bet Dados.
+Os dados e as estatísticas são de um levantamento da Bet Dados.
 
-  NÃO precisa informar a temporada.
+NÃO precisa informar a temporada.
 
-  Reforçando: NÃO FAÇA NENHUMA PREVISÃO PARA A PARTIDA!
+Reforçando: NÃO FAÇA NENHUMA PREVISÃO PARA A PARTIDA!
 
-  Nos gráficos, SEMPRE ative o rótulo de dados (mostrar valores).
+Nos gráficos, SEMPRE ative o rótulo de dados (mostrar valores).
 
-  Importante: a Bet Dados NÃO oferece dados em tempo real. Não coloque isso na apresentação. Não coloque NENHUM ponto negativo da Bet Dados.
+Importante: a Bet Dados NÃO oferece dados em tempo real. Não coloque isso na apresentação. Não coloque NENHUM ponto negativo da Bet Dados.
 
-  Não tenho QR Code, então não peça para o usuário scannear um QR Code. Peça apenas para clicar no botão e assinar a Bet Dados. Explique que, após o pagamento,
-  o link de acesso ao grupo no Telegram será enviado por e-mail para o usuário.
+Não tenho QR Code, então não peça para o usuário scannear um QR Code. Peça apenas para clicar no botão e assinar a Bet Dados. Explique que, após o pagamento,
+o link de acesso ao grupo no Telegram será enviado por e-mail para o usuário.
 
-  O botão de assinatura deve estar sempre com grande destaque na página.
+O botão de assinatura deve estar sempre com grande destaque na página.
 
-  COLOQUE IMAGEM APENAS NA CAPA E NA CONTRACAPA, NÃO COLOQUE MAIS NENHUMA IMAGEM NA APRESENTAÇÃO!
+COLOQUE IMAGEM APENAS NA CAPA E NA CONTRACAPA, NÃO COLOQUE MAIS NENHUMA IMAGEM NA APRESENTAÇÃO!
 
-  USE SEMPRE FONTES COM COR ESCURA, COMO PRETO, AZUL ESCURO (#001636).
-
-  [ DADOS DA PARTIDA ]
-
-  Duelo: Santos x Vitória | Campeonato Brasileiro
-
-  Data: 20/10/2025
-
-  Hora: 21:30
-
-  Segue abaixo as estatísticas para a apresentação:
-
-  Temporada atual
-
-  Informações                     Santos Vitória
-                            Jogos    43     57  
-                        Vitórias    14     20  
-                          Empates    12     20  
-                        Derrotas    17     17  
-                    Gols marcados    52     66  
-                    Gols sofridos    56     63  
-                  Aproveitamento 41.86  46.78  
-                    Over 2.5 gols    24     21  
-  Probabilidade de over 2.5 gols 55.81  36.84  
-                  Under 2.5 gols    19     36  
-  Probabilidade de under 2.5 gols 44.19  63.16  
-                        Odd média  2.85   3.49  
-          Odd média quando venceu  4.01   2.15  
-                        Goleadas     0      4  
-          Probabilidade de golear  0.00   7.02  
-          Goleadas como mandante     0      0  
-          Goleadas como visitante     0      3  
-
-  Todas as informações abaixo são baseadas nos últimos 10 jogos de cada clube. Deixe isso explícito e coloque um asterisco em todos os slides informando que os dados são das últimas 10 partidas de cada clube.
-
-  Desempenho recente
-
-  Informações                     Santos Vitória
-                            Jogos    10     10  
-                        Vitórias     3      3  
-                          Empates     4      1  
-                        Derrotas     3      6  
-                    Gols marcados    10     10  
-                    Gols sofridos    17     23  
-                  Aproveitamento 43.33  33.33  
-                    Over 2.5 gols     5      5  
-  Probabilidade de over 2.5 gols 50.00  50.00  
-                  Under 2.5 gols     5      5  
-  Probabilidade de under 2.5 gols 50.00  50.00  
-                        Odd média  3.25   4.99  
-          Odd média quando venceu  5.14         
-                        Goleadas     0      0  
-          Probabilidade de golear  0.00   0.00  
-          Goleadas como mandante     0      0  
-          Goleadas como visitante     0      0  
-
-  Primeiro tempo
-
-  Informações                          Santos Vitória
-                                Jogos    10     10  
-                Posse de bola (média) 53.00  39.40  
-                              xG médio  0.40   0.62  
-                              xG total  4.02   6.23  
-              Grandes chances criadas     3      8  
-              Grandes chances por jogo     0      0  
-          Grandes chances convertidas     0      5  
-    Aproveitamento das grandes chances  0.00  62.50  
-                          Finalizações    70     50  
-                Finalizações por jogo  7.00   5.00  
-                  Finalizações certas    15     16  
-          Finalizações certas por jogo  1.50   1.60  
-            % Acerto nas finalizações:    21     32  
-          Finalizações dentro da área    40     30  
-  Finalizações dentro da área por jogo  4.00   3.00  
-      % de finalizações dentro da área 57.14  60.00  
-                        Bolas na trave     1      1  
-                            Escanteios    28     19  
-                  Escanteios por jogo  2.80   1.90  
-                                Passes  2226   1578  
-                        Passes certos  1902   1267  
-              Assertividade nos passes 85.44  80.29  
-              Entradas no terço final   256    248  
-      Entradas no terço final por jogo 25.60  24.80  
-        Faltas sofridas no terço final    16      8  
-                        Perdas de bola    49     30  
-              Perdas de bola por jogo  4.90   3.00  
-                Duelos ganhos (média) 51.20  51.60  
-                      Cartões amarelos     8     12  
-                    Cartões vermelhos     0      1  
-
-  Segundo tempo
-
-  Informações                          Santos Vitória
-                                Jogos    10     10  
-                Posse de bola (média) 45.50  39.70  
-                              xG médio  0.92   0.53  
-                              xG total  9.19   5.33  
-              Grandes chances criadas    16      7  
-              Grandes chances por jogo     1      0  
-          Grandes chances convertidas     8      3  
-    Aproveitamento das grandes chances 50.00  42.86  
-                          Finalizações    72     48  
-                Finalizações por jogo  7.20   4.80  
-                  Finalizações certas    27     16  
-          Finalizações certas por jogo  2.70   1.60  
-            % Acerto nas finalizações:    37     33  
-          Finalizações dentro da área    46     32  
-  Finalizações dentro da área por jogo  4.60   3.20  
-      % de finalizações dentro da área 63.89  66.67  
-                        Bolas na trave     4      1  
-                            Escanteios    20     18  
-                  Escanteios por jogo  2.00   1.80  
-                                Passes  1770   1605  
-                        Passes certos  1446   1311  
-              Assertividade nos passes 81.69  81.68  
-              Entradas no terço final   287    244  
-      Entradas no terço final por jogo 28.70  24.40  
-        Faltas sofridas no terço final    14      9  
-                        Perdas de bola    33     47  
-              Perdas de bola por jogo  3.30   4.70  
-                Duelos ganhos (média) 53.00  51.90  
-                      Cartões amarelos    19     21  
-                    Cartões vermelhos     1      4  
-
-  Desempenho nos 90 minutos
-
-  Informações                          Santos Vitória
-                                Jogos    10     10  
-                Posse de bola (média) 49.30  39.50  
-                              xG médio  1.32   1.16  
-                              xG total 13.23  11.57  
-              Grandes chances criadas    19     15  
-              Grandes chances por jogo     1      1  
-          Grandes chances convertidas     8      8  
-    Aproveitamento das grandes chances 42.11  53.33  
-                          Finalizações   142     98  
-                Finalizações por jogo 14.20   9.80  
-                  Finalizações certas    42     32  
-          Finalizações certas por jogo  4.20   3.20  
-            % Acerto nas finalizações:    29     32  
-          Finalizações dentro da área    86     62  
-  Finalizações dentro da área por jogo  8.60   6.20  
-      % de finalizações dentro da área 60.56  63.27  
-                        Bolas na trave     5      2  
-                            Escanteios    48     37  
-                  Escanteios por jogo  4.80   3.70  
-                                Passes  3996   3183  
-                        Passes certos  3348   2578  
-              Assertividade nos passes 83.78  80.99  
-              Entradas no terço final   543    492  
-      Entradas no terço final por jogo 54.30  49.20  
-        Faltas sofridas no terço final    30     17  
-                        Perdas de bola    82     77  
-              Perdas de bola por jogo  8.20   7.70  
-                Duelos ganhos (média) 52.10  51.80  
-                      Cartões amarelos    27     33  
-                    Cartões vermelhos     1      5  
-
-  Clean sheets e clean goals
-  clube    clean_sheets  clean_goals
-  Santos 2             4           
-  Vitória 2             4           
-
-  Desempenho em casa do mandante do duelo
-  informacao              dados
-                    Jogos    10
-                Vitórias     4
-                  Empates     3
-                Derrotas     3
-            Gols marcados    10
-            Gols sofridos    12
-          Aproveitamento 50.00
-  Média de gols marcados  1.00
-  Média de gols sofridos  1.20
-            Clean sheets     4
-              Clean goals     4
-                Odd média  2.31
-  Odd média quando venceu  2.54
-
-  Desempenho fora do visitante do duelo
-  informacao              dados
-                    Jogos    10
-                Vitórias     0
-                  Empates     3
-                Derrotas     7
-            Gols marcados     5
-            Gols sofridos    22
-          Aproveitamento 10.00
-  Média de gols marcados  0.50
-  Média de gols sofridos  2.20
-            Clean sheets     2
-              Clean goals     7
-                Odd média  6.83
-  Odd média quando venceu  0.00
-
-  Confronto direto desde 2020
-  informacao             dados
-                  Jogos    1 
-      Vitórias do Santos    1 
+USE SEMPRE FONTES COM COR ESCURA, COMO PRETO, AZUL ESCURO (#001636).
+
+[ DADOS DA PARTIDA ]
+
+Duelo: Al-Ettifaq x Al-Nassr | Campeonato Saudita
+
+Data: 30/12/2025
+
+Hora: 14:30
+
+Segue abaixo as estatísticas para a apresentação:
+
+Temporada atual
+
+Informações                     Al-Ettifaq Al-Nassr
+                          Jogos    11         14   
+                       Vitórias     4         12   
+                        Empates     4          1   
+                       Derrotas     3          1   
+                  Gols marcados    17         42   
+                  Gols sofridos    20         10   
+                 Aproveitamento 48.48      88.10   
+                  Over 2.5 gols     8         11   
+ Probabilidade de over 2.5 gols 72.73      78.57   
+                 Under 2.5 gols     3          3   
+Probabilidade de under 2.5 gols 27.27      21.43   
+                      Odd média  3.01       1.35   
+        Odd média quando venceu  3.40       1.28   
+                       Goleadas     0          5   
+        Probabilidade de golear  0.00      35.71   
+         Goleadas como mandante     0          0   
+        Goleadas como visitante     0          2   
+
+Todas as informações abaixo são baseadas nos últimos 10 jogos de cada clube. Deixe isso explícito e coloque um asterisco em todos os slides informando que os dados são das últimas 10 partidas de cada clube.
+
+Desempenho recente
+
+Informações                     Al-Ettifaq Al-Nassr
+                          Jogos    10         10   
+                       Vitórias     3          9   
+                        Empates     4          0   
+                       Derrotas     3          1   
+                  Gols marcados    15         31   
+                  Gols sofridos    19          7   
+                 Aproveitamento 43.33      90.00   
+                  Over 2.5 gols     7          8   
+ Probabilidade de over 2.5 gols 70.00      80.00   
+                 Under 2.5 gols     3          2   
+Probabilidade de under 2.5 gols 30.00      20.00   
+                      Odd média  3.22       1.26   
+        Odd média quando venceu  3.90       1.24   
+                       Goleadas     0          4   
+        Probabilidade de golear  0.00      40.00   
+         Goleadas como mandante     0          3   
+        Goleadas como visitante     0          1   
+
+Primeiro tempo
+
+Informações                          Al-Ettifaq Al-Nassr
+                               Jogos    10         10   
+               Posse de bola (média) 51.00      61.80   
+                            xG médio  0.00       0.00   
+                            xG total  0.00       0.00   
+             Grandes chances criadas    13         24   
+            Grandes chances por jogo     1          2   
+         Grandes chances convertidas     5          8   
+  Aproveitamento das grandes chances 38.46      33.33   
+                        Finalizações    44         97   
+               Finalizações por jogo  4.40       9.70   
+                 Finalizações certas    19         40   
+        Finalizações certas por jogo  1.90       4.00   
+          % Acerto nas finalizações:    43         41   
+         Finalizações dentro da área    32         64   
+Finalizações dentro da área por jogo  3.20       6.40   
+    % de finalizações dentro da área 72.73      65.98   
+                      Bolas na trave     3          2   
+                          Escanteios    20         39   
+                 Escanteios por jogo  2.00       3.90   
+                              Passes  2148       2321   
+                       Passes certos  1815       2006   
+            Assertividade nos passes 84.50      86.43   
+             Entradas no terço final   237        316   
+    Entradas no terço final por jogo 23.70      31.60   
+      Faltas sofridas no terço final    11         22   
+                      Perdas de bola    33         42   
+             Perdas de bola por jogo  3.30       4.20   
+               Duelos ganhos (média) 48.60      54.90   
+                    Cartões amarelos     7          8   
+                   Cartões vermelhos     0          0   
+
+Segundo tempo
+
+Informações                          Al-Ettifaq Al-Nassr
+                               Jogos    10         10   
+               Posse de bola (média) 54.10      60.70   
+                            xG médio  0.00       0.00   
+                            xG total  0.00       0.00   
+             Grandes chances criadas    15         24   
+            Grandes chances por jogo     1          2   
+         Grandes chances convertidas     9          8   
+  Aproveitamento das grandes chances 60.00      33.33   
+                        Finalizações    52        104   
+               Finalizações por jogo  5.20      10.40   
+                 Finalizações certas    19         40   
+        Finalizações certas por jogo  1.90       4.00   
+          % Acerto nas finalizações:    36         38   
+         Finalizações dentro da área    32         70   
+Finalizações dentro da área por jogo  3.20       7.00   
+    % de finalizações dentro da área 61.54      67.31   
+                      Bolas na trave     1          3   
+                          Escanteios    21         39   
+                 Escanteios por jogo  2.10       3.90   
+                              Passes  2019       2189   
+                       Passes certos  1708       1918   
+            Assertividade nos passes 84.60      87.62   
+             Entradas no terço final   274        316   
+    Entradas no terço final por jogo 27.40      31.60   
+      Faltas sofridas no terço final    10         17   
+                      Perdas de bola    54         33   
+             Perdas de bola por jogo  5.40       3.30   
+               Duelos ganhos (média) 49.60      51.70   
+                    Cartões amarelos    13          7   
+                   Cartões vermelhos     1          0   
+
+Desempenho nos 90 minutos
+
+Informações                          Al-Ettifaq Al-Nassr
+                               Jogos    10         10   
+               Posse de bola (média) 52.50      61.20   
+                            xG médio  0.56       1.04   
+                            xG total  5.64      10.41   
+             Grandes chances criadas    30         48   
+            Grandes chances por jogo     3          4   
+         Grandes chances convertidas    14         16   
+  Aproveitamento das grandes chances 46.67      33.33   
+                        Finalizações   103        201   
+               Finalizações por jogo 10.30      20.10   
+                 Finalizações certas    43         80   
+        Finalizações certas por jogo  4.30       8.00   
+          % Acerto nas finalizações:    41         39   
+         Finalizações dentro da área    69        134   
+Finalizações dentro da área por jogo  6.90      13.40   
+    % de finalizações dentro da área 66.99      66.67   
+                      Bolas na trave     5          5   
+                          Escanteios    43         78   
+                 Escanteios por jogo  4.30       7.80   
+                              Passes  4315       4510   
+                       Passes certos  3649       3924   
+            Assertividade nos passes 84.57      87.01   
+             Entradas no terço final   535        632   
+    Entradas no terço final por jogo 53.50      63.20   
+      Faltas sofridas no terço final    22         39   
+                      Perdas de bola    92         75   
+             Perdas de bola por jogo  9.20       7.50   
+               Duelos ganhos (média) 49.20      53.80   
+                    Cartões amarelos    21         15   
+                   Cartões vermelhos     1          0   
+
+Clean sheets e clean goals
+clube       clean_sheets  clean_goals
+Al-Ettifaq 2             2           
+  Al-Nassr 4             0           
+
+Desempenho em casa do mandante do duelo
+informacao              dados
+                  Jogos     5
+               Vitórias     1
+                Empates     3
+               Derrotas     1
+          Gols marcados     6
+          Gols sofridos     8
+         Aproveitamento 40.00
+ Média de gols marcados  1.20
+ Média de gols sofridos  1.60
+           Clean sheets     0
+            Clean goals     1
+              Odd média  4.50
+Odd média quando venceu  2.25
+
+Desempenho fora do visitante do duelo
+informacao              dados
+                  Jogos    10
+               Vitórias     8
+                Empates     0
+               Derrotas     2
+          Gols marcados    35
+          Gols sofridos     9
+         Aproveitamento 80.00
+ Média de gols marcados  3.50
+ Média de gols sofridos  0.90
+           Clean sheets     5
+            Clean goals     0
+              Odd média  1.45
+Odd média quando venceu  1.37
+
+Placares mais repetidos do mandante desde 2020
+placar  Qtd.  prob
+1-0    11    16.92
+1-1    10    15.38
+1-2     9    13.85
+0-0     7    10.77
+2-1     7    10.77
+0-2     6     9.23
+2-2     5     7.69
+0-1     4     6.15
+1-3     3     4.62
+0-3     3     4.62
+
+Placares mais repetidos do mandantes nos últimos 10 jogos
+placar  Qtd.  prob
+2-1    3     30.0 
+0-0    2     20.0 
+3-2    1     10.0 
+2-2    1     10.0 
+0-5    1     10.0 
+1-0    1     10.0 
+1-1    1     10.0 
+
+Placares mais repetidos do visitante desde 2020
+placar  Qtd.  prob
+1-1    12    15.19
+0-1    10    12.66
+0-2    10    12.66
+1-2     9    11.39
+1-3     8    10.13
+2-1     7     8.86
+0-3     6     7.59
+1-0     6     7.59
+2-3     6     7.59
+1-4     5     6.33
+
+Placares mais repetidos do visitante nos últimos 10 jogos
+placar  Qtd.  prob
+0-2    2     20.0 
+1-3    1     10.0 
+0-4    1     10.0 
+0-5    1     10.0 
+3-2    1     10.0 
+0-9    1     10.0 
+1-4    1     10.0 
+2-3    1     10.0 
+2-1    1     10.0 
+
+Confronto direto desde 2020
+informacao              dados
+                  Jogos    0 
+ Vitórias do Al-Ettifaq    0 
                 Empates    0 
-    Vitórias do Vitória    0 
-          Gols do Santos    1 
-        Gols do Vitória    0 
-  Média de gols do duelo 1.00 
-    Odd média do Santos 3.60 
-    Odd média do Vitória 2.20 
-  Odd média do vencedor 3.60 
+   Vitórias do Al-Nassr    0 
+     Gols do Al-Ettifaq    0 
+       Gols do Al-Nassr    0 
+ Média de gols do duelo 0.00 
+Odd média do Al-Ettifaq  nan 
+  Odd média do Al-Nassr  nan 
+  Odd média do vencedor  nan 
 
-  Confronto direto - últimos 10 jogos
-  informacao             dados
-                  Jogos    1 
-      Vitórias do Santos    1 
+Placares do confronto direto desde 2020
+placar  Qtd.  prob
+1-1    2     40.0 
+0-3    1     20.0 
+2-1    1     20.0 
+2-2    1     20.0 
+
+Confronto direto - últimos 10 jogos
+informacao              dados
+                  Jogos    0 
+ Vitórias do Al-Ettifaq    0 
                 Empates    0 
-    Vitórias do Vitória    0 
-          Gols do Santos    1 
-        Gols do Vitória    0 
-  Média de gols do duelo 1.00 
-    Odd média do Santos 3.60 
-    Odd média do Vitória 2.20 
-  Odd média do vencedor 3.60 
+   Vitórias do Al-Nassr    0 
+     Gols do Al-Ettifaq    0 
+       Gols do Al-Nassr    0 
+ Média de gols do duelo 0.00 
+Odd média do Al-Ettifaq  nan 
+  Odd média do Al-Nassr  nan 
+  Odd média do vencedor  nan 
 
-  Mais minutos
+Formação mais utilizada pelo mandante
+4-6-0
 
-  name            position   team     minutos
-    Lucas Arcanjo    Goleiro Vitória 900     
-  Gabriel Brazão    Goleiro  Santos 878     
-    Renato Kayzer   Atacante Vitória 829     
-            Ramon   Defensor Vitória 810     
-    Lucas Halter   Defensor Vitória 790     
-        Zé Rafael Meio-campo  Santos 742     
-        Guilherme Meio-campo  Santos 729     
-      Luan Peres   Defensor  Santos 720     
-            Erick   Atacante Vitória 638     
-  Gonzalo Escobar   Defensor  Santos 628     
+Jogadores do mandante com maior frequência como titular nos últimos 10 jogos
+name                position   team        jogos_titular
+        Marek Rodák    Goleiro Al-Ettifaq 10            
+    Francisco Calvo   Defensor Al-Ettifaq 10            
+        Jack Hendry   Defensor Al-Ettifaq 10            
+Abdullah Al Khateeb   Defensor Al-Ettifaq  7            
+      Abdullah Madu   Defensor Al-Ettifaq  5            
+Georginio Wijnaldum Meio-campo Al-Ettifaq 10            
+        Ondrej Duda Meio-campo Al-Ettifaq  9            
+      Álvaro Medrán Meio-campo Al-Ettifaq  9            
+  Khalid Al-Ghannam Meio-campo Al-Ettifaq  7            
+        Mohau Nkota Meio-campo Al-Ettifaq  7            
+        Mukhtar Ali Meio-campo Al-Ettifaq  6            
 
-  Artilharia
+Formação mais utilizada pelo visitante
+4-4-2
 
-  name                position   team     gols
-        Renato Kayzer   Atacante Vitória 3    
-            Guilherme Meio-campo  Santos 2    
-      Álvaro Barreal Meio-campo  Santos 2    
-        Lautaro Díaz   Atacante  Santos 2    
-        Raúl Cáceres   Defensor Vitória 2    
-  Aitor Cantalapiedra   Atacante Vitória 2    
-            Zé Rafael Meio-campo  Santos 1    
-      Tiquinho Soares   Atacante  Santos 1    
-  Benjamín Rollheiser Meio-campo  Santos 1    
-    Gustavo Caballero Meio-campo  Santos 1    
+Jogadores do visitante com maior frequência como titular nos últimos 10 jogos
+name              position   team      jogos_titular
+   Nawaf Al-Aqidi    Goleiro Al-Nassr  6            
+   Iñigo Martínez   Defensor Al-Nassr 10            
+    Nawaf Boushal   Defensor Al-Nassr  8            
+  Mohamed Simakan   Defensor Al-Nassr  7            
+Sultan Al-Ghannam   Defensor Al-Nassr  7            
+           Ângelo Meio-campo Al-Nassr  9            
+   Kingsley Coman Meio-campo Al-Nassr  8            
+       Sadio Mané Meio-campo Al-Nassr  8            
+ Marcelo Brozović Meio-campo Al-Nassr  7            
+Cristiano Ronaldo   Atacante Al-Nassr  9            
+       João Félix   Atacante Al-Nassr  9            
 
-  Assistências
+Mais minutos
 
-  name                position   team     assistencias
-  Aitor Cantalapiedra   Atacante Vitória 2            
-                Erick   Atacante Vitória 2            
-        João Schmidt Meio-campo  Santos 1            
-            Guilherme Meio-campo  Santos 1            
-  Benjamín Rollheiser Meio-campo  Santos 1            
-      Álvaro Barreal Meio-campo  Santos 1            
-    Gustavo Caballero Meio-campo  Santos 1            
-        Lautaro Díaz   Atacante  Santos 1            
-                Souza   Defensor  Santos 1            
-              Osvaldo Meio-campo Vitória 1            
+name                position   team        minutos
+        Marek Rodák    Goleiro Al-Ettifaq 930     
+        Jack Hendry   Defensor Al-Ettifaq 930     
+    Francisco Calvo   Defensor Al-Ettifaq 929     
+Georginio Wijnaldum Meio-campo Al-Ettifaq 921     
+     Iñigo Martínez   Defensor   Al-Nassr 863     
+      Álvaro Medrán Meio-campo Al-Ettifaq 843     
+  Cristiano Ronaldo   Atacante   Al-Nassr 809     
+         João Félix   Atacante   Al-Nassr 792     
+             Ângelo Meio-campo   Al-Nassr 756     
+     Kingsley Coman Meio-campo   Al-Nassr 725     
 
-  Participação em gols
+Artilharia
 
-  name                position   team     participacoes
-  Aitor Cantalapiedra   Atacante Vitória 4             
-            Guilherme Meio-campo  Santos 3             
-      Álvaro Barreal Meio-campo  Santos 3             
-        Lautaro Díaz   Atacante  Santos 3             
-        Renato Kayzer   Atacante Vitória 3             
-                Erick   Atacante Vitória 3             
-  Benjamín Rollheiser Meio-campo  Santos 2             
-    Gustavo Caballero Meio-campo  Santos 2             
-        Raúl Cáceres   Defensor Vitória 2             
-        Lucas Halter   Defensor Vitória 2             
+name                position   team        gols
+  Cristiano Ronaldo   Atacante   Al-Nassr 11   
+         João Félix   Atacante   Al-Nassr 10   
+Georginio Wijnaldum Meio-campo Al-Ettifaq  5   
+  Khalid Al-Ghannam Meio-campo Al-Ettifaq  4   
+     Moussa Dembélé   Atacante Al-Ettifaq  3   
+         Sadio Mané Meio-campo   Al-Nassr  2   
+     Kingsley Coman Meio-campo   Al-Nassr  2   
+             Ângelo Meio-campo   Al-Nassr  2   
+             Wesley   Atacante   Al-Nassr  2   
+    Francisco Calvo   Defensor Al-Ettifaq  1   
 
-  Rating total
+Assistências
 
-  name                position   team    rating_total
-        Renato Kayzer   Atacante Vitória 68,50       
-            Guilherme Meio-campo  Santos 67,10       
-              Osvaldo Meio-campo Vitória 67,00       
-        Lucas Arcanjo    Goleiro Vitória 66,60       
-      Gabriel Brazão    Goleiro  Santos 64,50       
-            Zé Rafael Meio-campo  Santos 64,30       
-  Benjamín Rollheiser Meio-campo  Santos 63,30       
-      Álvaro Barreal Meio-campo  Santos 63,20       
-  Aitor Cantalapiedra   Atacante Vitória 62,60       
-                Erick   Atacante Vitória 62,50       
+name              position   team        assistencias
+   Kingsley Coman Meio-campo   Al-Nassr 5            
+    Álvaro Medrán Meio-campo Al-Ettifaq 3            
+    Nawaf Boushal   Defensor   Al-Nassr 3            
+       Sadio Mané Meio-campo   Al-Nassr 3            
+       João Félix   Atacante   Al-Nassr 3            
+  Francisco Calvo   Defensor Al-Ettifaq 2            
+Khalid Al-Ghannam Meio-campo Al-Ettifaq 2            
+           Ângelo Meio-campo   Al-Nassr 2            
+     Majed Dawran Meio-campo Al-Ettifaq 1            
+      Mohau Nkota Meio-campo Al-Ettifaq 1            
 
-  Rating médio
+Participação em gols
 
-  name                position   team_x  rating_medio
-            Guilherme Meio-campo  Santos 7,46        
-            Zé Rafael Meio-campo  Santos 7,14        
-        Lautaro Díaz   Atacante  Santos 7,12        
-  Benjamín Rollheiser Meio-campo  Santos 7,03        
-      Álvaro Barreal Meio-campo  Santos 7,02        
-  Aitor Cantalapiedra   Atacante Vitória 6,96        
-                Erick   Atacante Vitória 6,94        
-        Lucas Halter   Defensor Vitória 6,93        
-                  Edu   Defensor Vitória 6,92        
-                Pepê Meio-campo Vitória 6,92        
+name                position   team        participacoes
+         João Félix   Atacante   Al-Nassr 13            
+  Cristiano Ronaldo   Atacante   Al-Nassr 12            
+     Kingsley Coman Meio-campo   Al-Nassr  7            
+  Khalid Al-Ghannam Meio-campo Al-Ettifaq  6            
+Georginio Wijnaldum Meio-campo Al-Ettifaq  6            
+         Sadio Mané Meio-campo   Al-Nassr  5            
+     Moussa Dembélé   Atacante Al-Ettifaq  4            
+             Ângelo Meio-campo   Al-Nassr  4            
+      Álvaro Medrán Meio-campo Al-Ettifaq  3            
+    Francisco Calvo   Defensor Al-Ettifaq  3            
 
-  Grandes chances criadas
+Rating total
 
-  name                position   team     grandes_chances
-            Guilherme Meio-campo  Santos 4               
-        Lautaro Díaz   Atacante  Santos 3               
-      Álvaro Barreal Meio-campo  Santos 2               
-        Renato Kayzer   Atacante Vitória 2               
-  Aitor Cantalapiedra   Atacante Vitória 2               
-                Erick   Atacante Vitória 2               
-        João Schmidt Meio-campo  Santos 1               
-        Igor Vinícius   Defensor  Santos 1               
-  Benjamín Rollheiser Meio-campo  Santos 1               
-    Gustavo Caballero Meio-campo  Santos 1               
+name                 position   team       rating_total
+          João Félix   Atacante   Al-Nassr 80,80       
+   Sultan Al-Ghannam   Defensor   Al-Nassr 71,30       
+         Marek Rodák    Goleiro Al-Ettifaq 71,00       
+      Iñigo Martínez   Defensor   Al-Nassr 70,90       
+       Álvaro Medrán Meio-campo Al-Ettifaq 70,00       
+Abdullah Al-Khaibari Meio-campo   Al-Nassr 69,20       
+ Georginio Wijnaldum Meio-campo Al-Ettifaq 69,10       
+         Jack Hendry   Defensor Al-Ettifaq 68,20       
+              Ângelo Meio-campo   Al-Nassr 67,10       
+         Ondrej Duda Meio-campo Al-Ettifaq 66,00       
 
-  Passes chave
+Rating médio
 
-  name                position   team     passes_chave
-            Guilherme Meio-campo  Santos 16           
-  Benjamín Rollheiser Meio-campo  Santos 15           
-                Erick   Atacante Vitória 14           
-  Aitor Cantalapiedra   Atacante Vitória 13           
-      Álvaro Barreal Meio-campo  Santos 13           
-              Neymar   Atacante  Santos  8           
-        Lautaro Díaz   Atacante  Santos  7           
-              Ronald Meio-campo Vitória  7           
-        Igor Vinícius   Defensor  Santos  7           
-            Zé Rafael Meio-campo  Santos  6           
+name              position   team_x     rating_medio
+       João Félix   Atacante   Al-Nassr 8,08        
+           Ângelo Meio-campo   Al-Nassr 7,46        
+   Kingsley Coman Meio-campo   Al-Nassr 7,33        
+Khalid Al-Ghannam Meio-campo Al-Ettifaq 7,33        
+Cristiano Ronaldo   Atacante   Al-Nassr 7,29        
+    Nawaf Boushal   Defensor   Al-Nassr 7,26        
+   Nawaf Al-Aqidi    Goleiro   Al-Nassr 7,22        
+  Mohamed Simakan   Defensor   Al-Nassr 7,16        
+Sultan Al-Ghannam   Defensor   Al-Nassr 7,13        
+      Marek Rodák    Goleiro Al-Ettifaq 7,10        
 
-  xG total
+Grandes chances criadas
 
-  name                position   team    xg_total
-        Lautaro Díaz   Atacante  Santos 2,29    
-            Guilherme Meio-campo  Santos 2,27    
-        Renato Kayzer   Atacante Vitória 2,14    
-  Aitor Cantalapiedra   Atacante Vitória 1,95    
-      Tiquinho Soares   Atacante  Santos 1,86    
-            Zé Marcos   Defensor Vitória 1,85    
-  Benjamín Rollheiser Meio-campo  Santos 1,74    
-            Zé Rafael Meio-campo  Santos 1,32    
-    Gustavo Caballero Meio-campo  Santos 0,93    
-                Dudu Meio-campo Vitória 0,92    
+name                position   team        grandes_chances
+     Kingsley Coman Meio-campo   Al-Nassr 10              
+  Khalid Al-Ghannam Meio-campo Al-Ettifaq  6              
+         João Félix   Atacante   Al-Nassr  6              
+      Álvaro Medrán Meio-campo Al-Ettifaq  5              
+    Francisco Calvo   Defensor Al-Ettifaq  4              
+             Ângelo Meio-campo   Al-Nassr  3              
+      Nawaf Boushal   Defensor   Al-Nassr  3              
+  Sultan Al-Ghannam   Defensor   Al-Nassr  3              
+         Sadio Mané Meio-campo   Al-Nassr  3              
+Georginio Wijnaldum Meio-campo Al-Ettifaq  2              
 
-  xG médio
+Passes chave
 
-  name                position   team    xg_medio
-        Lautaro Díaz   Atacante  Santos 0,38    
-      Luca Meirelles   Atacante  Santos 0,34    
-            Zé Marcos   Defensor Vitória 0,31    
-            Guilherme Meio-campo  Santos 0,25    
-      Ricardo Ryller Meio-campo Vitória 0,23    
-                Dudu Meio-campo Vitória 0,23    
-  Aitor Cantalapiedra   Atacante Vitória 0,22    
-        Renato Kayzer   Atacante Vitória 0,21    
-      Tiquinho Soares   Atacante  Santos 0,21    
-              Neymar   Atacante  Santos 0,20    
+name              position   team        passes_chave
+       João Félix   Atacante   Al-Nassr 27           
+           Ângelo Meio-campo   Al-Nassr 21           
+   Kingsley Coman Meio-campo   Al-Nassr 20           
+       Sadio Mané Meio-campo   Al-Nassr 18           
+    Álvaro Medrán Meio-campo Al-Ettifaq 13           
+      Ondrej Duda Meio-campo Al-Ettifaq 11           
+    Nawaf Boushal   Defensor   Al-Nassr 11           
+ Marcelo Brozović Meio-campo   Al-Nassr 11           
+Khalid Al-Ghannam Meio-campo Al-Ettifaq 11           
+Sultan Al-Ghannam   Defensor   Al-Nassr  9           
+
+xG total
+
+Empty DataFrame
+Columns: [name, position, team, xg_total]
+Index: []
+
+xG médio
+
+Empty DataFrame
+Columns: [name, position, team, xg_medio]
+Index: []

@@ -14,8 +14,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.common.exceptions import TimeoutException, WebDriverException, NoSuchElementException
 from urllib.parse import urlparse
-
-# ====== NOVO: Import das substituições de clubes (opcional) ======
 try:
     from substituicoes_clubes import substituicoes_por_id
 except Exception:
@@ -24,7 +22,7 @@ except Exception:
     print("AVISO: substituicoes_clubes.py não encontrado ou inválido. Seguiremos sem substituições de clubes.")
 
 # =============== CONFIG ===============
-temporada = "2025"
+temporada = "2026"
 MAX_MATCHES_PER_DRIVER = 30
 HEADLESS = True
 
@@ -108,6 +106,7 @@ def substituir_campeonato(n: str) -> str:
         'World Cup Qual. UEFA A': 'Eliminatórias',
         'CONMEBOL Libertadores': 'Libertadores',
         'CONMEBOL Sudamericana': 'Sul-Americana',
+        'Stars Cup': 'Copa do Catar I',
         'World Cup Qualification': 'Eliminatórias',
         'World Cup Qual. CONCACAF Gr. 2': 'Eliminatórias',
         'World Cup Qual. CONCACAF Group A': 'Eliminatórias',
@@ -152,31 +151,53 @@ def substituir_campeonato(n: str) -> str:
         'LigaPro Serie A': 'Equatoriano',
         'Eliteserien': 'Norueguês',
         'Copa Argentina': 'Copa da Argentina',
+        'World Cup Qual. CAF': 'Eliminatórias',
+        'World Cup Qual. UEFA I': 'Eliminatórias',
+        'World Cup Qual. UEFA F': 'Eliminatórias',
+        'World Cup Qual. CONCACAF Group C': 'Eliminatórias',
+        'World Cup Qual. CONCACAF Group B': 'Eliminatórias',
         'Gaucho': 'Gaúcho',
+        'Stars League': 'Catar',
+        'Qatar Cup': 'Catar Cup',
         'Allsvenskan': 'Sueco',
         'Primera División': 'Paraguaio',
         'Supercopa Internacional': 'Supercopa da Argentina',
         'Liga Profesional de Fútbol': 'Argentino',
         'Liga Profesional': 'Argentino',
+        'Copa Paraguay': 'Copa do Paraguai',
+        'Austrian Bundesliga': 'Austríaco',
+        'Campeonato Paraense': 'Paraense',
+        'Liga de Primera - Relegation Playoffs': 'Chileno',
         'Copa Chile': 'Copa do Chile',
         'Copa Ecuador': 'Copa do Equador',
         'Supercopa': 'Supercopa do Equador',
+        'MLS Pre Season': 'MLS Pré-Temporada',
         'Leinster Senior Cup': 'Copa da Liga da Irlanda',
         'FAI Presidents Cup': 'Supercopa da Irlanda',
         'Emperor Cup': 'Copa do Imperador',
         'J. League Cup': 'Copa da Liga do Japão',
         'FAI Cup': 'Copa da Irlanda',
+        'Mozzart Kup Srbije': 'Copa da Sérvia',
         'División de Honor': 'Paraguaio',
         'Supercopa Uruguaya': 'Supercopa do Uruguai',
+        'Baianão Mansão Green 2026': 'Baiano',
+        'Recopa Gaucha': 'Recopa Gaúcha',
+        'QSL Cup': 'Copa do Catar I',
         'Supercopa Venezuela': 'Supercopa da Venezuela',
         'Community Shield': 'Supercopa da Inglaterra',
         'FA Cup': 'Copa da Inglaterra',
         'EFL Cup': 'Copa da Liga Inglesa',
         'World Cup Qual. CONCACAF Gr. 3': 'Eliminatórias',
+        'World Cup Qual. CAF': 'Eliminatórias',
+        'Copa Bolivia': 'Copa da Bolívia',
         'LaLiga': 'La Liga',
         'Mineiro Módulo I - Classificação contra o rebaixamento': 'Mineiro',
         'Carioca Série A – Mata-mata': 'Carioca',
         'Carioca - Taça Rio': 'Carioca',
+        'Liga DIMAYOR': 'Colombiano',
+        'Africa Cup of Nations': 'Copa das Nações Africanas',
+        'World Cup Qual. CAF': 'Eliminatórias',
+        'World Cup Qual. UEFA E': 'Eliminatórias',
         'Carioca - Semifinais': 'Carioca',
         'Carioca - Classificação preliminar': 'Carioca',
         'Carioca - Classificação contra o rebaixamento': 'Carioca',
@@ -222,6 +243,7 @@ def substituir_campeonato(n: str) -> str:
         'Danish Superliga': 'Dinamarquês',
         'Oddset Pokalen': 'Copa da Dinamarca',
         'Pro League': 'Belga',
+        'Mozzart Bet Superliga': "Sérvio",
         'Beker van Belgie': 'Copa da Bélgica',
         'Primera LPF': 'Argentino',
         'World Cup Qualificação': 'Eliminatórias',

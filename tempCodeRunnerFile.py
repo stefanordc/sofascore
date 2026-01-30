@@ -1,1 +1,1 @@
-https://www.sofascore.com/pt/torneio/futebol/north-central-america/concacaf-champions-cup/498#id:69806
+Eliminatórias

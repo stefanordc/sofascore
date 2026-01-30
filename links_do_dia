@@ -17,6 +17,7 @@ TIMEOUT = 5
 # Prefixos excluídos por padrão (inclui a página diária dinâmica do SofaScore)
 DEFAULT_EXCLUDES = [
     "https://www.sofascore.com/pt/futebol/",
+    "https://www.sofascore.com/pt/torneio/futebol/brazil/catarinense/376#id:26506",
 ]
 
 def http_get(url: str) -> str:

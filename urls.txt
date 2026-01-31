@@ -1,258 +1,65 @@
 # Rodada 1
-'https://www.sofascore.com/pt/football/match/sk-rapid-wien-admira-wacker/aQsfQ#id:8858449',
-'https://www.sofascore.com/pt/football/match/austria-wien-lask/iQsdU#id:8858453',
-'https://www.sofascore.com/pt/football/match/sc-rheindorf-altach-tsv-hartberg/AQsgXb#id:8858454',
-'https://www.sofascore.com/pt/football/match/skn-st-polten-sk-sturm-graz/bQsuR#id:8858467',
-'https://www.sofascore.com/pt/football/match/wsg-tirol-sv-ried/ZPsfic#id:8858459',
-'https://www.sofascore.com/pt/football/match/wolfsberger-ac-red-bull-salzburg/WPsBQ#id:8858550',
+'https://www.sofascore.com/pt/football/match/sk-rapid-wien-sv-ried/ZPsfQ#id:14992669',
+'https://www.sofascore.com/pt/football/match/floridsdorfer-ac-sr-donaufeld/aRsKfd#id:14045810',
+'https://www.sofascore.com/pt/football/match/esv-parndorf-sv-ried/ZPsPQ#id:14045831',
+'https://www.sofascore.com/pt/football/match/sku-amstetten-sc-krems/gRsGAc#id:14045828',
+'https://www.sofascore.com/pt/football/match/svg-reichenau-vfb-hohenems/HRsGlr#id:14045819',
+'https://www.sofascore.com/pt/football/match/sv-wallern-wolfsberger-ac/BQsUwo#id:14045827',
+'https://www.sofascore.com/pt/football/match/atus-velden-sc-neusiedl-1919/TacsoKDc#id:14045815',
+'https://www.sofascore.com/pt/football/match/fc-dornbirn-grazer-ak-1902/cQsDT#id:14045839',
+'https://www.sofascore.com/pt/football/match/fc-lauterach-sc-schwaz/HBjsiQDb#id:14045811',
+'https://www.sofascore.com/pt/football/match/jennersdorf-fc-marchfeld-donauauen/wHqcsxWqc#id:14045838',
+'https://www.sofascore.com/pt/football/match/fc-hertha-wels-sc-imst-1933/nIbcsuHqc#id:14045830',
+'https://www.sofascore.com/pt/football/match/sc-kalsdorf-skn-st-polten/uRsiT#id:14045833',
+'https://www.sofascore.com/pt/football/match/sc-weiz-admira-wacker/aQsTR#id:14045813',
+'https://www.sofascore.com/pt/football/match/union-gurten-sv-wals-grunau/bOEsoXob#id:14045816',
+'https://www.sofascore.com/pt/football/match/fcm-traiskirchen-wsg-tirol/ficsFDFb#id:14045835',
+'https://www.sofascore.com/pt/football/match/austria-klagenfurt-sv-horn/lRsepr#id:14045823',
+'https://www.sofascore.com/pt/football/match/sv-tillmitsch-first-vienna/eQsnFyc#id:14045824',
+'https://www.sofascore.com/pt/football/match/treibach-fc-blau-weiss-linz/nRsiBGb#id:14045818',
+'https://www.sofascore.com/pt/football/match/schwarz-weiss-bregenz-union-vocklamarkt/udcsLfd#id:14045814',
+'https://www.sofascore.com/pt/football/match/atsv-wolfsberg-sv-oberwart/ORsMzw#id:14045822',
+'https://www.sofascore.com/pt/football/match/sk-bischofshofen-sk-sturm-graz/bQsxNHb#id:14045840',
+'https://www.sofascore.com/pt/football/match/sv-dinamo-helfort-kapfenberger-sv/rQsuVQb#id:14045825',
+'https://www.sofascore.com/pt/football/match/oedt-austria-salzburg/zlrsPxdc#id:14045841',
+'https://www.sofascore.com/pt/football/match/sc-neupack-hirschwang-sc-rheindorf-altach/gXbsVByc#id:14045834',
+'https://www.sofascore.com/pt/football/match/sv-kuchl-sc-austria-lustenau/mQsDklc#id:14045821',
+'https://www.sofascore.com/pt/football/match/union-dietach-red-bull-salzburg/WPsYmMd#id:14045817',
+'https://www.sofascore.com/pt/football/match/wiener-sport-club-lask/iQsqQ#id:14045812',
+'https://www.sofascore.com/pt/football/match/sv-stripfing-sc-retz/aCrsEkGb#id:14045829',
+'https://www.sofascore.com/pt/football/match/sv-lafnitz-tsv-hartberg/AQsuuR#id:14045820',
+'https://www.sofascore.com/pt/football/match/sv-donau-fc-lendorf/rTsPac#id:14045832',
+'https://www.sofascore.com/pt/football/match/austria-wien-ask-voitsberg/GQsdU#id:14045826',
+'https://www.sofascore.com/pt/football/match/fc-pinzgau-saalfelden-sc-rothis/MTsdgw#id:14045837',
+'https://www.sofascore.com/pt/football/match/fc-wacker-innsbruck-sk-rapid-wien/fQsNQ#id:14045836',
 
 # Rodada 2
-'https://www.sofascore.com/pt/football/match/sc-rheindorf-altach-red-bull-salzburg/WPsgXb#id:8858463',
-'https://www.sofascore.com/pt/football/match/sk-rapid-wien-sk-sturm-graz/bQsfQ#id:8858457',
-'https://www.sofascore.com/pt/football/match/wsg-tirol-lask/iQsfic#id:8858458',
-'https://www.sofascore.com/pt/football/match/skn-st-polten-admira-wacker/aQsuR#id:8858468',
-'https://www.sofascore.com/pt/football/match/wolfsberger-ac-tsv-hartberg/AQsBQ#id:8858469',
-'https://www.sofascore.com/pt/football/match/austria-wien-sv-ried/ZPsdU#id:8858455',
+'https://www.sofascore.com/pt/football/match/kapfenberger-sv-sc-austria-lustenau/mQsrQ#id:14292286',
+'https://www.sofascore.com/pt/football/match/fc-hertha-wels-skn-st-polten/uRsuHqc#id:14292285',
+'https://www.sofascore.com/pt/football/match/fc-marchfeld-donauauen-schwarz-weiss-bregenz/LfdswHqc#id:14292287',
+'https://www.sofascore.com/pt/football/match/ask-voitsberg-admira-wacker/aQsGQ#id:14292290',
+'https://www.sofascore.com/pt/football/match/sku-amstetten-first-vienna/eQsGAc#id:14292292',
+'https://www.sofascore.com/pt/football/match/union-gurten-sv-ried/ZPsoXob#id:14304582',
+'https://www.sofascore.com/pt/football/match/fc-dornbirn-red-bull-salzburg/WPsDT#id:14292289',
+'https://www.sofascore.com/pt/football/match/oedt-wsg-tirol/ficsPxdc#id:14293141',
+'https://www.sofascore.com/pt/football/match/sv-stripfing-floridsdorfer-ac/KfdsEkGb#id:14292297',
+'https://www.sofascore.com/pt/football/match/atus-velden-tsv-hartberg/AQsoKDc#id:14304583',
+'https://www.sofascore.com/pt/football/match/sc-schwaz-fc-blau-weiss-linz/nRsHBj#id:14292288',
+'https://www.sofascore.com/pt/football/match/sv-donau-sc-rheindorf-altach/gXbsPac#id:14293142',
+'https://www.sofascore.com/pt/football/match/sv-horn-lask/iQslR#id:14292293',
+'https://www.sofascore.com/pt/football/match/svg-reichenau-wolfsberger-ac/BQsGlr#id:14292291',
+'https://www.sofascore.com/pt/football/match/sc-rothis-sk-sturm-graz/bQsMT#id:14292296',
+'https://www.sofascore.com/pt/football/match/sv-oberwart-sk-rapid-wien/fQsOR#id:14292294',
 
-# Rodada 3
-'https://www.sofascore.com/pt/football/match/wsg-tirol-sc-rheindorf-altach/gXbsfic#id:8858464',
-'https://www.sofascore.com/pt/football/match/skn-st-polten-sk-rapid-wien/fQsuR#id:8858466',
-'https://www.sofascore.com/pt/football/match/sv-ried-red-bull-salzburg/WPsZP#id:8858465',
-'https://www.sofascore.com/pt/football/match/austria-wien-admira-wacker/aQsdU#id:8858452',
-'https://www.sofascore.com/pt/football/match/tsv-hartberg-sk-sturm-graz/bQsAQ#id:8858548',
-'https://www.sofascore.com/pt/football/match/wolfsberger-ac-lask/iQsBQ#id:8858451',
+# Oitavos-de-Final
+'https://www.sofascore.com/pt/football/match/fc-blau-weiss-linz-tsv-hartberg/AQsnR#id:14732367',
+'https://www.sofascore.com/pt/football/match/sc-rheindorf-altach-kapfenberger-sv/rQsgXb#id:14732366',
+'https://www.sofascore.com/pt/football/match/sv-stripfing-lask/iQsEkGb#id:14732368',
+'https://www.sofascore.com/pt/football/match/sk-sturm-graz-admira-wacker/aQsbQ#id:14732363',
+'https://www.sofascore.com/pt/football/match/schwarz-weiss-bregenz-sv-ried/ZPsLfd#id:14732370',
+'https://www.sofascore.com/pt/football/match/sku-amstetten-wolfsberger-ac/BQsGAc#id:14732365',
+'https://www.sofascore.com/pt/football/match/skn-st-polten-sk-rapid-wien/fQsuR#id:14732369',
+'https://www.sofascore.com/pt/football/match/wsg-tirol-red-bull-salzburg/WPsfic#id:14732364',
 
-# Rodada 4
-'https://www.sofascore.com/pt/football/match/admira-wacker-sv-ried/ZPsaQ#id:8858450',
-'https://www.sofascore.com/pt/football/match/skn-st-polten-wolfsberger-ac/BQsuR#id:8858461',
-'https://www.sofascore.com/pt/football/match/wsg-tirol-austria-wien/dUsfic#id:8858549',
-'https://www.sofascore.com/pt/football/match/tsv-hartberg-red-bull-salzburg/WPsAQ#id:8858460',
-'https://www.sofascore.com/pt/football/match/sc-rheindorf-altach-sk-sturm-graz/bQsgXb#id:8858462',
-'https://www.sofascore.com/pt/football/match/lask-sk-rapid-wien/fQsiQ#id:8858456',
-
-# Rodada 5
-'https://www.sofascore.com/pt/football/match/austria-wien-red-bull-salzburg/WPsdU#id:8858568',
-'https://www.sofascore.com/pt/football/match/sc-rheindorf-altach-admira-wacker/aQsgXb#id:8858514',
-'https://www.sofascore.com/pt/football/match/sk-sturm-graz-sv-ried/ZPsbQ#id:8858523',
-'https://www.sofascore.com/pt/football/match/skn-st-polten-lask/iQsuR#id:8858511',
-'https://www.sofascore.com/pt/football/match/wsg-tirol-tsv-hartberg/AQsfic#id:8858498',
-'https://www.sofascore.com/pt/football/match/wolfsberger-ac-sk-rapid-wien/fQsBQ#id:8858503',
-
-# Rodada 6
-'https://www.sofascore.com/pt/football/match/wsg-tirol-red-bull-salzburg/WPsfic#id:8858524',
-'https://www.sofascore.com/pt/football/match/skn-st-polten-sv-ried/ZPsuR#id:8858472',
-'https://www.sofascore.com/pt/football/match/austria-wien-tsv-hartberg/AQsdU#id:8858471',
-'https://www.sofascore.com/pt/football/match/wolfsberger-ac-admira-wacker/aQsBQ#id:8858474',
-'https://www.sofascore.com/pt/football/match/sc-rheindorf-altach-sk-rapid-wien/fQsgXb#id:8858552',
-'https://www.sofascore.com/pt/football/match/lask-sk-sturm-graz/bQsiQ#id:8858476',
-
-# Rodada 7
-'https://www.sofascore.com/pt/football/match/sc-rheindorf-altach-austria-wien/dUsgXb#id:8858555',
-'https://www.sofascore.com/pt/football/match/wsg-tirol-skn-st-polten/uRsfic#id:8858492',
-'https://www.sofascore.com/pt/football/match/tsv-hartberg-sv-ried/ZPsAQ#id:8858486',
-'https://www.sofascore.com/pt/football/match/lask-admira-wacker/aQsiQ#id:8858487',
-'https://www.sofascore.com/pt/football/match/sk-rapid-wien-red-bull-salzburg/WPsfQ#id:8858477',
-'https://www.sofascore.com/pt/football/match/wolfsberger-ac-sk-sturm-graz/bQsBQ#id:9225318',
-
-# Rodada 8
-'https://www.sofascore.com/pt/football/match/sk-sturm-graz-red-bull-salzburg/WPsbQ#id:8858483',
-'https://www.sofascore.com/pt/football/match/sc-rheindorf-altach-wolfsberger-ac/BQsgXb#id:8858489',
-'https://www.sofascore.com/pt/football/match/tsv-hartberg-lask/iQsAQ#id:8858484',
-'https://www.sofascore.com/pt/football/match/austria-wien-skn-st-polten/uRsdU#id:8858565',
-'https://www.sofascore.com/pt/football/match/wsg-tirol-admira-wacker/aQsfic#id:8858491',
-'https://www.sofascore.com/pt/football/match/sk-rapid-wien-sv-ried/ZPsfQ#id:8858535',
-
-# Rodada 9
-'https://www.sofascore.com/pt/football/match/tsv-hartberg-admira-wacker/aQsAQ#id:8858529',
-'https://www.sofascore.com/pt/football/match/skn-st-polten-red-bull-salzburg/WPsuR#id:8858539',
-'https://www.sofascore.com/pt/football/match/wsg-tirol-sk-sturm-graz/bQsfic#id:8858520',
-'https://www.sofascore.com/pt/football/match/sc-rheindorf-altach-lask/iQsgXb#id:8858526',
-'https://www.sofascore.com/pt/football/match/wolfsberger-ac-sv-ried/ZPsBQ#id:8858569',
-'https://www.sofascore.com/pt/football/match/austria-wien-sk-rapid-wien/fQsdU#id:8858540',
-
-# Rodada 10
-'https://www.sofascore.com/pt/football/match/admira-wacker-red-bull-salzburg/WPsaQ#id:8858545',
-'https://www.sofascore.com/pt/football/match/austria-wien-sk-sturm-graz/bQsdU#id:8858544',
-'https://www.sofascore.com/pt/football/match/sc-rheindorf-altach-skn-st-polten/uRsgXb#id:8858547',
-'https://www.sofascore.com/pt/football/match/tsv-hartberg-sk-rapid-wien/fQsAQ#id:8858537',
-'https://www.sofascore.com/pt/football/match/wsg-tirol-wolfsberger-ac/BQsfic#id:8858546',
-'https://www.sofascore.com/pt/football/match/lask-sv-ried/ZPsiQ#id:8858541',
-
-# Rodada 11
-'https://www.sofascore.com/pt/football/match/skn-st-polten-tsv-hartberg/AQsuR#id:8858512',
-'https://www.sofascore.com/pt/football/match/sk-sturm-graz-admira-wacker/aQsbQ#id:8858567',
-'https://www.sofascore.com/pt/football/match/sc-rheindorf-altach-sv-ried/ZPsgXb#id:8858507',
-'https://www.sofascore.com/pt/football/match/wsg-tirol-sk-rapid-wien/fQsfic#id:8858563',
-'https://www.sofascore.com/pt/football/match/austria-wien-wolfsberger-ac/BQsdU#id:8858536',
-'https://www.sofascore.com/pt/football/match/lask-red-bull-salzburg/WPsiQ#id:8858542',
-
-# Rodada 12
-'https://www.sofascore.com/pt/football/match/sk-rapid-wien-admira-wacker/aQsfQ#id:8858532',
-'https://www.sofascore.com/pt/football/match/skn-st-polten-sk-sturm-graz/bQsuR#id:8858518',
-'https://www.sofascore.com/pt/football/match/sc-rheindorf-altach-tsv-hartberg/AQsgXb#id:8858516',
-'https://www.sofascore.com/pt/football/match/wolfsberger-ac-red-bull-salzburg/WPsBQ#id:8858557',
-'https://www.sofascore.com/pt/football/match/wsg-tirol-sv-ried/ZPsfic#id:8858521',
-'https://www.sofascore.com/pt/football/match/austria-wien-lask/iQsdU#id:8858517',
-
-# Rodada 13
-'https://www.sofascore.com/pt/football/match/sk-rapid-wien-sk-sturm-graz/bQsfQ#id:8858531',
-'https://www.sofascore.com/pt/football/match/skn-st-polten-admira-wacker/aQsuR#id:8858561',
-'https://www.sofascore.com/pt/football/match/austria-wien-sv-ried/ZPsdU#id:8858519',
-'https://www.sofascore.com/pt/football/match/wolfsberger-ac-tsv-hartberg/AQsBQ#id:8858560',
-'https://www.sofascore.com/pt/football/match/sc-rheindorf-altach-red-bull-salzburg/WPsgXb#id:8858528',
-'https://www.sofascore.com/pt/football/match/wsg-tirol-lask/iQsfic#id:8858525',
-
-# Rodada 14
-'https://www.sofascore.com/pt/football/match/austria-wien-admira-wacker/aQsdU#id:8858490',
-'https://www.sofascore.com/pt/football/match/tsv-hartberg-sk-sturm-graz/bQsAQ#id:8858499',
-'https://www.sofascore.com/pt/football/match/sv-ried-red-bull-salzburg/WPsZP#id:8858522',
-'https://www.sofascore.com/pt/football/match/skn-st-polten-sk-rapid-wien/fQsuR#id:8858502',
-'https://www.sofascore.com/pt/football/match/wsg-tirol-sc-rheindorf-altach/gXbsfic#id:8858564',
-'https://www.sofascore.com/pt/football/match/wolfsberger-ac-lask/iQsBQ#id:8858493',
-
-# Rodada 15
-'https://www.sofascore.com/pt/football/match/sc-rheindorf-altach-sk-sturm-graz/bQsgXb#id:8858501',
-'https://www.sofascore.com/pt/football/match/admira-wacker-sv-ried/ZPsaQ#id:8858508',
-'https://www.sofascore.com/pt/football/match/tsv-hartberg-red-bull-salzburg/WPsAQ#id:8858504',
-'https://www.sofascore.com/pt/football/match/wsg-tirol-austria-wien/dUsfic#id:8858505',
-'https://www.sofascore.com/pt/football/match/skn-st-polten-wolfsberger-ac/BQsuR#id:8858506',
-'https://www.sofascore.com/pt/football/match/lask-sk-rapid-wien/fQsiQ#id:8858500',
-
-# Rodada 16
-'https://www.sofascore.com/pt/football/match/sk-sturm-graz-sv-ried/ZPsbQ#id:8858510',
-'https://www.sofascore.com/pt/football/match/wolfsberger-ac-sk-rapid-wien/fQsBQ#id:8858509',
-'https://www.sofascore.com/pt/football/match/sc-rheindorf-altach-admira-wacker/aQsgXb#id:8858478',
-'https://www.sofascore.com/pt/football/match/skn-st-polten-lask/iQsuR#id:8858513',
-'https://www.sofascore.com/pt/football/match/austria-wien-red-bull-salzburg/WPsdU#id:8858515',
-'https://www.sofascore.com/pt/football/match/wsg-tirol-tsv-hartberg/AQsfic#id:9346045',
-
-# Rodada 17
-'https://www.sofascore.com/pt/football/match/sc-rheindorf-altach-sk-rapid-wien/fQsgXb#id:8858473',
-'https://www.sofascore.com/pt/football/match/wolfsberger-ac-admira-wacker/aQsBQ#id:8858479',
-'https://www.sofascore.com/pt/football/match/wsg-tirol-red-bull-salzburg/WPsfic#id:8858551',
-'https://www.sofascore.com/pt/football/match/austria-wien-tsv-hartberg/AQsdU#id:8858566',
-'https://www.sofascore.com/pt/football/match/skn-st-polten-sv-ried/ZPsuR#id:8858482',
-'https://www.sofascore.com/pt/football/match/lask-sk-sturm-graz/bQsiQ#id:8858475',
-
-# Rodada 18
-'https://www.sofascore.com/pt/football/match/sc-rheindorf-altach-austria-wien/dUsgXb#id:8858488',
-'https://www.sofascore.com/pt/football/match/tsv-hartberg-sv-ried/ZPsAQ#id:8858559',
-'https://www.sofascore.com/pt/football/match/wsg-tirol-skn-st-polten/uRsfic#id:8858496',
-'https://www.sofascore.com/pt/football/match/lask-admira-wacker/aQsiQ#id:8858485',
-'https://www.sofascore.com/pt/football/match/wolfsberger-ac-sk-sturm-graz/bQsBQ#id:8858495',
-'https://www.sofascore.com/pt/football/match/sk-rapid-wien-red-bull-salzburg/WPsfQ#id:8858481',
-
-# Rodada 19
-'https://www.sofascore.com/pt/football/match/wsg-tirol-admira-wacker/aQsfic#id:8858533',
-'https://www.sofascore.com/pt/football/match/tsv-hartberg-lask/iQsAQ#id:8858494',
-'https://www.sofascore.com/pt/football/match/sk-rapid-wien-sv-ried/ZPsfQ#id:8858497',
-'https://www.sofascore.com/pt/football/match/austria-wien-skn-st-polten/uRsdU#id:8858530',
-'https://www.sofascore.com/pt/football/match/sc-rheindorf-altach-wolfsberger-ac/BQsgXb#id:8858554',
-'https://www.sofascore.com/pt/football/match/sk-sturm-graz-red-bull-salzburg/WPsbQ#id:8858527',
-
-# Rodada 20
-'https://www.sofascore.com/pt/football/match/sc-rheindorf-altach-lask/iQsgXb#id:8858562',
-'https://www.sofascore.com/pt/football/match/tsv-hartberg-admira-wacker/aQsAQ#id:8858556',
-'https://www.sofascore.com/pt/football/match/wsg-tirol-sk-sturm-graz/bQsfic#id:8858538',
-'https://www.sofascore.com/pt/football/match/skn-st-polten-red-bull-salzburg/WPsuR#id:8858543',
-'https://www.sofascore.com/pt/football/match/wolfsberger-ac-sv-ried/ZPsBQ#id:8858558',
-'https://www.sofascore.com/pt/football/match/austria-wien-sk-rapid-wien/fQsdU#id:8858534',
-
-# Rodada 21
-'https://www.sofascore.com/pt/football/match/admira-wacker-red-bull-salzburg/WPsaQ#id:8858570',
-'https://www.sofascore.com/pt/football/match/sc-rheindorf-altach-skn-st-polten/uRsgXb#id:8858580',
-'https://www.sofascore.com/pt/football/match/tsv-hartberg-sk-rapid-wien/fQsAQ#id:8858576',
-'https://www.sofascore.com/pt/football/match/austria-wien-sk-sturm-graz/bQsdU#id:8858578',
-'https://www.sofascore.com/pt/football/match/lask-sv-ried/ZPsiQ#id:8858579',
-'https://www.sofascore.com/pt/football/match/wsg-tirol-wolfsberger-ac/BQsfic#id:8858581',
-
-# Rodada 22
-'https://www.sofascore.com/pt/football/match/lask-red-bull-salzburg/WPsiQ#id:8858582',
-'https://www.sofascore.com/pt/football/match/sk-sturm-graz-admira-wacker/aQsbQ#id:8858571',
-'https://www.sofascore.com/pt/football/match/austria-wien-wolfsberger-ac/BQsdU#id:8858574',
-'https://www.sofascore.com/pt/football/match/sc-rheindorf-altach-sv-ried/ZPsgXb#id:8858572',
-'https://www.sofascore.com/pt/football/match/skn-st-polten-tsv-hartberg/AQsuR#id:8858577',
-'https://www.sofascore.com/pt/football/match/wsg-tirol-sk-rapid-wien/fQsfic#id:8858575',
-
-# Rodada 23
-'https://www.sofascore.com/pt/football/match/sc-rheindorf-altach-austria-wien/dUsgXb#id:9421846',
-'https://www.sofascore.com/pt/football/match/skn-st-polten-admira-wacker/aQsuR#id:9421852',
-'https://www.sofascore.com/pt/football/match/tsv-hartberg-sv-ried/ZPsAQ#id:9421842',
-'https://www.sofascore.com/pt/football/match/wolfsberger-ac-sk-rapid-wien/fQsBQ#id:9421828',
-'https://www.sofascore.com/pt/football/match/wsg-tirol-lask/iQsfic#id:9421822',
-'https://www.sofascore.com/pt/football/match/sk-sturm-graz-red-bull-salzburg/WPsbQ#id:9421818',
-
-# Rodada 24
-'https://www.sofascore.com/pt/football/match/admira-wacker-sv-ried/ZPsaQ#id:9421836',
-'https://www.sofascore.com/pt/football/match/sc-rheindorf-altach-skn-st-polten/uRsgXb#id:9421824',
-'https://www.sofascore.com/pt/football/match/austria-wien-tsv-hartberg/AQsdU#id:9421850',
-'https://www.sofascore.com/pt/football/match/wolfsberger-ac-lask/iQsBQ#id:9421815',
-'https://www.sofascore.com/pt/football/match/wsg-tirol-sk-sturm-graz/bQsfic#id:9421816',
-'https://www.sofascore.com/pt/football/match/sk-rapid-wien-red-bull-salzburg/WPsfQ#id:9421819',
-
-# Rodada 25
-'https://www.sofascore.com/pt/football/match/tsv-hartberg-admira-wacker/aQsAQ#id:9421829',
-'https://www.sofascore.com/pt/football/match/austria-wien-skn-st-polten/uRsdU#id:9421833',
-'https://www.sofascore.com/pt/football/match/sc-rheindorf-altach-sv-ried/ZPsgXb#id:9421827',
-'https://www.sofascore.com/pt/football/match/lask-red-bull-salzburg/WPsiQ#id:9421831',
-'https://www.sofascore.com/pt/football/match/wsg-tirol-wolfsberger-ac/BQsfic#id:9421820',
-'https://www.sofascore.com/pt/football/match/sk-rapid-wien-sk-sturm-graz/bQsfQ#id:9421817',
-
-# Rodada 26
-'https://www.sofascore.com/pt/football/match/sc-rheindorf-altach-admira-wacker/aQsgXb#id:9421832',
-'https://www.sofascore.com/pt/football/match/skn-st-polten-tsv-hartberg/AQsuR#id:9421839',
-'https://www.sofascore.com/pt/football/match/austria-wien-sv-ried/ZPsdU#id:9421834',
-'https://www.sofascore.com/pt/football/match/wolfsberger-ac-sk-sturm-graz/bQsBQ#id:9421848',
-'https://www.sofascore.com/pt/football/match/wsg-tirol-red-bull-salzburg/WPsfic#id:9421841',
-'https://www.sofascore.com/pt/football/match/lask-sk-rapid-wien/fQsiQ#id:9421844',
-
-# Rodada 27
-'https://www.sofascore.com/pt/football/match/austria-wien-admira-wacker/aQsdU#id:9421792',
-'https://www.sofascore.com/pt/football/match/sc-rheindorf-altach-tsv-hartberg/AQsgXb#id:9421807',
-'https://www.sofascore.com/pt/football/match/skn-st-polten-sv-ried/ZPsuR#id:9421810',
-'https://www.sofascore.com/pt/football/match/wsg-tirol-sk-rapid-wien/fQsfic#id:9421845',
-'https://www.sofascore.com/pt/football/match/wolfsberger-ac-red-bull-salzburg/WPsBQ#id:9421853',
-'https://www.sofascore.com/pt/football/match/lask-sk-sturm-graz/bQsiQ#id:9421851',
-
-# Rodada 28
-'https://www.sofascore.com/pt/football/match/austria-wien-admira-wacker/aQsdU#id:9421809',
-'https://www.sofascore.com/pt/football/match/skn-st-polten-sv-ried/ZPsuR#id:9421808',
-'https://www.sofascore.com/pt/football/match/sc-rheindorf-altach-tsv-hartberg/AQsgXb#id:9421814',
-'https://www.sofascore.com/pt/football/match/lask-sk-sturm-graz/bQsiQ#id:9421843',
-'https://www.sofascore.com/pt/football/match/wolfsberger-ac-red-bull-salzburg/WPsBQ#id:9421825',
-'https://www.sofascore.com/pt/football/match/wsg-tirol-sk-rapid-wien/fQsfic#id:9421847',
-
-# Rodada 29
-'https://www.sofascore.com/pt/football/match/skn-st-polten-admira-wacker/aQsuR#id:9421799',
-'https://www.sofascore.com/pt/football/match/sc-rheindorf-altach-austria-wien/dUsgXb#id:9421802',
-'https://www.sofascore.com/pt/football/match/tsv-hartberg-sv-ried/ZPsAQ#id:9421805',
-'https://www.sofascore.com/pt/football/match/wsg-tirol-lask/iQsfic#id:9421840',
-'https://www.sofascore.com/pt/football/match/sk-sturm-graz-red-bull-salzburg/WPsbQ#id:9421826',
-'https://www.sofascore.com/pt/football/match/wolfsberger-ac-sk-rapid-wien/fQsBQ#id:9421830',
-
-# Rodada 30
-'https://www.sofascore.com/pt/football/match/sc-rheindorf-altach-skn-st-polten/uRsgXb#id:9421796',
-'https://www.sofascore.com/pt/football/match/admira-wacker-sv-ried/ZPsaQ#id:9421797',
-'https://www.sofascore.com/pt/football/match/austria-wien-tsv-hartberg/AQsdU#id:9421793',
-'https://www.sofascore.com/pt/football/match/wolfsberger-ac-lask/iQsBQ#id:9421837',
-'https://www.sofascore.com/pt/football/match/wsg-tirol-sk-sturm-graz/bQsfic#id:9421849',
-'https://www.sofascore.com/pt/football/match/sk-rapid-wien-red-bull-salzburg/WPsfQ#id:9421838',
-
-# Rodada 31
-'https://www.sofascore.com/pt/football/match/austria-wien-skn-st-polten/uRsdU#id:9421800',
-'https://www.sofascore.com/pt/football/match/sc-rheindorf-altach-sv-ried/ZPsgXb#id:9421791',
-'https://www.sofascore.com/pt/football/match/tsv-hartberg-admira-wacker/aQsAQ#id:9421798',
-'https://www.sofascore.com/pt/football/match/lask-red-bull-salzburg/WPsiQ#id:9421835',
-'https://www.sofascore.com/pt/football/match/sk-rapid-wien-sk-sturm-graz/bQsfQ#id:9421801',
-'https://www.sofascore.com/pt/football/match/wsg-tirol-wolfsberger-ac/BQsfic#id:9421806',
-
-# Rodada 32
-'https://www.sofascore.com/pt/football/match/sc-rheindorf-altach-admira-wacker/aQsgXb#id:9421821',
-'https://www.sofascore.com/pt/football/match/skn-st-polten-tsv-hartberg/AQsuR#id:9421794',
-'https://www.sofascore.com/pt/football/match/austria-wien-sv-ried/ZPsdU#id:9421823',
-'https://www.sofascore.com/pt/football/match/wsg-tirol-red-bull-salzburg/WPsfic#id:9421795',
-'https://www.sofascore.com/pt/football/match/lask-sk-rapid-wien/fQsiQ#id:9421804',
-'https://www.sofascore.com/pt/football/match/wolfsberger-ac-sk-sturm-graz/bQsBQ#id:9421803',
-
-# Semifinais
-'https://www.sofascore.com/pt/football/match/austria-wien-tsv-hartberg/AQsdU#id:9533791',
+# Quartas de final
+'https://www.sofascore.com/pt/football/match/fc-blau-weiss-linz-lask/iQsnR#id:14992667',

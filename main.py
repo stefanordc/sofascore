@@ -148,6 +148,7 @@ def substituir_campeonato(n: str) -> str:
         'Copa Colombia': 'Copa da Colômbia',
         'Liga 1': 'Peruano',
         'Premier Division': 'Irlandês',
+        'ÖFB Cup': 'Copa da Áustria',
         'LigaPro Serie A': 'Equatoriano',
         'Eliteserien': 'Norueguês',
         'Copa Argentina': 'Copa da Argentina',

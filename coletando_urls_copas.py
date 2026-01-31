@@ -18,7 +18,7 @@ from selenium.common.exceptions import (
 from webdriver_manager.chrome import ChromeDriverManager
 
 # ──────────────── CONFIGURAÇÕES ──────────────── #
-URL_TORNEIO = "https://www.sofascore.com/pt/football/tournament/austria/bundesliga/45#id:29401"
+URL_TORNEIO = "https://www.sofascore.com/pt/football/tournament/austria/ofb-cup/445#id:77237"
 
 # Execução oculta (sem abrir janela visual)
 HEADLESS = True  
